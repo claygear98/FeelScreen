@@ -13,7 +13,7 @@ function App() {
 					target="_blank"
 					rel="noopener noreferrer"
 				>
-					Learn kkkks
+					Learn kkkksasd
 				</a>
 			</header>
 		</div>
