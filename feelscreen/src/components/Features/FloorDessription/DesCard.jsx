@@ -19,7 +19,7 @@ const DesCard = (props) => {
             } else {
                 setPictureNum(pictureNum + 1);
             }
-        }, 2000);
+        }, 2500);
 
         return () => clearInterval(intervalId);
     }, [pictureNum]);

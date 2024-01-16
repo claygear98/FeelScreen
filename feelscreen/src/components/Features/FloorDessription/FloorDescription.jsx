@@ -103,10 +103,10 @@ const FloorDescription = () => {
         }
 
         const elements = document.getElementsByClassName(`${floor.slice(0,1)}f`);
-            if (elements.length > 0) {
-                elements[0].classList.remove('hidden');
-                elements[1].classList.remove('hidden');
-            }
+        if (elements.length > 0) {
+            elements[0].classList.remove('hidden');
+            elements[1].classList.remove('hidden');
+        }
     }, [floor,beforeFloor]);
     const handelFloor = (changeFloor) =>{
         setBeforeFloor(floor.slice(0,1));
