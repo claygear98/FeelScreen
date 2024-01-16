@@ -1,65 +1,110 @@
-import SignUp from './SignUp.js';
+import React from "react";
+import { useState } from "react";
+import styled from "styled-components";
 
-function LogIn() {
+function SignUp() {
+		const [username, setUsername] = useState('');
+		const [phone, setPhone] = useState('');
+		const [password, setPassword] = useState('');
+		const [passwordcheck, setPasswordCheck] = useState('');
+		const [code, setCode] = useState('');
+	  
+		// 입력 값 변경 핸들러
+		const handleUsername = (e) => {
+		  setUsername(e.target.value);
+		};
+	  
+		const handlePhone = (e) => {
+		  setPhone(e.target.value);
+		};
+	   
+		const handlePassword = (e) => {
+		  setPassword(e.target.value);
+		};
+	  
+		const handlePasswordCheck = (e) => {
+		  setPasswordCheck(e.target.value);
+		};
+	  
+		const codeCheck = (e) => {
+		  setCode(e.target.value);
+		};
+		// 회원가입 버튼 클릭 핸들러
+		const handleSignup = () => {
+		  // 여기에서 실제 회원가입 로직을 처리할 수 있습니다.
+		  // 예를 들면, 서버에 회원가입 요청을 보내는 등의 작업이 들어갈 수 있습니다.
+		  console.log('회원가입 정보:', { username, phone, password, code });
+		};
+
+		const Wrapper = styled.div`
+			width:100%;
+			box-sizing:border-box;
+		`
+		const Container = styled.div`
+			width: 90%;
+			display:flex;
+			margin: 0 auto;
+		`
+		
+		const SignUpForm = styled.div`
+			width: 100%;
+			border: 2px solid black;
+			border-radius: 10px;
+		`
   return (
-		<div className="max-w-md mx-auto my-10">
-			<h2 className="text-2xl font-bold mb-6">회원가입</h2>
-			<form className="space-y-4">
-				<div className="flex flex-col">
-					<label className="mb-2">아이디(닉네임):</label>
-					<input
-						type="text"
-						className="border border-gray-300 p-2 rounded-md"
-						value={SignUp.username}
-						onChange={SignUp.handleUsername}
-					/>
-				</div>
-				<div className="flex flex-col">
-					<label className="mb-2">전화번호:</label>
-					<input
-						type="text"
-						className="border border-gray-300 p-2 rounded-md"
-						value={SignUp.phone}
-						onChange={SignUp.handlePhone}
-					/>
-				</div>
-				<div className="flex flex-col">
-					<label className="mb-2">인증번호 입력:</label>
-					<input
-						type="text"
-						className="border border-gray-300 p-2 rounded-md"
-						value={SignUp.code}
-						onChange={SignUp.codeCheck}
-					/>
-				</div>
-				<div className="flex flex-col">
-					<label className="mb-2">비밀번호:</label>
-					<input
-						type="password"
-						className="border border-gray-300 p-2 rounded-md"
-						value={SignUp.password}
-						onChange={SignUp.handlePassword}
-					/>
-				</div>
-				<div className="flex flex-col">
-					<label className="mb-2">비밀번호 확인:</label>
-					<input
-						type="password"
-						className="border border-gray-300 p-2 rounded-md"
-						value={SignUp.passwordcheck}
-						onChange={SignUp.handlePasswordCheck}
-					/>
-				</div>
-				<button
-					type="button"
-					className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"
-					onClick={SignUp.handleSignup}
-				>
-					회원가입
-				</button>
-			</form>
-		</div>
+		<Wrapper>
+			<Container>
+				<SignUpForm>
+					<h2>회원 가입을 위해 정보를 입력해주세요.</h2>
+					<form>
+						<div>
+							<label>아이디(닉네임):</label>
+							<input
+								type="text"
+								value={SignUp.username}
+								onChange={SignUp.handleUsername}
+							/>
+						</div>
+						<div>
+							<labe>전화번호:</labe>
+							<input
+								type="text"
+								value={SignUp.phone}
+								onChange={SignUp.handlePhone}
+							/>
+						</div>
+						<div>
+							<label>인증번호 입력:</label>
+							<input
+								type="text"
+								value={SignUp.code}
+								onChange={SignUp.codeCheck}
+							/>
+						</div>
+						<div>
+							<label>비밀번호:</label>
+							<input
+								type="password"
+								value={SignUp.password}
+								onChange={SignUp.handlePassword}
+							/>
+						</div>
+						<div>
+							<label>비밀번호 확인:</label>
+							<input
+								type="password"
+								value={SignUp.passwordcheck}
+								onChange={SignUp.handlePasswordCheck}
+							/>
+						</div>
+						<button type="button" onClick={SignUp.handleSignup}>
+							회원가입
+						</button>
+					</form>
+				</SignUpForm>
+			</Container>
+		</Wrapper>
 	);
-}
+  }
 
-export default LogIn;
+export default SignUp;
