@@ -1,6 +1,8 @@
 import React from "react";
+import {Link} from "react-router-dom";
 import { useForm } from 'react-hook-form';
 import styled from "styled-components";
+import axios from 'axios';
 
 const Wrapper = styled.div`
 		width:100%;
@@ -46,12 +48,13 @@ const Wrapper = styled.div`
 			width: 100%;
 			font-size: 12px;
 			border: none;
-			border-bottom: 1.5px solid black;
+			border-bottom: 2px solid black;
 			outline: none;
 			box-shadow: none;
-		}
-		>input:hover {
-			border-bottom: 1.5px solid blue;
+			transition: 0.3s all; 
+		} 
+		>input:hover, >div>input:hover {
+			border-bottom: 2px solid blue;
 
 		}
 
@@ -61,16 +64,27 @@ const Wrapper = styled.div`
 			font-size:14px;
 		}
 		>div>p {
-			margin-left: 10px;
+			margin-left: 10px;    
 			margin-bottom: 0;
 		}
-		>div>input {
+		>div>.inputsub {
+			margin: 10px 0 0 0;
+			width: 70%;
 			margin-bottom: 6px;
+			border: none;
+			border-bottom: 2px solid black;
+			outline: none;
+			box-shadow: none;
+			transition: 0.3s all;
 		}
 	`
 	const Submit = styled.div`
 		text-align:center;
 		padding-top: 30px;
+		Button {
+			width: 200px;
+			height: 40px;
+		}
 	`
 
 	const Error = styled.span`
@@ -79,6 +93,14 @@ const Wrapper = styled.div`
 		color:red;
 		
 	`
+	const Button = styled.button`
+		width: 100px;
+		border: 2px solid black;
+		border-radius: 10px;
+		background-color : #C3E2C2;
+		font-weight: 700;
+		font-size : 14px;
+	`;
 function SignUp() {
 	const {
 		register,
@@ -87,9 +109,11 @@ function SignUp() {
 		getValues,
 	} = useForm();
 
-	const onSubmit = (data) => {
+	function onSubmit(data) {
 		console.log(data);
 	};
+
+
 	return (
 		<Wrapper>
 			<Container>
@@ -111,26 +135,34 @@ function SignUp() {
 							/>
 							{errors.username && <Error>{errors.username.message}</Error>}
 						</InputInfo>
-						<InputInfo>
+						<InputInfo className="subcheck">
 							<label>전화번호</label>
 							<br />
-							<input
-								type="text"
-								{...register('phone')}
-								placeholder="전화번호를 입력해 주세요."
-								required
-							/>
+							<div>
+								<input
+									type="text"
+									{...register('phone')}
+									placeholder="전화번호를 입력해 주세요."
+									required
+									className="inputsub"
+								/>
+								<Button type="submit">인증하기</Button>
+							</div>
 							{errors.phone && <Error>{errors.phone.message}</Error>}
 						</InputInfo>
-						<InputInfo>
+						<InputInfo className="subcheck">
 							<label>인증번호 입력</label>
 							<br />
-							<input
-								type="text"
-								{...register('code')}
-								placeholder="인증번호를 입력해 주세요."
-								required
-							/>
+							<div>
+								<input
+									type="text"
+									{...register('code')}
+									placeholder="인증번호를 입력해 주세요."
+									required
+									className="inputsub"
+								/>
+								<Button type="submit">인증확인</Button>
+							</div>
 							{errors.code && <Error>{errors.code.message}</Error>}
 						</InputInfo>
 						<InputInfo>
@@ -147,7 +179,7 @@ function SignUp() {
 						</InputInfo>
 						<InputInfo>
 							<label>비밀번호 확인</label>
-							<br/>
+							<br />
 							<input
 								type="password"
 								{...register('passwordCheck', {
@@ -164,7 +196,9 @@ function SignUp() {
 								autoComplete="new-password"
 							/>
 						</InputInfo>
-						{errors.passwordCheck && (<Error>{errors.passwordCheck.message}</Error>)}
+						{errors.passwordCheck && (
+							<Error>{errors.passwordCheck.message}</Error>
+						)}
 						<InputInfo>
 							<div>
 								<input
@@ -181,14 +215,14 @@ function SignUp() {
 								/>
 								<p>
 									이용약관 개인정보 수집 및 이용, 마케팅 활용 선택에 모두
-									동의합니다. <a href="http://www.naver.com">자세히 보기</a>
+									동의합니다. <Link to="http://www.naver.com">자세히 보기</Link>
 								</p>
 							</div>
 							{errors.checkbox && <Error>{errors.checkbox.message}</Error>}
 						</InputInfo>
 						<hr></hr>
 						<Submit>
-							<button type="submit">회원가입</button>
+							<Button type="submit">회원가입</Button>
 						</Submit>
 					</form>
 				</SignUpForm>
