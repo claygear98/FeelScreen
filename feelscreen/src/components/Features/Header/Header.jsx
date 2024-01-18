@@ -44,7 +44,8 @@ const Header = () => {
 	return (
 		<HeaderDiv>
 			<Hello>
-				<span className="hi">안녕하세요, {username}님!</span>
+				<span className="hi">안녕하세요,</span>
+				<span className="hi">{username}님!</span>
 				<span className="imfill">하단 필스크린입니다.</span>
 			</Hello>
 			<UserImage>
