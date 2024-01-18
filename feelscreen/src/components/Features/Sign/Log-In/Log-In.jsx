@@ -100,14 +100,13 @@ const Button = styled.button`
 	font-weight: 700;
 	font-size: 14px;
 `;
-function SignUp() {
+function LogIn() {
 	const {
 		register,
 		formState: { errors },
 		handleSubmit,
 		getValues,
-		pattern,
-	} = useForm({ mode: 'onChange' });
+	} = useForm();
 
 	function lastSubmit(data) {
 		console.log(data);
@@ -122,13 +121,11 @@ function SignUp() {
 		axios.get('http://localhost:3000/sign-up/phone', {
 			phone: data.phone,
 		});
-		console.log(data.phone);
 	}
 	function codeSubmit(data) {
 		axios.get('http://localhost:3000/sign-up/code', {
 			code: data.code,
 		});
-		console.log(data.code);
 	}
 
 	return (
@@ -146,21 +143,9 @@ function SignUp() {
 							<br />
 							<input
 								type="text"
-								{...register('username', {
-									validate: {
-										check: () => {
-											if (
-												getValues('username').length > 10 ||
-												getValues('username').length < 2
-											) {
-												return '아이디는 2~10자이내여야합니다.';
-											}
-										},
-									},
-								})}
-								placeholder="아이디는 2~10자이내여야 합니다."
+								{...register('username')}
+								placeholder="아이디는 2~10자 여야 합니다."
 								required
-								maxLength={10}
 							/>
 							{errors.username && <Error>{errors.username.message}</Error>}
 						</InputInfo>
@@ -170,16 +155,7 @@ function SignUp() {
 							<div>
 								<input
 									type="text"
-									{...register('phone', {
-										validate: {
-											check: (val) => {
-												if (val.match(/\D+/)) {
-													return "전화번호는 '-' 제외한 숫자만 입력해주세요.";
-												}
-											},
-										},
-									})}
-									maxLength={11}
+									{...register('phone')}
 									placeholder="전화번호를 입력해 주세요."
 									required
 									className="inputsub"
@@ -196,16 +172,7 @@ function SignUp() {
 							<div>
 								<input
 									type="text"
-									{...register('code', {
-										validate: {
-											check: (val) => {
-												if (val.match(/\D+/)) {
-													return '인증번호는 숫자만 입력하십시오';
-												}
-											},
-										},
-									})}
-									maxLength={5}
+									{...register('code')}
 									placeholder="인증번호를 입력해 주세요."
 									required
 									className="inputsub"
@@ -221,23 +188,10 @@ function SignUp() {
 							<br />
 							<input
 								type="password"
-								{...register('password', {
-									validate: {
-										check: (val) => {
-											if (val.match(/[\W_]/)) {
-												return '특수문자는 입력이 안됩니다요';
-											} else if (
-												!val.match(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{7,20}$/)
-											) {
-												return '7~20자의 영문자와 숫자의 조합이어야 합니다.';
-											}
-										},
-									},
-								})}
+								{...register('password')}
 								placeholder="비밀번호를 입력해 주세요."
 								required
 								autoComplete="new-password"
-								maxLength={20}
 							/>
 							{errors.password && <Error>{errors.password.message}</Error>}
 						</InputInfo>
@@ -258,7 +212,6 @@ function SignUp() {
 								placeholder="비밀번호를 한번더 입력해 주세요."
 								required
 								autoComplete="new-password"
-								maxLength={20}
 							/>
 						</InputInfo>
 						{errors.passwordCheck && (
@@ -296,4 +249,4 @@ function SignUp() {
 	);
 }
 
-export default SignUp;
+export default LogIn;
