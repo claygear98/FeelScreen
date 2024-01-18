@@ -1,13 +1,14 @@
 import React from 'react';
 import Nav from '../components/Features/Nav/Nav';
+import Header from '../components/Features/Header/Header';
 
 const Fillstagram = () => {
-    return (
-        <div>
+	return (
+		<div>
+			<Header />
 			<Nav />
-            
-        </div>
-    );
+		</div>
+	);
 };
 
 export default Fillstagram;
