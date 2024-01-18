@@ -110,7 +110,7 @@ function SignUp() {
 
 	function lastSubmit(data) {
 		console.log(data);
-		axios.post('http://localhost:3001/allow', {
+		axios.post('http://localhost:3001/sign-up/allow', {
 			username: data.username,
 			phone: data.phone,
 			code: data.code,
@@ -118,12 +118,12 @@ function SignUp() {
 		});
 	}
 	function phoneSubmit(data) {
-		axios.get('http://localhost:3001/phone', {
+		axios.get('http://localhost:3001/sign-up/phone', {
 			phone: data.phone,
 		});
 	}
 	function codeSubmit(data) {
-		axios.get('http://localhost:3001/code', {
+		axios.get('http://localhost:3001/sign-up/code', {
 			code: data.code,
 		});
 	}
