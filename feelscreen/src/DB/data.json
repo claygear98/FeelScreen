@@ -1,3 +1,80 @@
 {
-    "username" : "서원준"
+  "allow": [
+    {
+      "id": "4c16",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "data": "1234"
+    },
+    {
+      "id": "8cdf",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "data": "1234"
+    },
+    {
+      "id": "ba2f",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "data": "1234"
+    },
+    {
+      "id": "3846",
+      "username": "1234",
+      "phone": "1234",
+      "code": "1234",
+      "password": "1234"
+    },
+    {
+      "id": "5217",
+      "username": "1234",
+      "phone": "1234",
+      "code": "1234",
+      "password": "1234"
+    },
+    {
+      "id": "129b",
+      "username": "1234",
+      "phone": "1234",
+      "code": "1234",
+      "password": "1234"
+    },
+    {
+      "id": "f6c9",
+      "username": "1234",
+      "phone": "1234",
+      "code": "1234",
+      "password": "1234"
+    },
+    {
+      "id": "fa98",
+      "username": "1234",
+      "phone": "01088313956",
+      "code": "123456qq",
+      "password": "1234"
+    }
+  ],
+  "phone": [
+    {
+      "id": "0880",
+      "phone": "1234"
+    },
+    {
+      "id": "8a45",
+      "phone": ""
+    },
+    {
+      "id": "e54e",
+      "phone": ""
+    }
+  ],
+  "code": [
+    {
+      "id": "fb58",
+      "code": "1234"
+    }
+  ]
 }

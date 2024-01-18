@@ -1,106 +1,105 @@
-import React from "react";
-import {Link} from "react-router-dom";
+import React from 'react';
+import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import styled from "styled-components";
+import styled from 'styled-components';
 import axios from 'axios';
 
 const Wrapper = styled.div`
-		width:100%;
-		box-sizing:border-box;
-	`
-	const Container = styled.div`
-		width: 90%;
-		margin: 0 auto;
-	`
-	const FeelLogo = styled.div`
-		height: 50px;
+	width: 100%;
+	box-sizing: border-box;
+`;
+const Container = styled.div`
+	width: 90%;
+	margin: 0 auto;
+`;
+const FeelLogo = styled.div`
+	height: 50px;
+	font-weight: 700;
+	text-align: left;
+	margin-top: 15px;
+`;
+const SignUpForm = styled.div`
+	border: 2px solid black;
+	border-radius: 10px;
+	padding: 40px 30px 30px;
+	text-align: left;
+	box-shadow: -5px 5px 10px rgba(0, 0, 0, 0.5);
+
+	> h2 {
+		font-weight: 800;
+		font-size: 20px;
+	}
+	> form > hr {
+		border: 0;
+		height: 2px;
+		background-color: black;
+		margin: 20px 0;
+	}
+`;
+const InputInfo = styled.div`
+	width: 100%;
+	margin-top: 10px;
+	> label {
+		font-size: 15px;
 		font-weight: 700;
-		text-align: left;
-		margin-top: 15px;
-	`
-	const SignUpForm = styled.div`
-		border: 2px solid black;
-		border-radius: 10px;
-		padding: 40px 30px 30px;
-		text-align: left;
-		box-shadow: -5px 5px 10px rgba(0, 0, 0, 0.5);
+	}
+	> input {
+		margin: 10px 0 0 0;
+		width: 100%;
+		font-size: 12px;
+		border: none;
+		border-bottom: 2px solid black;
+		outline: none;
+		box-shadow: none;
+		transition: 0.3s all;
+	}
+	> input:hover,
+	> div > input:hover {
+		border-bottom: 2px solid blue;
+	}
 
-		> h2 {
-			font-weight: 800;
-			font-size: 20px;
-		}
-		> form > hr {
-			border: 0;
-			height: 2px;
-			background-color: black;
-			margin: 20px 0;
-		}
-	`; 
-	const InputInfo = styled.div`
-		width:100%;
-		margin-top: 10px;
-		>label {
-			font-size:15px;
-			font-weight:700;
-		}
-		> input {
-			margin: 10px 0 0 0;
-			width: 100%;
-			font-size: 12px;
-			border: none;
-			border-bottom: 2px solid black;
-			outline: none;
-			box-shadow: none;
-			transition: 0.3s all; 
-		} 
-		>input:hover, >div>input:hover {
-			border-bottom: 2px solid blue;
+	> div {
+		display: flex;
+		justify-content: space-between;
+		font-size: 14px;
+	}
+	> div > p {
+		margin-left: 10px;
+		margin-bottom: 0;
+	}
+	> div > .inputsub {
+		margin: 10px 0 0 0;
+		width: 70%;
+		margin-bottom: 6px;
+		border: none;
+		border-bottom: 2px solid black;
+		outline: none;
+		box-shadow: none;
+		transition: 0.3s all;
+	}
+`;
+const Submit = styled.div`
+	text-align: center;
+	padding-top: 30px;
+	Button {
+		width: 200px;
+		height: 40px;
+	}
+`;
 
-		}
-
-		>div {
-			display: flex;
-			justify-content:space-between;
-			font-size:14px;
-		}
-		>div>p {
-			margin-left: 10px;    
-			margin-bottom: 0;
-		}
-		>div>.inputsub {
-			margin: 10px 0 0 0;
-			width: 70%;
-			margin-bottom: 6px;
-			border: none;
-			border-bottom: 2px solid black;
-			outline: none;
-			box-shadow: none;
-			transition: 0.3s all;
-		}
-	`
-	const Submit = styled.div`
-		text-align:center;
-		padding-top: 30px;
-		Button {
-			width: 200px;
-			height: 40px;
-		}
-	`
-
-	const Error = styled.span`
-		font-size:11px;
-		font-weight: 600;
-		color:red;
-		
-	`
-	const Button = styled.button`
-		width: 100px;
-		border: 2px solid black;
-		border-radius: 10px;
-		background-color : #C3E2C2;
-		font-weight: 700;
-		font-size : 14px;
-	`;
+const Error = styled.span`
+	font-size: 11px;
+	font-weight: 600;
+	color: red;
+`;
+const Button = styled.button`
+	width: 100px;
+	border: 2px solid black;
+	border-radius: 10px;
+	background-color: #c3e2c2;
+	font-weight: 700;
+	font-size: 14px;
+`;
 function SignUp() {
 	const {
 		register,
@@ -109,10 +108,25 @@ function SignUp() {
 		getValues,
 	} = useForm();
 
-	function onSubmit(data) {
+	function lastSubmit(data) {
 		console.log(data);
-	};
-
+		axios.post('http://localhost:3001/allow', {
+			username: data.username,
+			phone: data.phone,
+			code: data.code,
+			password: data.password,
+		});
+	}
+	function phoneSubmit(data) {
+		axios.get('http://localhost:3001/phone', {
+			phone: data.phone,
+		});
+	}
+	function codeSubmit(data) {
+		axios.get('http://localhost:3001/code', {
+			code: data.code,
+		});
+	}
 
 	return (
 		<Wrapper>
@@ -123,7 +137,7 @@ function SignUp() {
 						회원 가입을 위해 <br />
 						정보를 입력해주세요.
 					</h2>
-					<form onSubmit={handleSubmit(onSubmit)}>
+					<form onSubmit={handleSubmit(lastSubmit)}>
 						<InputInfo>
 							<label>아이디(닉네임)</label>
 							<br />
@@ -146,7 +160,9 @@ function SignUp() {
 									required
 									className="inputsub"
 								/>
-								<Button type="submit">인증하기</Button>
+								<Button type="submit" onClick={handleSubmit(phoneSubmit)}>
+									인증하기
+								</Button>
 							</div>
 							{errors.phone && <Error>{errors.phone.message}</Error>}
 						</InputInfo>
@@ -161,7 +177,9 @@ function SignUp() {
 									required
 									className="inputsub"
 								/>
-								<Button type="submit">인증확인</Button>
+								<Button type="submit" onClick={handleSubmit(codeSubmit)}>
+									인증확인
+								</Button>
 							</div>
 							{errors.code && <Error>{errors.code.message}</Error>}
 						</InputInfo>
