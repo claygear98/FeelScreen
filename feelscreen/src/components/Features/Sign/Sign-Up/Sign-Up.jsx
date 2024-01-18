@@ -110,7 +110,7 @@ function SignUp() {
 
 	function lastSubmit(data) {
 		console.log(data);
-		axios.post('http://localhost:3001/allow', {
+		axios.post('http://localhost:3000/sign-up/allow', {
 			username: data.username,
 			phone: data.phone,
 			code: data.code,
@@ -120,14 +120,14 @@ function SignUp() {
 	const phoneSubmit = () => {
 		// phone 정보만 사용하는 API 호출
 		const phoneData = { phone: getValues('phone') };
-		axios.post('http://localhost:3001/phone', phoneData);
+		axios.post('http://localhost:3000/sign-up/phone', phoneData);
 		console.log(getValues('phone'));
 	};
 
 	const codeSubmit = () => {
 		// code 정보만 사용하는 API 호출
 		const codeData = { code: getValues('code') };
-		axios.post('http://localhost:3001/code', codeData);
+		axios.post('http://localhost:3000/sign-up/code', codeData);
 		console.log(getValues('code'));
 	};
 
@@ -194,6 +194,7 @@ function SignUp() {
 									className="inputsub"
 								/>
 								<Button type="button" onClick={phoneSubmit}>
+									{/* 둘중에하나만떠야됨 */}
 									인증하기
 								</Button>
 							</div>
