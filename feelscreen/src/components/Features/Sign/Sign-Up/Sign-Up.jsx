@@ -106,30 +106,30 @@ function SignUp() {
 		formState: { errors },
 		handleSubmit,
 		getValues,
-		pattern,
 	} = useForm({ mode: 'onChange' });
 
 	function lastSubmit(data) {
 		console.log(data);
-		axios.post('http://localhost:3000/sign-up/allow', {
+		axios.post('http://localhost:3001/allow', {
 			username: data.username,
 			phone: data.phone,
 			code: data.code,
 			password: data.password,
 		});
 	}
-	function phoneSubmit(data) {
-		axios.get('http://localhost:3000/sign-up/phone', {
-			phone: data.phone,
-		});
-		console.log(data.phone);
-	}
-	function codeSubmit(data) {
-		axios.get('http://localhost:3000/sign-up/code', {
-			code: data.code,
-		});
-		console.log(data.code);
-	}
+	const phoneSubmit = () => {
+		// phone 정보만 사용하는 API 호출
+		const phoneData = { phone: getValues('phone') };
+		axios.post('http://localhost:3001/phone', phoneData);
+		console.log(getValues('phone'));
+	};
+
+	const codeSubmit = () => {
+		// code 정보만 사용하는 API 호출
+		const codeData = { code: getValues('code') };
+		axios.post('http://localhost:3001/code', codeData);
+		console.log(getValues('code'));
+	};
 
 	return (
 		<Wrapper>
@@ -176,15 +176,24 @@ function SignUp() {
 												if (val.match(/\D+/)) {
 													return "전화번호는 '-' 제외한 숫자만 입력해주세요.";
 												}
+												if (val.length < 11) {
+													return '전화번호11자리를다입력해주세요.';
+												}
+												if (
+													!(val[0] === '0' && val[1] === '1' && val[2] === '0')
+												) {
+													return '전화번호는010으로시작해야합니다.';
+												}
 											},
 										},
 									})}
+									minLength={11}
 									maxLength={11}
 									placeholder="전화번호를 입력해 주세요."
 									required
 									className="inputsub"
 								/>
-								<Button type="submit" onClick={handleSubmit(phoneSubmit)}>
+								<Button type="button" onClick={phoneSubmit}>
 									인증하기
 								</Button>
 							</div>
@@ -202,15 +211,19 @@ function SignUp() {
 												if (val.match(/\D+/)) {
 													return '인증번호는 숫자만 입력하십시오';
 												}
+												if (val.length < 5) {
+													return '인증번호 5자리를 다 입력하십시오';
+												}
 											},
 										},
 									})}
+									minLength={5}
 									maxLength={5}
 									placeholder="인증번호를 입력해 주세요."
 									required
 									className="inputsub"
 								/>
-								<Button type="submit" onClick={handleSubmit(codeSubmit)}>
+								<Button type="button" onClick={codeSubmit}>
 									인증확인
 								</Button>
 							</div>
