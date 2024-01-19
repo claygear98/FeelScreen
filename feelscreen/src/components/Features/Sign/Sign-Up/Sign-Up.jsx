@@ -99,6 +99,7 @@ const Button = styled.button`
 	background-color: #c3e2c2;
 	font-weight: 700;
 	font-size: 14px;
+	
 `;
 function SignUp() {
 	const {
@@ -110,25 +111,26 @@ function SignUp() {
 
 	function lastSubmit(data) {
 		console.log(data);
-		axios.post('http://localhost:3000/sign-up/allow', {
+		axios.post('http://localhost:3001/allow', {
 			username: data.username,
 			phone: data.phone,
 			code: data.code,
 			password: data.password,
 		});
 	}
+
 	const phoneSubmit = () => {
 		// phone 정보만 사용하는 API 호출
 		const phoneData = { phone: getValues('phone') };
-		axios.post('http://localhost:3000/sign-up/phone', phoneData);
-		console.log(getValues('phone'));
+		axios.post('http://localhost:3001/phone', phoneData);
+		// console.log(getValues('phone'));
 	};
 
 	const codeSubmit = () => {
 		// code 정보만 사용하는 API 호출
 		const codeData = { code: getValues('code') };
-		axios.post('http://localhost:3000/sign-up/code', codeData);
-		console.log(getValues('code'));
+		axios.post('http://localhost:3001/code', codeData);
+		// console.log(getValues('code'));
 	};
 
 	return (
@@ -192,8 +194,9 @@ function SignUp() {
 									placeholder="전화번호를 입력해 주세요."
 									required
 									className="inputsub"
+									
 								/>
-								<Button type="button" onClick={phoneSubmit}>
+								<Button type="button" onClick={phoneSubmit} className='ph-btn' disabled={getValues('phone').length < 11}>
 									{/* 둘중에하나만떠야됨 */}
 									인증하기
 								</Button>
@@ -224,7 +227,7 @@ function SignUp() {
 									required
 									className="inputsub"
 								/>
-								<Button type="button" onClick={codeSubmit}>
+								<Button type="button" onClick={codeSubmit}  className='code-btn'>
 									인증확인
 								</Button>
 							</div>
