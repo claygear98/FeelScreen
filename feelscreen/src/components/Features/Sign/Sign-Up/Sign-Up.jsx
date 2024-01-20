@@ -3,11 +3,9 @@ import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import axios from 'axios';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const Wrapper = styled.div`
-	width: 100%;
-	box-sizing: border-box;
-`;
 const Container = styled.div`
 	width: 90%;
 	margin: 0 auto;
@@ -99,42 +97,71 @@ const Button = styled.button`
 	background-color: #c3e2c2;
 	font-weight: 700;
 	font-size: 14px;
-	
 `;
+const SignForm = {
+	username: '',
+	phone: '',
+	password: '',
+	code: '',
+};
+
 function SignUp() {
 	const {
 		register,
 		formState: { errors },
 		handleSubmit,
 		getValues,
-	} = useForm({ mode: 'onChange' });
+	} = useForm({
+		mode: 'onChange',
+		defaultValues: SignForm,
+	});
 
+	const navigate = useNavigate();
+
+	const navigateToLogIn = () => {
+		navigate('/log-in');
+	};
 	function lastSubmit(data) {
 		console.log(data);
-		axios.post('http://localhost:3001/allow', {
-			username: data.username,
-			phone: data.phone,
-			code: data.code,
-			password: data.password,
-		});
+		axios
+			.post('http://localhost:3001/allow', {
+				username: data.username,
+				phone: data.phone,
+				code: data.code,
+				password: data.password,
+			}).then(Response => {
+				if (Response.status === 201) {
+					alert('회원가입이 완료되었습니다! 로그인화면으로 이동합니다.');
+					navigateToLogIn();
+				} else {
+					alert('회원가입이 실패했습니다! 다시시도해주세요.');
+				}
+			})
 	}
+
+	const [res, setRes] = useState(0);
+	const [codeOff, setCodeOff] = useState(true);
 
 	const phoneSubmit = () => {
 		// phone 정보만 사용하는 API 호출
 		const phoneData = { phone: getValues('phone') };
-		axios.post('http://localhost:3001/phone', phoneData);
-		// console.log(getValues('phone'));
+		axios.post('http://localhost:3001/phone', phoneData).then((Response) => {
+			console.log(Response.status);
+			setRes(Response.status);
+		});
 	};
 
 	const codeSubmit = () => {
 		// code 정보만 사용하는 API 호출
 		const codeData = { code: getValues('code') };
 		axios.post('http://localhost:3001/code', codeData);
-		// console.log(getValues('code'));
+		console.log(getValues('code'));
+		setCodeOff(!codeOff);
+
 	};
 
 	return (
-		<Wrapper>
+	
 			<Container>
 				<FeelLogo>Feel Screen</FeelLogo>
 				<SignUpForm>
@@ -194,11 +221,14 @@ function SignUp() {
 									placeholder="전화번호를 입력해 주세요."
 									required
 									className="inputsub"
-									
 								/>
-								<Button type="button" onClick={phoneSubmit} className='ph-btn' disabled={getValues('phone').length < 11}>
-									{/* 둘중에하나만떠야됨 */}
-									인증하기
+								<Button
+									type="button"
+									onClick={phoneSubmit}
+									className="phcode-btn"
+									disabled={getValues('phone').length < 11 || !(getValues('phone')[0] === '0' &&getValues('phone')[1] === '1' && getValues('phone')[2] === '0') }
+								>
+									전송하기
 								</Button>
 							</div>
 							{errors.phone && <Error>{errors.phone.message}</Error>}
@@ -227,8 +257,17 @@ function SignUp() {
 									required
 									className="inputsub"
 								/>
-								<Button type="button" onClick={codeSubmit}  className='code-btn'>
-									인증확인
+								<Button
+									type="button"
+									onClick={codeSubmit}
+									className="phcode-btn"
+									disabled={
+										getValues('code').length < 5 ||
+										res !== 201 ||
+										codeOff === false
+									}
+								>
+									{codeOff ? '인증하기' : '인증완료'}
 								</Button>
 							</div>
 							{errors.code && <Error>{errors.code.message}</Error>}
@@ -309,7 +348,7 @@ function SignUp() {
 					</form>
 				</SignUpForm>
 			</Container>
-		</Wrapper>
+
 	);
 }
 

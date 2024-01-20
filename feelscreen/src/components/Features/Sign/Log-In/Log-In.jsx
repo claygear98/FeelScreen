@@ -1,251 +1,165 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { SiKakaotalk } from "react-icons/si";
 
-const Wrapper = styled.div`
+const LogInContainer = styled.div`
 	width: 100%;
-	box-sizing: border-box;
-`;
-const Container = styled.div`
-	width: 90%;
 	margin: 0 auto;
-`;
-const FeelLogo = styled.div`
-	height: 50px;
-	font-weight: 700;
-	text-align: left;
-	margin-top: 15px;
-`;
-const SignUpForm = styled.div`
-	border: 2px solid black;
-	border-radius: 10px;
-	padding: 40px 30px 30px;
-	text-align: left;
-	box-shadow: -5px 5px 10px rgba(0, 0, 0, 0.5);
-
-	> h2 {
-		font-weight: 800;
-		font-size: 20px;
-	}
-	> form > hr {
-		border: 0;
-		height: 2px;
-		background-color: black;
-		margin: 20px 0;
-	}
-`;
-const InputInfo = styled.div`
-	width: 100%;
-	margin-top: 10px;
-	> label {
-		font-size: 15px;
-		font-weight: 700;
-	}
-	> input {
-		margin: 10px 0 0 0;
-		width: 100%;
-		font-size: 12px;
-		border: none;
-		border-bottom: 2px solid black;
-		outline: none;
-		box-shadow: none;
-		transition: 0.3s all;
-	}
-	> input:hover,
-	> div > input:hover {
-		border-bottom: 2px solid blue;
-	}
-
-	> div {
-		display: flex;
-		justify-content: space-between;
-		font-size: 14px;
-	}
-	> div > p {
-		margin-left: 10px;
-		margin-bottom: 0;
-	}
-	> div > .inputsub {
-		margin: 10px 0 0 0;
-		width: 70%;
-		margin-bottom: 6px;
-		border: none;
-		border-bottom: 2px solid black;
-		outline: none;
-		box-shadow: none;
-		transition: 0.3s all;
-	}
-`;
-const Submit = styled.div`
+	margin-top: 100px;
 	text-align: center;
-	padding-top: 30px;
-	Button {
-		width: 200px;
-		height: 40px;
-	}
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+`;
+const LogInPut = styled.div`
+width: 100%;
+display: flex;
+flex-direction: column;
+flex-wrap: wrap;
+align-content: space-around;
+input {
+	margin-top: 10px;
+	width: 300px;
+	height: 30px;
+	border-radius: 7px;
+	border: 2px solid black;
+}
 `;
 
+const ToLogIn = styled.div`
+	margin-top: 20px;
+	> button {
+		width: 150px;
+		height: 50px;
+		border-radius: 7px;
+		border: 2px solid black;
+		font-size: 20px;
+		font-weight: 700;
+		background-color: #c3e2c2;
+	}
+`;
+const ToSignUp = styled.div`
+display: flex;
+width: 150px;
+align-items: center;
+justify-content: space-between;
+margin-top: 10px;
+button {
+	width: 90px;
+	height: 50px;
+	border-radius: 7px;
+	border: 2px solid black;
+	font-weight: 700;
+	font-size: 15px;
+	background-color: #c3e2c2;
+}
+`;
 const Error = styled.span`
 	font-size: 11px;
 	font-weight: 600;
 	color: red;
 `;
-const Button = styled.button`
-	width: 100px;
-	border: 2px solid black;
-	border-radius: 10px;
-	background-color: #c3e2c2;
-	font-weight: 700;
-	font-size: 14px;
-`;
+
 function LogIn() {
 	const {
 		register,
 		formState: { errors },
 		handleSubmit,
-		getValues,
-	} = useForm();
+		// getValues,
+	} = useForm({ mode: 'onChange' });
 
-	function lastSubmit(data) {
+	const navigate = useNavigate();
+
+	const navigateToSignUp = () => {
+		navigate('/sign-up');
+	};
+	
+	const navigateToMain = () => {
+		navigate('/');
+	}
+
+	function onSubmit(data) {
 		console.log(data);
-		axios.post('http://localhost:3000/sign-up/allow', {
-			username: data.username,
-			phone: data.phone,
-			code: data.code,
-			password: data.password,
-		});
-	}
-	function phoneSubmit(data) {
-		axios.get('http://localhost:3000/sign-up/phone', {
-			phone: data.phone,
-		});
-	}
-	function codeSubmit(data) {
-		axios.get('http://localhost:3000/sign-up/code', {
-			code: data.code,
-		});
+		axios
+			.post('http://localhost:3001/allow', {
+				phone: data.phone,
+				password: data.password,
+			})
+			.then((response) => {
+				console.log(response)
+				if (response.status === 201) {
+					navigateToMain();
+				} else {
+					alert('로그인에 실패했습니다. 전화번호/비밀번호를 확인해주세요');
+				}
+			});
+			// }).then(navigateToMain);
 	}
 
 	return (
-		<Wrapper>
-			<Container>
-				<FeelLogo>Feel Screen</FeelLogo>
-				<SignUpForm>
-					<h2>
-						회원 가입을 위해 <br />
-						정보를 입력해주세요.
-					</h2>
-					<form onSubmit={handleSubmit(lastSubmit)}>
-						<InputInfo>
-							<label>아이디(닉네임)</label>
-							<br />
-							<input
-								type="text"
-								{...register('username')}
-								placeholder="아이디는 2~10자 여야 합니다."
-								required
-							/>
-							{errors.username && <Error>{errors.username.message}</Error>}
-						</InputInfo>
-						<InputInfo className="subcheck">
-							<label>전화번호</label>
-							<br />
-							<div>
-								<input
-									type="text"
-									{...register('phone')}
-									placeholder="전화번호를 입력해 주세요."
-									required
-									className="inputsub"
-								/>
-								<Button type="submit" onClick={handleSubmit(phoneSubmit)}>
-									인증하기
-								</Button>
-							</div>
-							{errors.phone && <Error>{errors.phone.message}</Error>}
-						</InputInfo>
-						<InputInfo className="subcheck">
-							<label>인증번호 입력</label>
-							<br />
-							<div>
-								<input
-									type="text"
-									{...register('code')}
-									placeholder="인증번호를 입력해 주세요."
-									required
-									className="inputsub"
-								/>
-								<Button type="submit" onClick={handleSubmit(codeSubmit)}>
-									인증확인
-								</Button>
-							</div>
-							{errors.code && <Error>{errors.code.message}</Error>}
-						</InputInfo>
-						<InputInfo>
-							<label>비밀번호</label>
-							<br />
-							<input
-								type="password"
-								{...register('password')}
-								placeholder="비밀번호를 입력해 주세요."
-								required
-								autoComplete="new-password"
-							/>
-							{errors.password && <Error>{errors.password.message}</Error>}
-						</InputInfo>
-						<InputInfo>
-							<label>비밀번호 확인</label>
-							<br />
-							<input
-								type="password"
-								{...register('passwordCheck', {
-									validate: {
-										check: (val) => {
-											if (getValues('password') !== val) {
-												return '비밀번호가 일치하지 않습니다.';
-											}
-										},
-									},
-								})}
-								placeholder="비밀번호를 한번더 입력해 주세요."
-								required
-								autoComplete="new-password"
-							/>
-						</InputInfo>
-						{errors.passwordCheck && (
-							<Error>{errors.passwordCheck.message}</Error>
-						)}
-						<InputInfo>
-							<div>
-								<input
-									type="checkbox"
-									{...register('checkbox', {
-										validate: {
-											check: (val) => {
-												if (val === false) {
-													return '체크박스 확인부탁드립니다.';
-												}
-											},
-										},
-									})}
-								/>
-								<p>
-									이용약관 개인정보 수집 및 이용, 마케팅 활용 선택에 모두
-									동의합니다. <Link to="http://www.naver.com">자세히 보기</Link>
-								</p>
-							</div>
-							{errors.checkbox && <Error>{errors.checkbox.message}</Error>}
-						</InputInfo>
-						<hr></hr>
-						<Submit>
-							<Button type="submit">회원가입</Button>
-						</Submit>
-					</form>
-				</SignUpForm>
-			</Container>
-		</Wrapper>
+		<LogInContainer>
+			<h1>Feel Screen</h1>
+			<form onSubmit={handleSubmit(onSubmit)}>
+				<LogInPut>
+					<input
+						type="text"
+						placeholder="전화번호 전체를 입력해주세요. ('-' 제외)"
+						{...register('phone', {
+							validate: {
+								check: (val) => {
+									if (val.match(/\D+/)) {
+										return "전화번호는 '-' 제외한 숫자만 입력해주세요.";
+									}
+									if (val.length < 11) {
+										return '전화번호11자리를다입력해주세요.';
+									}
+									if (!(val[0] === '0' && val[1] === '1' && val[2] === '0')) {
+										return '전화번호는010으로시작해야합니다.';
+									}
+								},
+							},
+						})}
+						minLength={11}
+						maxLength={11}
+						required
+					/>
+					{errors.phone && <Error>{errors.phone.message}</Error>}
+				</LogInPut>
+				<LogInPut>
+					<input
+						type="password"
+						{...register('password', {
+							validate: {
+								check: (val) => {
+									if (val.match(/[\W_]/)) {
+										return '특수문자는 입력이 안됩니다요';
+									} else if (
+										!val.match(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{7,20}$/)
+									) {
+										return '7~20자의 영문자와 숫자의 조합이어야 합니다.';
+									}
+								},
+							},
+						})}
+						placeholder="비밀번호를 입력해 주세요."
+						required
+						maxLength={20}
+					/>
+					{errors.password && <Error>{errors.password.message}</Error>}
+				</LogInPut>
+				<ToLogIn>
+					<button >로그인</button>
+				</ToLogIn>
+			</form>
+			<ToSignUp>
+				<SiKakaotalk style={{fontSize:"50px", backgroundColor:"#fffb00", color:"#3d3a44"}} onClick={() => {}} />
+				<button onClick={navigateToSignUp}>회원가입</button>
+			</ToSignUp>
+		</LogInContainer>
 	);
 }
 
