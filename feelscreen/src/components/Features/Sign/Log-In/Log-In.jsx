@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { SiKakaotalk } from "react-icons/si";
+import { Cookies } from 'react-cookie';
 
 const LogInContainer = styled.div`
 	width: 100%;
@@ -65,6 +66,7 @@ const Error = styled.span`
 `;
 
 function LogIn() {
+	const cookies = new Cookies();
 	const {
 		register,
 		formState: { errors },
@@ -93,6 +95,8 @@ function LogIn() {
 				console.log(response)
 				if (response.status === 201) {
 					navigateToMain();
+					cookies.set("Authorization", response.status);
+					cookies.set("Refresh", response.statusText);
 				} else {
 					alert('로그인에 실패했습니다. 전화번호/비밀번호를 확인해주세요');
 				}
