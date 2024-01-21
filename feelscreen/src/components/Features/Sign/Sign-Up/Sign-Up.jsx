@@ -34,6 +34,11 @@ const SignUpForm = styled.div`
 		margin: 20px 0;
 	}
 `;
+const Error = styled.span`
+	font-size: 11px;
+	font-weight: 600;
+	color: red;
+`;
 const InputInfo = styled.div`
 	width: 100%;
 	margin-top: 10px;
@@ -85,11 +90,7 @@ const Submit = styled.div`
 	}
 `;
 
-const Error = styled.span`
-	font-size: 11px;
-	font-weight: 600;
-	color: red;
-`;
+
 const Button = styled.button`
 	width: 100px;
 	border: 2px solid black;
@@ -157,7 +158,6 @@ function SignUp() {
 		axios.post('http://localhost:3001/code', codeData);
 		console.log(getValues('code'));
 		setCodeOff(!codeOff);
-
 	};
 
 	return (

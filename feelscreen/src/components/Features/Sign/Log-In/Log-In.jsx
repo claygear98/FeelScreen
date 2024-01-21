@@ -85,7 +85,7 @@ function LogIn() {
 	function onSubmit(data) {
 		console.log(data);
 		axios
-			.post('http://localhost:3001/allow', {
+			.post('http://localhost:3001/allow', { 
 				phone: data.phone,
 				password: data.password,
 			})
@@ -156,7 +156,7 @@ function LogIn() {
 				</ToLogIn>
 			</form>
 			<ToSignUp>
-				<SiKakaotalk style={{fontSize:"50px", backgroundColor:"#fffb00", color:"#3d3a44"}} onClick={() => {}} />
+				<SiKakaotalk style={{fontSize:"50px", backgroundColor:"#fffb00", color:"#3d3a44", borderRadius:"7px"}} onClick={() => {}} />
 				<button onClick={navigateToSignUp}>회원가입</button>
 			</ToSignUp>
 		</LogInContainer>
