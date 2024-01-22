@@ -210,7 +210,7 @@ function SignUp() {
 													return '전화번호11자리를다입력해주세요.';
 												}
 												if (
-													!(val[0] === '0' && val[1] === '1' && val[2] === '0')
+													!(val.slice(0,3) === "010")
 												) {
 													return '전화번호는010으로시작해야합니다.';
 												}
@@ -227,7 +227,7 @@ function SignUp() {
 									type="button"
 									onClick={phoneSubmit}
 									className="phcode-btn"
-									disabled={getValues('phone').length < 11 || !(getValues('phone')[0] === '0' &&getValues('phone')[1] === '1' && getValues('phone')[2] === '0') }
+									disabled={getValues('phone').length < 11 || !(getValues('phone').slice(0,3) === "010")}
 								>
 									전송하기
 								</Button>

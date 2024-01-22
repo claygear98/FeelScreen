@@ -44,20 +44,20 @@ const ToLogIn = styled.div`
 	}
 `;
 const ToSignUp = styled.div`
-display: flex;
-width: 150px;
-align-items: center;
-justify-content: space-between;
-margin-top: 10px;
-button {
-	width: 90px;
-	height: 50px;
-	border-radius: 7px;
-	border: 2px solid black;
-	font-weight: 700;
-	font-size: 15px;
-	background-color: #c3e2c2;
-}
+	display: flex;
+	width: 150px;
+	align-items: center;
+	justify-content: space-between;
+	margin-top: 10px;
+	button {
+		width: 90px;
+		height: 50px;
+		border-radius: 7px;
+		border: 2px solid black;
+		font-weight: 700;
+		font-size: 15px;
+		background-color: #c3e2c2;
+	}
 `;
 const Error = styled.span`
 	font-size: 11px;
@@ -123,7 +123,7 @@ function LogIn() {
 									if (val.length < 11) {
 										return '전화번호11자리를다입력해주세요.';
 									}
-									if (!(val[0] === '0' && val[1] === '1' && val[2] === '0')) {
+									if (!(val.slice(0,3) === "010")) {
 										return '전화번호는010으로시작해야합니다.';
 									}
 								},
