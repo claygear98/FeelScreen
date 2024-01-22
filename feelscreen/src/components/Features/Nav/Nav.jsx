@@ -73,7 +73,7 @@ const Nav = () => {
 							? { backgroundColor: '#4ECB71' }
 							: {}
 					}
-					onClick={() => handleNavigae('/notice')}
+					onClick={() => handleNavigae('/notice/read')}
 				>
 					<HiOutlineSpeakerphone
 						style={location.pathname === '/notice' ? { color: '#d8f7e0' } : {}}

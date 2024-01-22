@@ -4,6 +4,8 @@ import Home from './pages/Home';
 import Fillstagram from './pages/Fillstagram';
 import Notice from './pages/Notice';
 import Mypage from './pages/Mypage';
+import DetailNotice from './components/Features/Notice/DetailNotice';
+import PostNotice from './components/Features/Notice/PostNotice';
 
 function App() {
 	return (
@@ -11,7 +13,11 @@ function App() {
 			<Router>
 				<Routes>
 					<Route path="/" element={<Home />} />
-					<Route path="notice" element={<Notice />} />
+					<Route path="notice">
+						<Route path="read" element={<Notice />} />
+						<Route path="detail" element={<DetailNotice />} />
+						<Route path="post" element={<PostNotice />} />
+					</Route>
 					<Route path="fillstagram" element={<Fillstagram />} />
 					<Route path="mypage" element={<Mypage />} />
 				</Routes>
