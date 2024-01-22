@@ -1,5 +1,7 @@
 import './App.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import SignUp from './pages/SignUp';
+import LogIn from './pages/LogIn';
 import Home from './pages/Home';
 import Fillstagram from './pages/Fillstagram';
 import Notice from './pages/Notice';
@@ -12,6 +14,8 @@ function App() {
 		<div className="App">
 			<Router>
 				<Routes>
+					<Route path="/sign-up" element={<SignUp />} />
+					<Route path="/log-in" element={<LogIn />} />
 					<Route path="/" element={<Home />} />
 					<Route path="notice">
 						<Route path="read" element={<Notice />} />
