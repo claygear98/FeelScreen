@@ -12,9 +12,12 @@ const ContentEditor = ({ SetContent }) => {
 					const data = new FormData();
 					loader.file.then((file) => {
 						console.log(file.name);
+						console.log('-----------------------');
 						console.log(file);
 						data.append('imageName', file.name);
 						data.append('image', file);
+						data.append('jihoon', '지훈');
+						console.log(data.get('jihoon'));
 						axios
 							.post(`${sever_port}/${apiAdress}`, {
 								data: data,
