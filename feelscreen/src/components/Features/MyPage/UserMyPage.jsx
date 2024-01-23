@@ -2,8 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
-// import { Cookies } from 'react-cookie';
+import { Cookies } from 'react-cookie';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const MypageContainer = styled.div`
 	margin-top: 20px;
@@ -81,6 +82,7 @@ const Error = styled.span`
 `;
 
 const MyPage = () => {
+	const cookies = new Cookies();
 	const {
 		register,
 		formState: { errors },
@@ -95,6 +97,16 @@ const MyPage = () => {
 	});
 	const [isProfileModifyVisible, setProfileModifyVisible] = useState(false);
 
+	const navigate = useNavigate();
+
+	const navigateToMain = () => {
+		navigate('/');
+	};
+
+	const navigateToMyPost = () => {
+		navigate('/Mypost');
+	};
+
 	function onSubmit(data) {
 		console.log(data);
 		axios
@@ -107,6 +119,7 @@ const MyPage = () => {
 					alert('아이디(닉네임)이/가 변경되었습니다.');
 					setProfileModifyVisible(false);
 					reset();
+					return window.location.reload();
 				} else {
 					alert('아이디(닉네임)변경에 실패했습니다 다시시도해주세요.');
 				}
@@ -114,17 +127,32 @@ const MyPage = () => {
 	}
 
 	function logOut() {
-		// 홈화면으로 네비게이트
-		// 토큰 삭제
+		cookies.remove('Refresh');
+		cookies.remove('Authorization');
 		alert('로그아웃 되었습니다!');
+		navigateToMain();
 	}
 
 	function deleteUser() {
 		//axios.delete 로 토큰 보내기
+		//이거 확인할 방법을 모르겠네..
+		axios
+			.delete('http://localhost:3001/delete', {
+				headers: {
+					Authorization: cookies.get('Authorization'),
+				},
+			})
+			.then((res) => {
+				if (res.data.success) {
+					alert('정상적으로 탈퇴되었습니다.');
+				} else {
+					alert('회원탈퇴 실패!');
+				}
+			});
 	}
 
 	function myPost() {
-		//내가 쓴글로 네비게이트
+		navigateToMyPost();
 	}
 
 	function modifyUsername() {
