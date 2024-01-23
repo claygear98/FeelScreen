@@ -138,7 +138,7 @@ const MyPage = () => {
 		//이거 확인할 방법을 모르겠네..
 		//맞춰봐야될 부분입니다 김민주양
 		axios
-			.delete('http://localhost:3001/allow', {
+			.delete('http://localhost:3001/delete', {
 				headers: {
 					Authorization: cookies.get('Authorization'),
 				},
