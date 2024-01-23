@@ -26,6 +26,7 @@ const SeeMyPost = styled.div`
 	}
 `;
 const MyPostList = styled.ul`
+	width: 90%;
 	list-style: none;
 	margin: 0;
 	padding: 0;
@@ -33,7 +34,7 @@ const MyPostList = styled.ul`
 `;
 const MyPostBox = styled.div`
 	margin: 0 auto;
-	width: 90%;
+	width: 100%;
 	height: 100px;
 	border: 2px solid black;
 	border-radius: 10px;
