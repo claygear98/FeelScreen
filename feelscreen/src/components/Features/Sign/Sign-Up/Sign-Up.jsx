@@ -5,11 +5,13 @@ import styled from 'styled-components';
 import axios from 'axios';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Cookies } from 'react-cookie';
 
 const Container = styled.div`
 	width: 90%;
 	margin: 0 auto;
 `;
+
 const FeelLogo = styled.div`
 	height: 50px;
 	font-weight: 700;
@@ -106,6 +108,7 @@ const SignForm = {
 };
 
 function SignUp() {
+	const cookies = new Cookies();
 	const {
 		register,
 		formState: { errors },
@@ -129,10 +132,12 @@ function SignUp() {
 				phone: data.phone,
 				code: data.code,
 				password: data.password,
+				id: data.id,
 			})
 			.then((Response) => {
 				console.log(Response);
 				if (Response.status === 201) {
+					cookies.set('userId', Response.data.id);
 					alert('회원가입이 완료되었습니다! 로그인화면으로 이동합니다.');
 					navigateToLogIn();
 				} else {

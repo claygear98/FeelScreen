@@ -87,9 +87,10 @@ function LogIn() {
 	function onSubmit(data) {
 		console.log(data);
 		axios
-			.post('http://localhost:3001/allow', {
+			.post('http://localhost:3001/login', {
 				phone: data.phone,
 				password: data.password,
+				id: data.id,
 			})
 			.then((response) => {
 				console.log(response);
