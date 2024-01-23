@@ -1,5 +1,4 @@
 //회원가입과 관련한 api 요청
-const mysql = require('mysql2');
 const express = require('express');
 const app = express();
 const db = require('../db/databaseSet.js');
