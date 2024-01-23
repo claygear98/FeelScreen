@@ -136,18 +136,23 @@ const MyPage = () => {
 	function deleteUser() {
 		//axios.delete 로 토큰 보내기
 		//이거 확인할 방법을 모르겠네..
+		//맞춰봐야될 부분입니다 김민주양
 		axios
-			.delete('http://localhost:3001/delete', {
+			.delete('http://localhost:3001/allow', {
 				headers: {
 					Authorization: cookies.get('Authorization'),
 				},
 			})
 			.then((res) => {
-				if (res.data.success) {
+				if (res.status === 204) {
 					alert('정상적으로 탈퇴되었습니다.');
 				} else {
 					alert('회원탈퇴 실패!');
 				}
+			})
+			.catch((error) => {
+				console.error(error);
+				alert('회원 탈퇴에 실패했습니다. 다시 시도해주세요.');
 			});
 	}
 
