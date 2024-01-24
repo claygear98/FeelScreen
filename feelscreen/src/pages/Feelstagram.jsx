@@ -2,7 +2,7 @@ import React from 'react';
 import Nav from '../components/Features/Nav/Nav';
 import Header from '../components/Features/Header/Header';
 
-const Fillstagram = () => {
+const Feelstagram = () => {
 	return (
 		<div>
 			<Header />
@@ -11,4 +11,4 @@ const Fillstagram = () => {
 	);
 };
 
-export default Fillstagram;
+export default Feelstagram;
