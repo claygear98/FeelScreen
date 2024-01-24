@@ -7,6 +7,7 @@ import Feelstagram from './pages/Feelstagram';
 import Notice from './pages/Notice';
 import Mypage from './pages/Mypage';
 import Mypost from './pages/Mypost';
+import FeelstaCreate from './pages/FeelstaCreate';
 
 function App() {
 	return (
@@ -18,6 +19,7 @@ function App() {
 					<Route path="/" element={<Home />} />
 					<Route path="/notice" element={<Notice />} />
 					<Route path="/feelstagram" element={<Feelstagram />} />
+					<Route path="/feelstacreate" element={<FeelstaCreate />} />
 					<Route path="/mypage" element={<Mypage />} />
 					<Route path="/mypost" element={<Mypost />} />
 				</Routes>
