@@ -124,7 +124,7 @@ function SignUp() {
 	function lastSubmit(data) {
 		console.log(data);
 		axios
-			.post('http://localhost:3001/allow', {
+			.post('http://localhost:3001/sign-up/allow', {
 				username: data.username,
 				phone: data.phone,
 				code: data.code,
@@ -147,16 +147,18 @@ function SignUp() {
 	const phoneSubmit = () => {
 		// phone 정보만 사용하는 API 호출
 		const phoneData = { phone: getValues('phone') };
-		axios.post('http://localhost:3001/phone', phoneData).then((Response) => {
-			console.log(Response.status);
-			setRes(Response.status);
-		});
+		axios
+			.post('http://localhost:3001/sign-up/phone', phoneData)
+			.then((Response) => {
+				console.log(Response.status);
+				setRes(Response.status);
+			});
 	};
 
 	const codeSubmit = () => {
 		// code 정보만 사용하는 API 호출
 		const codeData = { code: getValues('code') };
-		axios.post('http://localhost:3001/code', codeData);
+		axios.post('http://localhost:3001/sign-up/code', codeData);
 		console.log(getValues('code'));
 		setCodeOff(!codeOff);
 	};

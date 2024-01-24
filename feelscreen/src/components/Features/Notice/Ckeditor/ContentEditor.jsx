@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-const sever_port = 'http://localhost:3000';
+const sever_port = 'http://localhost:3001';
 const apiAdress = 'image';
 const ContentEditor = ({ SetContent }) => {
 	function uploadAdapter(loader) {
@@ -19,9 +19,14 @@ const ContentEditor = ({ SetContent }) => {
 						data.append('jihoon', '지훈');
 						console.log(data.get('jihoon'));
 						axios
-							.post(`${sever_port}/${apiAdress}`, {
-								data: data,
-							})
+							.post(
+								`${sever_port}/${apiAdress}`,
+								{
+									imageName: data.get('imageName'),
+									image: data.get('image'),
+								},
+								console.log(data.get('imageName'))
+							)
 							.then((res) => {
 								resolve({
 									default: `${sever_port}/${res.filename}`,

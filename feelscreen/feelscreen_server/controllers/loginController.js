@@ -3,8 +3,9 @@ const express = require('express');
 const app = express();
 const db = require('../db/databaseSet.js');
 const redisClient = require('../JWT/redis.js');
-
+const jwt = require('../JWT/jwt-util.js');
 const encode = require('../crypto/Usercrypto.js');
+const crypto = require('crypto');
 
 //redis 연결
 redisClient.on('connect', () => {
@@ -13,12 +14,15 @@ redisClient.on('connect', () => {
 redisClient.on('error', (err) => {
 	console.error('Redis Client Error', err);
 });
-
 redisClient.connect().then(); // redis v4 연결 (비동기)
+const redisCli = redisClient.v4;
 
+const cors = require('cors');
+
+app.use(cors());
 app.use(express.json());
 
-app.listen(3000, () => {
+app.listen(3001, () => {
 	console.log('안뇽');
 });
 
@@ -29,7 +33,7 @@ app.post('/log-in', (req, res) => {
 
 	let sql = `SELECT USER_ID, PASSWORD, PASSWORDSALT FROM USER WHERE PHONE = "${phoneEn}"`;
 
-	db.query(sql, function (error, result) {
+	db.query(sql, async function (error, result) {
 		if (error) {
 			console.log(error);
 			res.send({ success: false, message: '' });
@@ -47,12 +51,22 @@ app.post('/log-in', (req, res) => {
 					.toString('hex');
 
 				if (result[0].PASSWORD === check) {
-					//토큰 생성
+					let user_id = result[0].USER_ID;
+					let accessToken = 'Bearer ' + jwt.sign(user_id);
+					let refreshToken = jwt.refresh();
+
+					//redis에 넣는 key는 무조건 String값
+					await redisCli.set(user_id.toString(), refreshToken);
+					let data = await redisCli.get(user_id.toString());
+					console.log(data);
+					res.send({
+						success: true,
+						Authorization: accessToken,
+						Refresh: refreshToken,
+					});
 				} else {
 					res.send({ success: false, message: 'password is incorrect' });
 				}
-
-				res.send({ success: true });
 			}
 		}
 	});

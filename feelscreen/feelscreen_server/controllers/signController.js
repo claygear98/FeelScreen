@@ -5,8 +5,10 @@ const db = require('../db/databaseSet.js');
 
 app.use(express.json());
 const encode = require('../crypto/Usercrypto.js');
+const cors = require('cors');
 
-app.listen(3000, () => {
+app.use(cors());
+app.listen(3001, () => {
 	console.log('안뇽');
 });
 

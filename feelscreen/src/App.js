@@ -3,12 +3,12 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import SignUp from './pages/SignUp';
 import LogIn from './pages/LogIn';
 import Home from './pages/Home';
-import Fillstagram from './pages/Fillstagram';
+// import Fillstagram from './pages/Fillstagram';
 import Notice from './pages/Notice';
-import Mypage from './pages/Mypage';
+// import Mypage from './pages/Mypage';
 import DetailNotice from './components/Features/Notice/DetailNotice';
 import PostNotice from './components/Features/Notice/PostNotice';
-import Mypost from './pages/Mypost';
+// import Mypost from './pages/Mypost';
 
 function App() {
 	return (
@@ -23,8 +23,8 @@ function App() {
 						<Route path="detail" element={<DetailNotice />} />
 						<Route path="post" element={<PostNotice />} />
 					</Route>
-					<Route path="fillstagram" element={<Fillstagram />} />
-					<Route path="mypage" element={<Mypage />} />
+					{/* <Route path="fillstagram" element={<Fillstagram />} /> */}
+					{/* <Route path="mypage" element={<Mypage />} /> */}
 				</Routes>
 			</Router>
 		</div>
