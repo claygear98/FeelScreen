@@ -137,7 +137,7 @@ const FeelStaCreate = () => {
 				tagInput.disabled = true;
 				document.getElementById('addTagButton').disabled = true;
 			}
-			// tagInput.value = '';
+			tagInput.value = '';
 		}
 	};
 
@@ -146,7 +146,7 @@ const FeelStaCreate = () => {
 			.post('http://localhost:3001/feelsta', {
 				title: data.title,
 				image: data.image,
-				tag: data.tag,
+				tag: data.tag.filter((item) => item !== undefined),
 				description: data.description,
 			})
 			.then((Response) => {
@@ -186,10 +186,18 @@ const FeelStaCreate = () => {
 					<h4>이미지</h4>
 					{/* 눌러서 사진 등록 */}
 					<ImageBox>
-						<div>1</div>
-						<div>2</div>
-						<div>3</div>
-						<div>4</div>
+						<div>
+							1<input type="file" {...register(`image.0`)} />
+						</div>
+						<div>
+							2<input type="file" {...register(`image.1`)} />
+						</div>
+						<div>
+							3<input type="file" {...register(`image.2`)} />
+						</div>
+						<div>
+							4<input type="file" {...register(`image.3`)} />
+						</div>
 					</ImageBox>
 				</Image>
 				<Tag>
