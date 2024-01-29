@@ -24,3 +24,6 @@ data.json
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Ignore data.json file
+data.json

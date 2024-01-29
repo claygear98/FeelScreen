@@ -93,9 +93,12 @@ const MyPage = () => {
 		mode: 'onChange',
 		defaultValues: {
 			username: '',
+			password: '',
+			id: '',
 		},
 	});
 	const [isProfileModifyVisible, setProfileModifyVisible] = useState(false);
+	const [isProfileDeleteVisible, setProfileDeleteVisible] = useState(false);
 
 	const navigate = useNavigate();
 
@@ -108,21 +111,24 @@ const MyPage = () => {
 	};
 
 	function onSubmit(data) {
-		console.log(data);
+		console.log(data.id);
+		const Access = cookies.get('userId');
 		axios
-			.post('http://localhost:3001/allow', {
+			.patch(`http://localhost:3001/allow/${Access}`, {
 				username: data.username,
 			})
 			.then((Response) => {
 				console.log(Response);
-				if (Response.status === 201) {
+				if (Response.status === 200) {
 					alert('아이디(닉네임)이/가 변경되었습니다.');
 					setProfileModifyVisible(false);
 					reset();
-					return window.location.reload();
-				} else {
-					alert('아이디(닉네임)변경에 실패했습니다 다시시도해주세요.');
+					window.location.reload();
 				}
+			})
+			.catch((error) => {
+				console.error(error);
+				alert('변경에 실패했습니다. 다시 시도해주세요.');
 			});
 	}
 
@@ -133,21 +139,24 @@ const MyPage = () => {
 		navigateToMain();
 	}
 
-	function deleteUser() {
+	function deleteUser(data) {
 		//axios.delete 로 토큰 보내기
-		//이거 확인할 방법을 모르겠네..
-		//맞춰봐야될 부분입니다 김민주양
+		const Access = cookies.get('userId');
 		axios
-			.delete('http://localhost:3001/delete', {
-				headers: {
-					Authorization: cookies.get('Authorization'),
-				},
+			.delete(`http://localhost:3001/allow/${Access}`, {
+				// headers: {
+				// 	Authorization: cookies.get('Authorization'),
+				// },
 			})
 			.then((res) => {
-				if (res.status === 204) {
+				if (res.status === 200) {
 					alert('정상적으로 탈퇴되었습니다.');
-				} else {
-					alert('회원탈퇴 실패!');
+					setProfileModifyVisible(false);
+					cookies.remove('userId');
+					cookies.remove('Refresh');
+					cookies.remove('Authorization');
+					reset();
+					navigateToMain();
 				}
 			})
 			.catch((error) => {
@@ -155,14 +164,26 @@ const MyPage = () => {
 				alert('회원 탈퇴에 실패했습니다. 다시 시도해주세요.');
 			});
 	}
-
 	function myPost() {
 		navigateToMyPost();
 	}
 
 	function modifyUsername() {
 		setProfileModifyVisible(true);
+		setProfileDeleteVisible(false);
 	}
+
+	function deleteUserProfile() {
+		setProfileDeleteVisible(true);
+		setProfileModifyVisible(false);
+	}
+
+	function onCancel() {
+		setProfileModifyVisible(false);
+		setProfileDeleteVisible(false);
+		reset();
+	}
+
 	return (
 		<MypageContainer>
 			<Section>
@@ -171,7 +192,7 @@ const MyPage = () => {
 			</Section>
 			<Section>
 				<button onClick={myPost}>내가 쓴 글</button>
-				<button className="deleteUser" onClick={deleteUser}>
+				<button className="deleteUser" onClick={deleteUserProfile}>
 					회원 탈퇴
 				</button>
 			</Section>
@@ -200,7 +221,45 @@ const MyPage = () => {
 						/>
 						{errors.username && <Error>{errors.username.message}</Error>}
 					</InputInfo>
+					<button type="button" onClick={onCancel}>
+						취소
+					</button>
 					<button type="submit">변경하기</button>
+				</ProfileModify>
+			)}
+			{isProfileDeleteVisible && (
+				<ProfileModify onSubmit={handleSubmit(deleteUser)}>
+					<InputInfo>
+						<h4>정말 탈퇴 하시겠습니까?</h4>
+						<br />
+						<label>탈퇴하시려면 비밀번호를 입력해주세요.</label>
+						<br />
+						<input
+							type="password"
+							{...register('password', {
+								validate: {
+									check: (val) => {
+										if (val.match(/[\W_]/)) {
+											return '특수문자는 입력이 안됩니다요';
+										} else if (
+											!val.match(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{7,20}$/)
+										) {
+											return '7~20자의 영문자와 숫자의 조합이어야 합니다.';
+										}
+									},
+								},
+							})}
+							placeholder="비밀번호를 입력해 주세요."
+							required
+							autoComplete="new-password"
+							maxLength={20}
+						/>
+						{errors.password && <Error>{errors.password.message}</Error>}
+					</InputInfo>
+					<button type="button" onClick={onCancel}>
+						취소
+					</button>
+					<button type="submit">탈퇴하기</button>
 				</ProfileModify>
 			)}
 		</MypageContainer>

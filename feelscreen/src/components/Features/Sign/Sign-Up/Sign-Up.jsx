@@ -10,6 +10,7 @@ const Container = styled.div`
 	width: 90%;
 	margin: 0 auto;
 `;
+
 const FeelLogo = styled.div`
 	height: 50px;
 	font-weight: 700;
@@ -150,8 +151,20 @@ function SignUp() {
 		axios
 			.post('http://localhost:3001/sign-up/phone', phoneData)
 			.then((Response) => {
-				console.log(Response.status);
-				setRes(Response.status);
+				if (Response.data.success === true) {
+					console.log(Response.status);
+					setRes(Response.status);
+				} else if (
+					Response.data.success === false &&
+					Response.data.message === 'DUPLICATE PHONE'
+				) {
+					// 중복된 전화번호로 가입할 수 없음을 사용자에게 알리기
+					alert('중복된 전화번호로 가입할 수 없습니다.');
+				}
+			})
+			.catch((error) => {
+				// 에러 발생 시 사용자에게 알리기
+				alert('전화번호를 제출하는 중에 오류가 발생했습니다.');
 			});
 	};
 

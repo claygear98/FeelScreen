@@ -2,7 +2,9 @@
 const express = require('express');
 const app = express();
 const db = require('../db/databaseSet.js');
-
+const sms = require('../sms/aligo_sms.js');
+const axios = require('axios');
+let random;
 app.use(express.json());
 const encode = require('../crypto/Usercrypto.js');
 const cors = require('cors');
@@ -37,24 +39,35 @@ app.post('/sign-up/allow', (req, res) => {
 
 //전화번호 인증 요청
 app.post('/sign-up/phone', (req, res) => {
-	//req: phone
-	//개발 순서
-	/*
-    1. 전화번호 db에 존재하는지 확인
-    2. 존재여부에 따라 409에러 or 인증번호 생성해서 문자 보내 주기
-    */
-	//res:
-	/*
-    중복된 전화번호
-    "status": 409,
-    "message": "DUPLICATE PHONE", 
-    
-    */
-	//success:"true", "false" --> 인증번호 생성 완료
+	//전화번호 중복 확인
+	let phoneEn = encode.AES_encrypt(req.body.phone);
+
+	let sql = `SELECT USER_ID FROM USER WHERE PHONE="${phoneEn}"`;
+
+	db.query(sql, async function (error, result) {
+		if (error) {
+			console.log(error);
+			res.send({ success: false, message: 'SAVE FAILED' });
+		} else {
+			if ((await result.length) !== 0) {
+				return res.send({ success: false, message: 'DUPLICATE PHONE' });
+			} else {
+				random = Math.floor(Math.random() * 100000);
+				console.log(req.body.phone, ' ', random);
+				axios.post(
+					'https://apis.aligo.in/send/',
+					sms.send(req, res, random, req.body.phone)
+				);
+			}
+		}
+	});
 });
 
 //인증번호 확인 요청
 app.post('/sign-up/code', (req, res) => {
-	//req : autoCode
-	//res: success: true
+	if (req.body.autoCode.toString() === random.toString()) {
+		res.send({ success: true });
+	} else {
+		res.send({ success: false });
+	}
 });
