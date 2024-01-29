@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { SiKakaotalk } from "react-icons/si";
+import { SiKakaotalk } from 'react-icons/si';
 import { Cookies } from 'react-cookie';
 
 const LogInContainer = styled.div`
@@ -17,18 +17,18 @@ const LogInContainer = styled.div`
 	align-items: center;
 `;
 const LogInPut = styled.div`
-width: 100%;
-display: flex;
-flex-direction: column;
-flex-wrap: wrap;
-align-content: space-around;
-input {
-	margin-top: 10px;
-	width: 300px;
-	height: 30px;
-	border-radius: 7px;
-	border: 2px solid black;
-}
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+	align-content: space-around;
+	input {
+		margin-top: 10px;
+		width: 300px;
+		height: 30px;
+		border-radius: 7px;
+		border: 2px solid black;
+	}
 `;
 
 const ToLogIn = styled.div`
@@ -79,31 +79,29 @@ function LogIn() {
 	const navigateToSignUp = () => {
 		navigate('/sign-up');
 	};
-	
+
 	const navigateToMain = () => {
 		navigate('/');
-	}
+	};
 
 	function onSubmit(data) {
 		console.log(data);
 		axios
-			.post('http://localhost:3001/allow', { 
+			.post('http://localhost:3001/log-in', {
 				phone: data.phone,
 				password: data.password,
 			})
 			.then((response) => {
-				console.log(response)
-				if (response.status === 201) {
-					const Access = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IuyEnOybkOykgCIsInBob25lIjoiMDEwODgzMTM5NTYiLCJwYXNzd29yZCI6IjEyMzQxMjM0ciJ9.deryl71FsMUfaoiq4pNIxmba9343vIyjpZwrmqA9Gc4";
-					const Refresh = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IuyEnOybkOykgCIsInBob25lIjoiMDEwODgzMTM5NTYiLCJwYXNzd29yZCI6IjEyMzQxMjM0ciJ9.deryl71FsMUfaoiq4pNIxmba9343vIyjpZwrmqA9Gc4";
-					cookies.set("Authorization", Access);
-					cookies.set("Refresh", Refresh);
+				console.log(response);
+				if (response.data.success === true) {
+					cookies.set('Authorization', response.data.Authorization);
+					cookies.set('Refresh', response.data.Refresh);
 					navigateToMain();
 				} else {
 					alert('로그인에 실패했습니다. 전화번호/비밀번호를 확인해주세요');
 				}
 			});
-			// }).then(navigateToMain);
+		// }).then(navigateToMain);
 	}
 
 	return (
@@ -123,7 +121,7 @@ function LogIn() {
 									if (val.length < 11) {
 										return '전화번호11자리를다입력해주세요.';
 									}
-									if (!(val.slice(0,3) === "010")) {
+									if (!(val.slice(0, 3) === '010')) {
 										return '전화번호는010으로시작해야합니다.';
 									}
 								},
@@ -158,11 +156,19 @@ function LogIn() {
 					{errors.password && <Error>{errors.password.message}</Error>}
 				</LogInPut>
 				<ToLogIn>
-					<button >로그인</button>
+					<button>로그인</button>
 				</ToLogIn>
 			</form>
 			<ToSignUp>
-				<SiKakaotalk style={{fontSize:"50px", backgroundColor:"#fffb00", color:"#3d3a44", borderRadius:"7px"}} onClick={() => {}} />
+				<SiKakaotalk
+					style={{
+						fontSize: '50px',
+						backgroundColor: '#fffb00',
+						color: '#3d3a44',
+						borderRadius: '7px',
+					}}
+					onClick={() => {}}
+				/>
 				<button onClick={navigateToSignUp}>회원가입</button>
 			</ToSignUp>
 		</LogInContainer>

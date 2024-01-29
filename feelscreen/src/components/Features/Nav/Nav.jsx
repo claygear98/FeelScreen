@@ -33,7 +33,7 @@ const Navbar = styled.div`
 			width: 30px;
 			height: 30px;
 		}
-		#Fillsta {
+		#Feelsta {
 			color: #4ecb71;
 			width: 30px;
 			height: 30px;
@@ -73,7 +73,7 @@ const Nav = () => {
 							? { backgroundColor: '#4ECB71' }
 							: {}
 					}
-					onClick={() => handleNavigae('/notice')}
+					onClick={() => handleNavigae('/notice/read')}
 				>
 					<HiOutlineSpeakerphone
 						style={location.pathname === '/notice' ? { color: '#d8f7e0' } : {}}
@@ -82,17 +82,17 @@ const Nav = () => {
 				</div>
 				<div
 					style={
-						location.pathname === '/fillstagram'
+						location.pathname === '/feelstagram'
 							? { backgroundColor: '#4ECB71' }
 							: {}
 					}
-					onClick={() => handleNavigae('/fillstagram')}
+					onClick={() => handleNavigae('/feelstagram')}
 				>
 					<TbGolf
 						style={
-							location.pathname === '/fillstagram' ? { color: '#d8f7e0' } : {}
+							location.pathname === '/feelstagram' ? { color: '#d8f7e0' } : {}
 						}
-						id="Fillsta"
+						id="Feelsta"
 					/>
 				</div>
 				<div
