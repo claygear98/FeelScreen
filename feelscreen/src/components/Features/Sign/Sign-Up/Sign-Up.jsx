@@ -5,7 +5,6 @@ import styled from 'styled-components';
 import axios from 'axios';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Cookies } from 'react-cookie';
 
 const Container = styled.div`
 	width: 90%;
@@ -108,7 +107,6 @@ const SignForm = {
 };
 
 function SignUp() {
-	const cookies = new Cookies();
 	const {
 		register,
 		formState: { errors },
@@ -127,17 +125,15 @@ function SignUp() {
 	function lastSubmit(data) {
 		console.log(data);
 		axios
-			.post('http://localhost:3001/allow', {
+			.post('http://localhost:3001/sign-up/allow', {
 				username: data.username,
 				phone: data.phone,
 				code: data.code,
 				password: data.password,
-				id: data.id,
 			})
 			.then((Response) => {
 				console.log(Response);
 				if (Response.status === 201) {
-					cookies.set('userId', Response.data.id);
 					alert('회원가입이 완료되었습니다! 로그인화면으로 이동합니다.');
 					navigateToLogIn();
 				} else {
@@ -152,16 +148,31 @@ function SignUp() {
 	const phoneSubmit = () => {
 		// phone 정보만 사용하는 API 호출
 		const phoneData = { phone: getValues('phone') };
-		axios.post('http://localhost:3001/phone', phoneData).then((Response) => {
-			console.log(Response.status);
-			setRes(Response.status);
-		});
+		axios
+			.post('http://localhost:3001/sign-up/phone', phoneData)
+			.then((Response) => {
+				if (Response.data.success === true) {
+					console.log(Response.status);
+					setRes(Response.status);
+				} else if (
+					Response.data.success === false &&
+					Response.data.message === 'DUPLICATE PHONE'
+				) {
+					// 중복된 전화번호로 가입할 수 없음을 사용자에게 알리기
+					alert('중복된 전화번호로 가입할 수 없습니다.');
+				}
+			})
+			.catch((error) => {
+				console.error('Error during phone submission:', error);
+				// 에러 발생 시 사용자에게 알리기
+				alert('전화번호를 제출하는 중에 오류가 발생했습니다.');
+			});
 	};
 
 	const codeSubmit = () => {
 		// code 정보만 사용하는 API 호출
 		const codeData = { code: getValues('code') };
-		axios.post('http://localhost:3001/code', codeData);
+		axios.post('http://localhost:3001/sign-up/code', codeData);
 		console.log(getValues('code'));
 		setCodeOff(!codeOff);
 	};

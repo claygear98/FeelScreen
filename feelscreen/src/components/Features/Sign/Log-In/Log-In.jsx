@@ -87,20 +87,15 @@ function LogIn() {
 	function onSubmit(data) {
 		console.log(data);
 		axios
-			.post('http://localhost:3001/login', {
+			.post('http://localhost:3001/log-in', {
 				phone: data.phone,
 				password: data.password,
-				id: data.id,
 			})
 			.then((response) => {
 				console.log(response);
-				if (response.status === 201) {
-					const Access =
-						'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IuyEnOybkOykgCIsInBob25lIjoiMDEwODgzMTM5NTYiLCJwYXNzd29yZCI6IjEyMzQxMjM0ciJ9.deryl71FsMUfaoiq4pNIxmba9343vIyjpZwrmqA9Gc4';
-					const Refresh =
-						'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IuyEnOybkOykgCIsInBob25lIjoiMDEwODgzMTM5NTYiLCJwYXNzd29yZCI6IjEyMzQxMjM0ciJ9.deryl71FsMUfaoiq4pNIxmba9343vIyjpZwrmqA9Gc4';
-					cookies.set('Authorization', Access);
-					cookies.set('Refresh', Refresh);
+				if (response.data.success === true) {
+					cookies.set('Authorization', response.data.Authorization);
+					cookies.set('Refresh', response.data.Refresh);
 					navigateToMain();
 				} else {
 					alert('로그인에 실패했습니다. 전화번호/비밀번호를 확인해주세요');
