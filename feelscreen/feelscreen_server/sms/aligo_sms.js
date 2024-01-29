@@ -1,9 +1,10 @@
 const aligoapi = require('aligoapi');
 // 해당 예제는 npm에서도 확인하실 수 있습니다
+const api = require('./APIKEY.js');
 
 var AuthData = {
-	key: '7zf2pvdjqux2e7qkuy1kvbolqk58jju6',
-	user_id: 'hnk1203',
+	key: api.key,
+	user_id: api.user_id,
 };
 // 인증용 데이터는 모든 API 호출시 필수값입니다.
 
@@ -14,7 +15,7 @@ AuthData.testmode_yn = 'Y';
 const send = (req, res, random, phone) => {
 	// 메시지 발송하기
 	req.body = {
-		sender: '01051040742', // (최대 16bytes)
+		sender: '01088313956', // (최대 16bytes)
 		receiver: phone, // 컴마()분기 입력으로 최대 1천명
 		msg: '인증번호는 ' + random + '입니다', // (1~2,000Byte)
 		msg_type: 'SMS',

@@ -5,9 +5,7 @@
 /.pnp
 .pnp.js
 .env
-databaseSet.js
 
-data.json
 # testing
 /coverage
 
@@ -27,3 +25,8 @@ yarn-error.log*
 
 # Ignore data.json file
 data.json
+
+#Personal
+databaseSet.js
+
+APIKEY.js

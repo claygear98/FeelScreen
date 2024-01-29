@@ -133,7 +133,7 @@ function SignUp() {
 			})
 			.then((Response) => {
 				console.log(Response);
-				if (Response.status === 201) {
+				if (Response.status === 200) {
 					alert('회원가입이 완료되었습니다! 로그인화면으로 이동합니다.');
 					navigateToLogIn();
 				} else {
@@ -164,6 +164,7 @@ function SignUp() {
 			})
 			.catch((error) => {
 				// 에러 발생 시 사용자에게 알리기
+				console.log(error);
 				alert('전화번호를 제출하는 중에 오류가 발생했습니다.');
 			});
 	};
@@ -279,7 +280,7 @@ function SignUp() {
 								className="phcode-btn"
 								disabled={
 									getValues('code').length < 5 ||
-									res !== 201 ||
+									res !== 200 ||
 									codeOff === false
 								}
 							>
