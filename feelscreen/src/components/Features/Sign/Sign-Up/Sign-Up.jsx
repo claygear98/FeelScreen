@@ -163,7 +163,6 @@ function SignUp() {
 				}
 			})
 			.catch((error) => {
-				console.error('Error during phone submission:', error);
 				// 에러 발생 시 사용자에게 알리기
 				alert('전화번호를 제출하는 중에 오류가 발생했습니다.');
 			});
