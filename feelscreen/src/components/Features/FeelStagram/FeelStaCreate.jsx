@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react';
 
 const SignForm = {
 	title: '',
-	image: [null, null, null, null],
+	image: [],
 	tag: ['', '', '', ''],
 	description: '',
 };
@@ -131,16 +131,22 @@ const FeelStaCreate = () => {
 		mode: 'onChange',
 		defaultValues: SignForm,
 	});
+
 	useEffect(() => {
 		const imageFields = watch('image'); // 이미지 필드를 관찰합니다.
 		// 각 이미지 필드에 대해 등록을 수행합니다.
-		for (let i = 0; i < imageFields.length; i++) {
-			register(`image.${i}`);
-		}
-	}, [register, watch]);
+		// for (let i = 0; i < imageFields.length; i++) {
+		const formData = new FormData();
+		formData.append(imageFields, SignForm.image);
+		register(`image`);
+		// 	console.log(i);
+		// 	console.log(getValues('image'));
+		// }
+		console.log(getValues('image'));
+	}, [register('image'), watch]);
 
 	const [tagIndex, setTagIndex] = useState(0);
-	const [imageSrcs, setImageSrcs] = useState(['', '', '', '']); // 이미지 src 상태
+	// const [imageSrcs, setImageSrcs] = useState(['', '', '', '']); // 이미지 src 상태
 
 	const plusTagAdd = () => {
 		const tagInput = document.getElementById('tagInput');
@@ -158,16 +164,18 @@ const FeelStaCreate = () => {
 		}
 	};
 
-	const encodeFileToBase64 = (fileBlob, index) => {
-		// 이미지의 인덱스 전달
-		const reader = new FileReader();
-		reader.readAsDataURL(fileBlob);
-		reader.onload = () => {
-			const updatedImageSrcs = [...imageSrcs]; // 이미지 srcs 배열 복사
-			updatedImageSrcs[index] = reader.result; // 특정 인덱스에 새 이미지 데이터 업데이트
-			setImageSrcs(updatedImageSrcs); // 이미지 srcs 상태 업데이트
-		};
-	};
+	// const encodeFileToBase64 = (fileBlob, index) => {
+	// 	// 이미지의 인덱스 전달
+	// 	const reader = new FileReader();
+	// 	reader.readAsDataURL(fileBlob);
+	// 	reader.onload = () => {
+	// 		const updatedImageSrcs = [...imageSrcs]; // 이미지 srcs 배열 복사
+	// 		updatedImageSrcs[index] = reader.result; // 특정 인덱스에 새 이미지 데이터 업데이트
+	// 		setImageSrcs(updatedImageSrcs); // 이미지 srcs 상태 업데이트
+	// 		console.log(imageSrcs);
+	// 	};
+	// };
+
 	const postFeelsta = (data) => {
 		axios
 			.post('http://localhost:3001/feelsta', {
@@ -216,18 +224,19 @@ const FeelStaCreate = () => {
 					<ImageBox>
 						<div
 							className="image-container"
-							style={{ backgroundImage: `url(${imageSrcs[0]})` }}
+							// style={{ backgroundImage: `url(${imageSrcs[0]})` }}
 						>
 							<input
 								type="file"
 								name={`img1`} // 동적으로 이름 설정
-								{...register(`image.0`)}
+								{...register(`image`)}
 								onChange={(e) => {
-									encodeFileToBase64(e.target.files[0], 0); // 인덱스를 encodeFileToBase64 함수에 전달
+									// encodeFileToBase64(e.target.files[0], 0); // 인덱스를 encodeFileToBase64 함수에 전달
+									console.log(getValues('image'));
 								}}
 							/>
 						</div>
-						<div
+						{/* <div
 							className="image-container"
 							style={{ backgroundImage: `url(${imageSrcs[1]})` }}
 						>
@@ -237,10 +246,11 @@ const FeelStaCreate = () => {
 								{...register(`image.1`)}
 								onChange={(e) => {
 									encodeFileToBase64(e.target.files[0], 1); // 인덱스를 encodeFileToBase64 함수에 전달
+									console.log(getValues(`image.1`));
 								}}
 							/>
-						</div>
-						<div
+						</div> */}
+						{/* <div
 							className="image-container"
 							style={{ backgroundImage: `url(${imageSrcs[2]})` }}
 						>
@@ -265,7 +275,7 @@ const FeelStaCreate = () => {
 									encodeFileToBase64(e.target.files[0], 3); // 인덱스를 encodeFileToBase64 함수에 전달
 								}}
 							/>
-						</div>
+						</div> */}
 					</ImageBox>
 				</Image>
 				<Tag>
