@@ -1,16 +1,16 @@
 import React from 'react';
 import Nav from '../components/Features/Nav/Nav';
 import Header from '../components/Features/Header/Header';
-import UserMyPage from '../components/Features/MyPage/UserMyPage';
+import FeelStaList from '../components/Features/FeelStagram/FeelStaList';
 
-const Mypage = () => {
+const Feelstagram = () => {
 	return (
 		<div>
 			<Header />
-			<UserMyPage />
+			<FeelStaList />
 			<Nav />
 		</div>
 	);
 };
 
-export default Mypage;
+export default Feelstagram;
