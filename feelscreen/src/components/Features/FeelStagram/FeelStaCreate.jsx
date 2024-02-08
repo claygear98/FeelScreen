@@ -238,7 +238,7 @@ const FeelStaCreate = () => {
 									const file = e.target.files[0]; // 선택된 파일 객체
 									encodeFileToBase64(file, 0); // Base64 인코딩을 시작
 									console.log(file);
-									setValue(`image`, file); // 실제 파일 객체를 저장
+									setValue(`image`, file.name); // 실제 파일 객체를 저장
 									console.log(getValues('image'));
 								}}
 							/>
