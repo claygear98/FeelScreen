@@ -11,13 +11,12 @@ const ContentEditor = ({ SetContent }) => {
 				return new Promise((resolve, reject) => {
 					const data = new FormData();
 					loader.file.then((file) => {
-						console.log(file.name);
-						console.log('-----------------------');
-						console.log(file);
-						data.append('imageName', file.name);
-						data.append('image', file);
-						data.append('jihoon', '지훈');
-						console.log(data.get('jihoon'));
+						const renamedFile = new File([file], `${Date.now()}.jpeg`, {
+							type: file.type,
+						});
+						console.log(renamedFile);
+						data.append('imageName', renamedFile.name);
+						data.append('image', renamedFile);
 						axios
 							.post(`${sever_port}/${apiAdress}`, {
 								data: data,
@@ -67,5 +66,6 @@ const ContentEditor = ({ SetContent }) => {
 		</div>
 	);
 };
+// 전송할때
 
 export default ContentEditor;
