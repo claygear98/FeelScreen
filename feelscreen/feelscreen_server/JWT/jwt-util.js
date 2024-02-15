@@ -31,6 +31,7 @@ module.exports = {
 				id: decoded.id,
 			};
 		} catch (err) {
+			console.log(err);
 			return {
 				ok: false,
 				message: err.message,

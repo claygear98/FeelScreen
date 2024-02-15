@@ -33,12 +33,11 @@ function logIn(sql, password, res) {
 
 				if (result[0].PASSWORD === check) {
 					let user_id = result[0].USER_ID;
-					let accessToken = 'Bearer ' + jwt.sign(user_id);
+					let accessToken = jwt.sign(user_id); //'Bearer ' +
 					let refreshToken = jwt.refresh();
 
 					await redisCli.set(user_id.toString(), refreshToken);
-					let data = await redisCli.get(user_id.toString());
-
+					await redisCli.set(user_id + 'access', accessToken);
 					res.send({
 						success: true,
 						Authorization: accessToken,
@@ -87,8 +86,24 @@ function duplicate(sql, req, res) {
 	return random;
 }
 
+function header(id, res) {
+	let sql = `SELECT USERNAME, PROFILEIMAGE FROM USER WHERE USER_ID = ${id}`;
+	db.query(sql, function (error, result) {
+		if (error) {
+			console.log(error);
+			res.send({ success: false, message: 'db error' });
+		} else {
+			res.send({
+				success: true,
+				username: result[0].USERNAME,
+				image: result[0].PROFILEIMAGE,
+			});
+		}
+	});
+}
 module.exports = {
 	logIn,
 	allow,
 	duplicate,
+	header,
 };
