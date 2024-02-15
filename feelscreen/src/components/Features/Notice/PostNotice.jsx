@@ -38,6 +38,7 @@ const PostNotice = () => {
 		[Title]
 	);
 	const onSubmitPost = (e) => {
+		console.log(123);
 		axios
 			.post('/notice-post', {
 				title: Title,
@@ -67,7 +68,7 @@ const PostNotice = () => {
 			/>
 			<div className="hi">본문내용</div>
 			<ContentEditor SetContent={SetContent} data={Content} />
-			<button onClick={onSubmitPost}>작성완료</button>
+			<div onClick={onSubmitPost}>작성완료</div>
 		</PostNoticeFrom>
 	);
 };
