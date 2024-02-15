@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import ContentEditor from './Ckeditor/ContentEditor';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+const sever_port = 'http://localhost:3001';
 
 const PostNoticeFrom = styled.form`
 	.ck-editor__editable {
@@ -40,7 +41,7 @@ const PostNotice = () => {
 	const onSubmitPost = (e) => {
 		console.log(123);
 		axios
-			.post('/notice-post', {
+			.post(`${sever_port}/notice-post`, {
 				title: Title,
 				content: Content,
 			})
