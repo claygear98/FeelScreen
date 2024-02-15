@@ -8,6 +8,9 @@ const mainController = require('../controllers/mainController.js');
 const imageMove = require('./imageMove.js');
 const cors = require('cors');
 const path = require('path');
+const multer = require('multer'); // (1)
+const mime = require('mime-types');
+const { v4: uuid } = require('uuid');
 const JWT = require('../JWT/jwtMiddle.js');
 
 let imageNames = [];
@@ -69,7 +72,7 @@ app.post('/notice-post', (req, res) => {
 	let from = './images';
 	let to = '../../public/assets/notice';
 
-	console.log(req.body);
+	console.log(req);
 	imageMove.moveImage(from, to, imageNames);
 });
 
