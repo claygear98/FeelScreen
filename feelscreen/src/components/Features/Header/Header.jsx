@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import useHeaderInfo from './HeadStore';
 
@@ -40,7 +40,9 @@ const UserImage = styled.div`
 `;
 const Header = () => {
 	const { username, userImage, getInfo } = useHeaderInfo();
-	getInfo();
+	useEffect(() => {
+		getInfo();
+	}, [getInfo]);
 	return (
 		<HeaderDiv>
 			<Hello>
