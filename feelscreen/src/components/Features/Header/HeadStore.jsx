@@ -1,14 +1,23 @@
 import { create } from 'zustand';
-// import axios from 'axios';
+import axios from 'axios';
+import { Cookies } from 'react-cookie';
 
+const cookies = new Cookies();
+console.log(cookies.get('Authorization'));
 const useHeaderInfo = create((set) => ({
 	username: '기본값',
 	userImage: `/assets/5f.png`,
 	getInfo() {
-		// axios.get('/header').then((Response)=>{
-		//  set((state)=>({userImage:Response.data.userImage,username:Response.data.username}))
-		// }
-		// )
+		axios
+			.post('http://localhost:3001/header', {
+				Authorization: cookies.get('Authorization'),
+			})
+			.then((Response) => {
+				set((state) => ({
+					userImage: Response.data.image,
+					username: Response.data.username,
+				}));
+			});
 	},
 }));
 

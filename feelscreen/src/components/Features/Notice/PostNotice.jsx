@@ -1,8 +1,11 @@
 //not yet
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import styled from 'styled-components';
 import ContentEditor from './Ckeditor/ContentEditor';
-const PostNoticeFrom = styled.div`
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+
+const PostNoticeFrom = styled.form`
 	.ck-editor__editable {
 		height: 250px;
 	}
@@ -24,16 +27,47 @@ const PostNoticeFrom = styled.div`
 `;
 const PostNotice = () => {
 	const [Content, SetContent] = useState('');
-	// const [Title, SetTitle] = useState('');
+	const [Title, SetTitle] = useState('');
 	// const [editor, setEditor] = useState(null);
+	const navigate = useNavigate();
+	const onChangeTitle = useCallback(
+		(e) => {
+			SetTitle(e.target.value);
+			console.log(Title);
+		},
+		[Title]
+	);
+	const onSubmitPost = (e) => {
+		axios
+			.post('/notice-post', {
+				title: Title,
+				content: Content,
+			})
+			.then((Response) => {
+				if (Response.sucess === 'true') {
+					alert('등록성공!!');
+					navigate('/notice/read');
+				} else if (Response.sucess === 'false') {
+					alert('실패했습니다! 다시 시도해주세요');
+				}
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+	};
 
 	return (
 		<PostNoticeFrom>
 			<h1>공지 제목</h1>
-			<textarea cols={50} placeholder="공지제목을 입력해 주세요" />
+			<textarea
+				cols={50}
+				placeholder="공지제목을 입력해 주세요"
+				onChange={onChangeTitle}
+				value={Title}
+			/>
 			<div className="hi">본문내용</div>
 			<ContentEditor SetContent={SetContent} data={Content} />
-			<button>작성완료</button>
+			<button onClick={onSubmitPost}>작성완료</button>
 		</PostNoticeFrom>
 	);
 };
