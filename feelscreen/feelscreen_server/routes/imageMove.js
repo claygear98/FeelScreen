@@ -1,6 +1,6 @@
 const fs = require('fs').promises;
-
-async function moveImage(sourceDir, destDir, imageNames) {
+const path = require('path');
+async function moveImage(sourceDir, destDir, imageNames, res) {
 	try {
 		// 읽기 가능한 디렉터리인지 확인
 		await fs.access(sourceDir, fs.constants.R_OK);
@@ -8,6 +8,7 @@ async function moveImage(sourceDir, destDir, imageNames) {
 		// 대상 디렉터리가 존재하지 않으면 생성
 		await fs.mkdir(destDir, { recursive: true });
 
+		console.log(imageNames);
 		for (let imageName of imageNames) {
 			const sourcePath = path.join(sourceDir, imageName);
 			const destPath = path.join(destDir, imageName);
@@ -19,8 +20,10 @@ async function moveImage(sourceDir, destDir, imageNames) {
 		}
 
 		console.log('이미지 이동이 성공적으로 완료되었습니다.');
+		// res.send({ success: true });
 	} catch (err) {
-		console.error(`이미지 이동 중 오류 발생: ${err.message}`);
+		console.error(`이미지 이동 중 오류 발생: ${err}`);
+		// res.send({ success: false });
 	}
 }
 

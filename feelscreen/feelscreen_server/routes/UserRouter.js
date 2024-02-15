@@ -72,8 +72,9 @@ app.post('/notice-post', (req, res) => {
 	let from = './images';
 	let to = '../../public/assets/notice';
 
-	console.log(req);
-	imageMove.moveImage(from, to, imageNames);
+	// console.log(req);/
+	imageMove.moveImage(from, to, imageNames, res);
+	res.send({ success: true });
 });
 
 //헤더 요청
