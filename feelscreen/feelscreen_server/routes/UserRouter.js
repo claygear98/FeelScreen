@@ -28,7 +28,8 @@ const storage = multer.diskStorage({
 	filename: (req, file, cb) => {
 		// (4)
 
-		cb(null, req.file.imageName); // (5)
+		// console.log(file);
+		cb(null, file.originalname); // (5)
 	},
 });
 
@@ -62,7 +63,7 @@ router.post('/sign-up/code', signController.code);
 
 //공지 사진 업로드
 app.post('/image', upload.single('image'), async (req, res) => {
-	res.status(200).json(req.file);
+	// res.status(200).json(req.file);
 });
 
 //공지 게시물 등록
