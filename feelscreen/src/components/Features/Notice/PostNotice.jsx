@@ -46,13 +46,13 @@ const PostNotice = () => {
 				content: Content,
 			})
 			.then((Response) => {
-				console.log(Response);
-				if (Response.data.success) {
+				if (Response.data.success === true) {
 					alert('등록성공!!');
 					navigate('/notice/read');
-				} else {
+				} else if (Response.data.success === false) {
 					alert('실패했습니다! 다시 시도해주세요');
 				}
+				console.log(Response);
 			})
 			.catch((error) => {
 				console.log(error);

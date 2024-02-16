@@ -20,10 +20,10 @@ async function moveImage(sourceDir, destDir, imageNames, res) {
 		}
 
 		console.log('이미지 이동이 성공적으로 완료되었습니다.');
-		// res.send({ success: true });
+		res.send({ success: true });
 	} catch (err) {
 		console.error(`이미지 이동 중 오류 발생: ${err}`);
-		// res.send({ success: false });
+		res.send({ success: false });
 	}
 }
 

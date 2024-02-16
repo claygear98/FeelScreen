@@ -27,9 +27,8 @@ const storage = multer.diskStorage({
 	},
 	filename: (req, file, cb) => {
 		// (4)
-		let name = `${uuid()}.${mime.extension(file.mimetype)}`;
-		imageNames.push(name);
-		cb(null, name); // (5)
+
+		cb(null, req.file.imageName); // (5)
 	},
 });
 
@@ -63,8 +62,7 @@ router.post('/sign-up/code', signController.code);
 
 //공지 사진 업로드
 app.post('/image', upload.single('image'), async (req, res) => {
-	console.log(req.file);
-	// res.status(200).json(req.file);
+	res.status(200).json(req.file);
 });
 
 //공지 게시물 등록
@@ -72,9 +70,7 @@ app.post('/notice-post', (req, res) => {
 	let from = './images';
 	let to = '../../public/assets/notice';
 
-	// console.log(req);/
 	imageMove.moveImage(from, to, imageNames, res);
-	res.send({ success: true });
 });
 
 //헤더 요청
