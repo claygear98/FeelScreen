@@ -27,6 +27,7 @@ const ContentEditor = ({ SetContent }) => {
 								resolve({
 									default: `/assets/notice/${res.data.filename}`,
 								});
+								console.log(res);
 							})
 							.catch((err) => {
 								console.log(err);
