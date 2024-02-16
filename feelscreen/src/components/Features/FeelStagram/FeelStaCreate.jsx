@@ -6,7 +6,8 @@ import { useState, useEffect } from 'react';
 
 const SignForm = {
 	title: '',
-	image: new FormData(),
+	// image: new FormData(),
+	image: [''],
 	tag: ['', '', '', ''],
 	description: '',
 };
@@ -41,11 +42,13 @@ const Image = styled.div`
 	text-align: left;
 `;
 
-const ImageBox = styled.div`
+const ImageBox = styled.ul`
+	list-style: none;
+	padding: 0;
 	width: 170px;
 	margin-top: 10px;
 	display: grid;
-	grid-template-columns: repeat(2, 1fr); /* 2개의 열로 나눔 */
+	grid-template-columns: repeat(4, 1fr);
 	grid-gap: 3px; /* 그리드 아이템 간의 간격 */
 	.image-container {
 		width: 80px;
@@ -61,6 +64,12 @@ const ImageBox = styled.div`
 		height: 100%;
 		opacity: 0;
 	}
+`;
+
+const PicPlus = styled.div`
+	display: inline-block;
+	width: 80px;
+	height: 80px;
 `;
 
 const Tag = styled.div`
@@ -140,7 +149,8 @@ const FeelStaCreate = () => {
 	}, [register, watch]);
 
 	const [tagIndex, setTagIndex] = useState(0);
-	const [imageSrcs, setImageSrcs] = useState(['']); // 이미지 src 상태
+	// const [imageSrcs, setImageSrcs] = useState(['', '', '', '']); // 이미지 src 상태
+	const [file, setFile] = useState(['']);
 
 	const plusTagAdd = () => {
 		const tagInput = document.getElementById('tagInput');
@@ -158,16 +168,17 @@ const FeelStaCreate = () => {
 		}
 	};
 
-	const encodeFileToBase64 = (fileBlob, index) => {
-		// 이미지의 인덱스 전달
-		const reader = new FileReader();
-		reader.readAsDataURL(fileBlob);
-		reader.onload = () => {
-			const updatedImageSrcs = [...imageSrcs]; // 이미지 srcs 배열 복사
-			updatedImageSrcs[index] = reader.result; // 특정 인덱스에 새 이미지 데이터 업데이트
-			setImageSrcs(updatedImageSrcs); // 이미지 srcs 상태 업데이트
-		};
-	};
+	// const encodeFileToBase64 = (fileBlob, index) => {
+	// 	// 이미지의 인덱스 전달
+	// 	const reader = new FileReader();
+	// 	reader.readAsDataURL(fileBlob);
+	// 	reader.onload = () => {
+	// 		const updatedImageSrcs = [...imageSrcs]; // 이미지 srcs 배열 복사
+	// 		updatedImageSrcs[index] = reader.result; // 특정 인덱스에 새 이미지 데이터 업데이트
+	// 		setImageSrcs(updatedImageSrcs); // 이미지 srcs 상태 업데이트
+	// 	};
+	// };
+
 	const postFeelsta = (data) => {
 		const formData = new FormData();
 
@@ -176,7 +187,9 @@ const FeelStaCreate = () => {
 		formData.append('description', data.description);
 
 		// 이미지 파일 추가
-		formData.append('image', data.image);
+		for (let i = 0; i < data.image.length; i++) {
+			formData.append('image', data.image[i]);
+		}
 
 		// 태그 추가
 		for (let i = 0; i < data.tag.length; i++) {
@@ -186,6 +199,9 @@ const FeelStaCreate = () => {
 		axios
 			.post('http://localhost:3001/feelsta', {
 				image: data.image,
+				tag: data.tag,
+				title: data.title,
+				description: data.description,
 			})
 			.then((Response) => {
 				console.log(Response);
@@ -222,29 +238,43 @@ const FeelStaCreate = () => {
 					/>
 					{errors.title && <Error>{errors.title.message}</Error>}
 				</Title>
+
 				<Image>
 					<h4>이미지</h4>
-					{/* 눌러서 사진 등록 */}
 					<ImageBox>
-						<div
-							className="image-container"
-							style={{ backgroundImage: `url(${imageSrcs[0]})` }}
-						>
+						{file &&
+							Array.from(file).map((item, index) => (
+								<li
+									key={index}
+									className="image-container"
+									style={{
+										backgroundImage: `url(${URL.createObjectURL(item)})`,
+									}}
+								></li>
+							))}
+						<PicPlus>
+							+
 							<input
 								type="file"
-								// name={`img1`} // 동적으로 이름 설정
-								// {...register(`image`)}
 								onChange={(e) => {
-									const file = e.target.files[0]; // 선택된 파일 객체
-									encodeFileToBase64(file, 0); // Base64 인코딩을 시작
-									console.log(file);
-									setValue(`image`, file.name); // 실제 파일 객체를 저장
+									const files = e.target.files;
+									let fileList = [];
+									for (let i = 0; i < files.length; i++) {
+										fileList.push(files[i]);
+										setValue(`image.${i}`, files[i].name);
+									}
+									setFile([...file, ...fileList]);
 									console.log(getValues('image'));
+									if (fileList.length > 4) {
+										alert('최대4개까지 가능합니다. 다시 선택해주세요');
+									}
 								}}
+								multiple
 							/>
-						</div>
+						</PicPlus>
 					</ImageBox>
 				</Image>
+
 				<Tag>
 					<h4>태그 추가</h4>
 					<h6>태그는 4개까지만 가능합니다</h6>
