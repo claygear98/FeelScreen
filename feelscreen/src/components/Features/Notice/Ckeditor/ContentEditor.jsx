@@ -25,7 +25,7 @@ const ContentEditor = ({ SetContent }) => {
 							)
 							.then((res) => {
 								resolve({
-									default: `${sever_port}/${res.filename}`,
+									default: `/assets/notice/${res.data.filename}`,
 								});
 							})
 							.catch((err) => {
