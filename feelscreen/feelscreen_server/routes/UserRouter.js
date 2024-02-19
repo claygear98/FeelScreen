@@ -5,6 +5,7 @@ const loginController = require('../controllers/loginController.js');
 const signController = require('../controllers/signController.js');
 const noticeController = require('../controllers/noticeController.js');
 const mainController = require('../controllers/mainController.js');
+const feelstaController = require('../controllers/feelstaController.js');
 const imageMove = require('./imageMove.js');
 const cors = require('cors');
 const path = require('path');
@@ -28,7 +29,7 @@ const storage = multer.diskStorage({
 	filename: (req, file, cb) => {
 		// (4)
 
-		// console.log(file);
+		imageNames.push(file.originalname);
 		cb(null, file.originalname); // (5)
 	},
 });
@@ -63,11 +64,20 @@ router.post('/sign-up/code', signController.code);
 
 //공지 사진 업로드
 app.post('/image', upload.single('image'), async (req, res) => {
-	// res.status(200).json(req.file);
+	res.status(200).json(req.file);
 });
 
 //공지 게시물 등록
 app.post('/notice-post', (req, res) => {
+	console.log(req.body.content);
+
+	imageNames = imageNames.filter((name) => {
+		if (req.body.content.includes(name)) {
+			return name;
+		}
+	});
+
+	// console.log(imageNames);
 	let from = './images';
 	let to = '../../public/assets/notice';
 
@@ -79,6 +89,14 @@ router.post('/header', async (req, res) => {
 	mainController.header(await JWT.authJWT(req, res), res);
 });
 
+//필스타 전체 목록
+router.get('/feelsta', (req, res) => {
+	feelstaController.feelAll(res);
+});
+
+router.get('/notice', (req, res) => {
+	noticeController.noticeList(res);
+});
 app.use('/', express.static(path.join(__dirname, 'images')));
 app.use('/', router);
 app.listen(3001, () => {
