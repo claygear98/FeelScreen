@@ -103,7 +103,22 @@ function header(id, res) {
 }
 
 function feelstaAll(res) {
-	let sql = `SELECT feelsta.*, USER.USERNAME, USER.PROFILEIMAGE, COUNT(FEELSTA_ID) FROM feelsta JOIN USER ON feelsta.USER_ID = USER.USER_ID WHERE feelsta.USER_ID = USER.USER_ID`;
+	let sql = `SELECT feelsta.FEELSTA_ID, feelsta.FEELSTA_TITLE, feelsta.FEELSTA_CONTENT, feelsta.FEELSTA_DATE, feelsta.FEELSTA_LIKE, feelsta.FEELSTA_TAG, COUNT(FEELSTA_ID) AS COMMENTS , USER.USERNAME, USER.PROFILEIMAGE FROM feelsta JOIN USER ON feelsta.USER_ID = USER.USER_ID WHERE feelsta.USER_ID = USER.USER_ID`;
+	db.query(sql, function (error, result) {
+		if (error) {
+			console.log(error);
+			res.send({ success: false, message: 'db error' });
+		} else {
+			console.log(result);
+			res.send({
+				success: true,
+				notice: result,
+			});
+		}
+	});
+}
+
+function feelstaOne(id, res) {
 	db.query(sql, function (error, result) {
 		if (error) {
 			console.log(error);
@@ -140,4 +155,5 @@ module.exports = {
 	header,
 	feelstaAll,
 	noticeList,
+	feelstaOne,
 };

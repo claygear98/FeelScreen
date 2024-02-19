@@ -24,7 +24,7 @@ const ContentEditor = ({ SetContent }) => {
 							)
 							.then((res) => {
 								resolve({
-									default: `http://localhost:3001/${res.data.originalname}`,
+									default: `${sever_port}/${res.data.originalname}`,
 								});
 								console.log(res);
 							})

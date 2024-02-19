@@ -97,6 +97,16 @@ router.get('/feelsta', (req, res) => {
 router.get('/notice', (req, res) => {
 	noticeController.noticeList(res);
 });
+
+router.get('/feelstadetail', (req, res) => {
+	let { feelsta_id } = req.query;
+
+	console.log(feelsta_id);
+});
+
+router.post('/feelsta-post', (req, res) => {
+	console.log(req.body);
+});
 app.use('/', express.static(path.join(__dirname, 'images')));
 app.use('/', router);
 app.listen(3001, () => {
