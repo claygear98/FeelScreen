@@ -101,9 +101,43 @@ function header(id, res) {
 		}
 	});
 }
+
+function feelstaAll(res) {
+	let sql = `SELECT feelsta.*, USER.USERNAME, USER.PROFILEIMAGE, COUNT(FEELSTA_ID) FROM feelsta JOIN USER ON feelsta.USER_ID = USER.USER_ID WHERE feelsta.USER_ID = USER.USER_ID`;
+	db.query(sql, function (error, result) {
+		if (error) {
+			console.log(error);
+			res.send({ success: false, message: 'db error' });
+		} else {
+			console.log(result);
+			res.send({
+				success: true,
+				notice: result,
+			});
+		}
+	});
+}
+
+function noticeList(res) {
+	let sql = `SELECT NOTICE_ID, NOTICETITLE FROM NOTICE`;
+
+	db.query(sql, function (error, result) {
+		if (error) {
+			console.log(error);
+			res.send({ success: false, message: 'db error' });
+		} else {
+			res.send({
+				success: true,
+				notice: result,
+			});
+		}
+	});
+}
 module.exports = {
 	logIn,
 	allow,
 	duplicate,
 	header,
+	feelstaAll,
+	noticeList,
 };

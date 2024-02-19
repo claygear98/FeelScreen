@@ -1,4 +1,3 @@
-
 import React from 'react';
 import axios from 'axios';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
@@ -25,7 +24,7 @@ const ContentEditor = ({ SetContent }) => {
 							)
 							.then((res) => {
 								resolve({
-									default: `/assets/notice/${res.data.filename}`,
+									default: `http://localhost:3001/${res.data.originalname}`,
 								});
 								console.log(res);
 							})

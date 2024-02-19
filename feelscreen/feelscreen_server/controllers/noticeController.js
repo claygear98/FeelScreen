@@ -1,27 +1,12 @@
-const multer = require('multer');
-const mime = require('mime-types');
+const userDB = require('../db/userDB.js');
 
-const upload = multer({
-	storage: multer.diskStorage({
-		filename(req, file, done) {
-			console.log(file);
-			done(null, file.originalname);
-		},
-		destination(req, file, done) {
-			console.log(file);
-			done(null, path.join(__dirname, 'temp'));
-		},
-	}),
-	fileFilter: (req, file, cb) => {
-		if (['image/jpeg', 'image/jpg', 'image/png'].includes(file.mimetype))
-			cb(null, true);
-		else cb(new Error('해당 파일의 형식을 지원하지 않습니다.'), false);
-	},
-	limits: {
-		fileSize: 1024 * 1024 * 5,
-	},
-});
+function noticePost(req, res, next) {}
+
+function noticeList(res) {
+	userDB.noticeList(res);
+}
 
 module.exports = {
-	upload,
+	noticePost,
+	noticeList,
 };
