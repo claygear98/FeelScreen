@@ -3,6 +3,8 @@ import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
+import { FaPlus } from 'react-icons/fa';
+import { RiDeleteBin6Line } from 'react-icons/ri';
 
 const SignForm = {
 	title: '',
@@ -42,34 +44,40 @@ const Image = styled.div`
 	text-align: left;
 `;
 
-const ImageBox = styled.ul`
-	list-style: none;
+const ImageBox = styled.div`
 	padding: 0;
-	width: 170px;
+	width: 360px;
 	margin-top: 10px;
 	display: grid;
-	grid-template-columns: repeat(4, 1fr);
-	grid-gap: 3px; /* 그리드 아이템 간의 간격 */
-	.image-container {
-		width: 80px;
-		height: 80px;
-		background-size: cover;
-		background-position: center;
-		border: 2px solid black;
-		border-radius: 5px;
-	}
+	grid-template-columns: repeat(5, 1fr);
+	overflow: hidden;
 
 	.image-container input {
 		width: 100%;
 		height: 100%;
 		opacity: 0;
 	}
+
+	#input-file {
+		display: none;
+	}
+
+	img {
+		display: inline-block;
+		width: 80px;
+		height: 80px;
+		margin-right: 10px;
+		border-radius: 5px;
+	}
 `;
 
-const PicPlus = styled.div`
-	display: inline-block;
+const PlusBtn = styled.div`
 	width: 80px;
 	height: 80px;
+	border-radius: 5px;
+	border: 1px solid black;
+	text-align: center;
+	line-height: 110px;
 `;
 
 const Tag = styled.div`
@@ -102,6 +110,7 @@ const PlusTag = styled.span`
 	font-size: 15px;
 	color: #4ecb71;
 `;
+
 const Des = styled.div`
 	width: 360px;
 	margin-top: 20px;
@@ -149,8 +158,40 @@ const FeelStaCreate = () => {
 	}, [register, watch]);
 
 	const [tagIndex, setTagIndex] = useState(0);
-	// const [imageSrcs, setImageSrcs] = useState(['', '', '', '']); // 이미지 src 상태
-	const [file, setFile] = useState(['']);
+	const [showImages, setShowImages] = useState([]);
+
+	// 이미지 상대경로 저장
+	const handleAddImages = (event) => {
+		let imageLists = event.target.files;
+		let imageUrlLists = [...showImages];
+
+		for (let i = 0; i < imageLists.length; i++) {
+			if (imageLists.length < 5) {
+				const currentImageUrl = URL.createObjectURL(imageLists[i]);
+				imageUrlLists.push(currentImageUrl);
+				setValue(`image.${imageUrlLists.length - 1}`, imageLists[i]);
+				console.log(getValues('image'));
+			} else {
+				alert('사진은 4장까지 선택가능합니다.');
+				window.location.reload();
+				imageLists = '';
+			}
+		}
+
+		if (imageUrlLists.length > 4) {
+			imageUrlLists = imageUrlLists.slice(0, 4);
+			setValue('image', getValues('image').slice(0, 4));
+		}
+
+		setShowImages(imageUrlLists);
+	};
+
+	// 버튼 클릭 시 이미지 삭제
+	const handleDeleteImage = (id) => {
+		setShowImages(showImages.filter((_, index) => index !== id));
+		setValue(`image.${id}`, null);
+		console.log(getValues('image'));
+	};
 
 	const plusTagAdd = () => {
 		const tagInput = document.getElementById('tagInput');
@@ -167,17 +208,6 @@ const FeelStaCreate = () => {
 			tagInput.value = '';
 		}
 	};
-
-	// const encodeFileToBase64 = (fileBlob, index) => {
-	// 	// 이미지의 인덱스 전달
-	// 	const reader = new FileReader();
-	// 	reader.readAsDataURL(fileBlob);
-	// 	reader.onload = () => {
-	// 		const updatedImageSrcs = [...imageSrcs]; // 이미지 srcs 배열 복사
-	// 		updatedImageSrcs[index] = reader.result; // 특정 인덱스에 새 이미지 데이터 업데이트
-	// 		setImageSrcs(updatedImageSrcs); // 이미지 srcs 상태 업데이트
-	// 	};
-	// };
 
 	const postFeelsta = (data) => {
 		const formData = new FormData();
@@ -197,7 +227,7 @@ const FeelStaCreate = () => {
 		}
 
 		axios
-			.post('http://localhost:3001/feelsta', {
+			.post('http://localhost:3001/feelsta-post', {
 				image: data.image,
 				tag: data.tag,
 				title: data.title,
@@ -242,39 +272,32 @@ const FeelStaCreate = () => {
 				<Image>
 					<h4>이미지</h4>
 					<ImageBox>
-						{file &&
-							Array.from(file).map((item, index) => (
-								<li
-									key={index}
-									className="image-container"
-									style={{
-										backgroundImage: `url(${URL.createObjectURL(item)})`,
+						{/* // 저장해둔 이미지들을 순회하면서 화면에 이미지 출력 */}
+						{showImages.map((image, id) => (
+							<div key={id}>
+								<img src={image} alt={`${image}-${id}`} />
+								<button
+									onClick={(e) => {
+										e.preventDefault();
+										handleDeleteImage(id);
 									}}
-								></li>
-							))}
-						<PicPlus>
-							+
-							<input
-								type="file"
-								onChange={(e) => {
-									const files = e.target.files;
-									let fileList = [];
-									for (let i = 0; i < files.length; i++) {
-										fileList.push(files[i]);
-										setValue(`image.${i}`, files[i].name);
-									}
-									setFile([...file, ...fileList]);
-									console.log(getValues('image'));
-									if (fileList.length > 4) {
-										alert('최대4개까지 가능합니다. 다시 선택해주세요');
-									}
-								}}
-								multiple
-							/>
-						</PicPlus>
+								>
+									<RiDeleteBin6Line />
+								</button>
+							</div>
+						))}
+						<label htmlFor="input-file" onChange={handleAddImages}>
+							<input type="file" id="input-file" multiple />
+							<PlusBtn>
+								<FaPlus
+									style={{
+										fontSize: '40px',
+									}}
+								/>
+							</PlusBtn>
+						</label>
 					</ImageBox>
 				</Image>
-
 				<Tag>
 					<h4>태그 추가</h4>
 					<h6>태그는 4개까지만 가능합니다</h6>
