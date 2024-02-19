@@ -10,8 +10,6 @@ const imageMove = require('./imageMove.js');
 const cors = require('cors');
 const path = require('path');
 const multer = require('multer'); // (1)
-const mime = require('mime-types');
-const { v4: uuid } = require('uuid');
 const JWT = require('../JWT/jwtMiddle.js');
 
 let imageNames = [];
@@ -28,7 +26,6 @@ const storage = multer.diskStorage({
 	},
 	filename: (req, file, cb) => {
 		// (4)
-
 		imageNames.push(file.originalname);
 		cb(null, file.originalname); // (5)
 	},
@@ -39,7 +36,6 @@ const upload = multer({
 	storage,
 	fileFilter: (req, file, cb) => {
 		if (['image/jpeg', 'image/jpg', 'image/png'].includes(file.mimetype)) {
-			console.log(5);
 			cb(null, true);
 		} else cb(new Error('해당 파일의 형식을 지원하지 않습니다.'), false);
 	},
@@ -104,9 +100,21 @@ router.get('/feelstadetail', (req, res) => {
 	console.log(feelsta_id);
 });
 
-router.post('/feelsta-post', (req, res) => {
-	console.log(req.body);
-});
+router.post(
+	'/feelsta-post',
+	feelstaController.FeelUpload.array('image', 4),
+	(req, res) => {
+		let urlArr = new Array();
+		for (let i = 0; i < req.files.length; i++) {
+			urlArr.push(`/assets/feelsta/${req.files[i].originalname}`);
+		}
+		// let jsonUrl = JSON.stringify(urlArr);
+		console.log(urlArr);
+
+		feelstaController.feelPost(req, res, urlArr);
+	}
+);
+
 app.use('/', express.static(path.join(__dirname, 'images')));
 app.use('/', router);
 app.listen(3001, () => {

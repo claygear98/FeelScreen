@@ -133,6 +133,23 @@ function feelstaOne(id, res) {
 	});
 }
 
+function feelstaPost(req, res, urlArr) {
+	// let [image, tag, title, description] = req.body;
+	let date = new Date();
+	let sql = `INSERT INTO FEELSTA (FEELSTA_TITLE, FEELSTA_CONTENT, FEELSTA_LIKE, FEELSTA_TAG, FEELSTA_DATE, FEELSTA_IMAGE, USER_ID) VALUES ("${req.body.title}", "${req.body.description}", 0, "${req.body.tag}", NOW(), "${urlArr}", 15)`;
+
+	db.query(sql, function (error, result) {
+		if (error) {
+			console.log(error);
+			res.send({ success: false, message: 'db error' });
+		} else {
+			// console.log(result);
+			res.send({
+				success: true,
+			});
+		}
+	});
+}
 function noticeList(res) {
 	let sql = `SELECT NOTICE_ID, NOTICETITLE FROM NOTICE`;
 
@@ -156,4 +173,5 @@ module.exports = {
 	feelstaAll,
 	noticeList,
 	feelstaOne,
+	feelstaPost,
 };

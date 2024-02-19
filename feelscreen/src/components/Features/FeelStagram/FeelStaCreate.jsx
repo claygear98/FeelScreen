@@ -2,11 +2,14 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import axios from 'axios';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { FaPlus } from 'react-icons/fa';
+import { RiDeleteBin6Line } from 'react-icons/ri';
 
 const SignForm = {
 	title: '',
-	image: ['', '', '', ''],
+	// image: new FormData(),
+	image: [''],
 	tag: ['', '', '', ''],
 	description: '',
 };
@@ -42,18 +45,39 @@ const Image = styled.div`
 `;
 
 const ImageBox = styled.div`
-	width: 170px;
+	padding: 0;
+	width: 360px;
 	margin-top: 10px;
 	display: grid;
-	grid-template-columns: repeat(2, 1fr); /* 2개의 열로 나눔 */
-	grid-gap: 3px; /* 그리드 아이템 간의 간격 */
-	div {
+	grid-template-columns: repeat(5, 1fr);
+	overflow: hidden;
+
+	.image-container input {
+		width: 100%;
+		height: 100%;
+		opacity: 0;
+	}
+
+	#input-file {
+		display: none;
+	}
+
+	img {
+		display: inline-block;
 		width: 80px;
 		height: 80px;
-		background-color: azure;
-		border: 2px solid black;
+		margin-right: 10px;
 		border-radius: 5px;
 	}
+`;
+
+const PlusBtn = styled.div`
+	width: 80px;
+	height: 80px;
+	border-radius: 5px;
+	border: 1px solid black;
+	text-align: center;
+	line-height: 110px;
 `;
 
 const Tag = styled.div`
@@ -86,6 +110,7 @@ const PlusTag = styled.span`
 	font-size: 15px;
 	color: #4ecb71;
 `;
+
 const Des = styled.div`
 	width: 360px;
 	margin-top: 20px;
@@ -119,11 +144,53 @@ const FeelStaCreate = () => {
 		handleSubmit,
 		getValues,
 		setValue,
+		watch,
 	} = useForm({
 		mode: 'onChange',
 		defaultValues: SignForm,
 	});
+	useEffect(() => {
+		const imageFields = watch('image'); // 이미지 필드를 관찰합니다.
+		// 각 이미지 필드에 대해 등록을 수행합니다.
+		for (let i = 0; i < imageFields.length; i++) {
+			register(`image`);
+		}
+	}, [register, watch]);
+
 	const [tagIndex, setTagIndex] = useState(0);
+	const [showImages, setShowImages] = useState([]);
+
+	// 이미지 상대경로 저장
+	const handleAddImages = (event) => {
+		let imageLists = event.target.files;
+		let imageUrlLists = [...showImages];
+
+		for (let i = 0; i < imageLists.length; i++) {
+			if (imageLists.length < 5) {
+				const currentImageUrl = URL.createObjectURL(imageLists[i]);
+				imageUrlLists.push(currentImageUrl);
+				setValue(`image.${imageUrlLists.length - 1}`, imageLists[i]);
+			} else {
+				alert('사진은 4장까지 선택가능합니다.');
+				window.location.reload();
+				imageLists = '';
+			}
+		}
+
+		if (imageUrlLists.length > 4) {
+			imageUrlLists = imageUrlLists.slice(0, 4);
+			setValue('image', getValues('image').slice(0, 4));
+		}
+
+		setShowImages(imageUrlLists);
+	};
+
+	// 버튼 클릭 시 이미지 삭제
+	const handleDeleteImage = (id) => {
+		setShowImages(showImages.filter((_, index) => index !== id));
+		setValue(`image.${id}`, null);
+		console.log(getValues('image'));
+	};
 
 	const plusTagAdd = () => {
 		const tagInput = document.getElementById('tagInput');
@@ -142,21 +209,40 @@ const FeelStaCreate = () => {
 	};
 
 	const postFeelsta = (data) => {
+		const formData = new FormData();
+
+		// 제목과 설명 추가
+		formData.append('title', data.title);
+		formData.append('description', data.description);
+
+		// // 이미지 파일 추가
+		for (let i = 0; i < data.image.length; i++) {
+			console.log(data.image[i]);
+
+			formData.append('image', data.image[i]);
+			console.log(formData.get('image'));
+		}
+		console.log(formData.get('image'));
+
+		// 태그 추가
+		for (let i = 0; i < data.tag.length; i++) {
+			formData.append('tag', data.tag[i]);
+		}
+
 		axios
-			.post('http://localhost:3001/feelsta', {
-				title: data.title,
-				image: data.image,
-				tag: data.tag.filter((item) => item !== undefined),
-				description: data.description,
+			.post('http://localhost:3001/feelsta-post', formData, {
+				headers: { 'Content-Type': 'multipart/form-data' },
 			})
 			.then((Response) => {
 				console.log(Response);
 				if (Response.status === 201) {
 					alert('게시물 등록 완료!');
+					//네비게이트 어디로
 				} else {
 					alert('게시물 등록이 실패했습니다. 다시 시도해주세요.');
 				}
-			});
+			})
+			.catch((e) => console.log(e));
 	};
 
 	return (
@@ -182,22 +268,34 @@ const FeelStaCreate = () => {
 					/>
 					{errors.title && <Error>{errors.title.message}</Error>}
 				</Title>
+
 				<Image>
 					<h4>이미지</h4>
-					{/* 눌러서 사진 등록 */}
 					<ImageBox>
-						<div>
-							1<input type="file" {...register(`image.0`)} />
-						</div>
-						<div>
-							2<input type="file" {...register(`image.1`)} />
-						</div>
-						<div>
-							3<input type="file" {...register(`image.2`)} />
-						</div>
-						<div>
-							4<input type="file" {...register(`image.3`)} />
-						</div>
+						{/* // 저장해둔 이미지들을 순회하면서 화면에 이미지 출력 */}
+						{showImages.map((image, id) => (
+							<div key={id}>
+								<img src={image} alt={`${image}-${id}`} />
+								<button
+									onClick={(e) => {
+										e.preventDefault();
+										handleDeleteImage(id);
+									}}
+								>
+									<RiDeleteBin6Line />
+								</button>
+							</div>
+						))}
+						<label htmlFor="input-file" onChange={handleAddImages}>
+							<input type="file" id="input-file" multiple />
+							<PlusBtn>
+								<FaPlus
+									style={{
+										fontSize: '40px',
+									}}
+								/>
+							</PlusBtn>
+						</label>
 					</ImageBox>
 				</Image>
 				<Tag>
