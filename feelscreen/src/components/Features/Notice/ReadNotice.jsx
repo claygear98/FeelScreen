@@ -1,27 +1,49 @@
 //not yet
-import React, { useState, useCallback } from 'react';
-import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useCallback } from 'react';
+// import styled from 'styled-components';
+// import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-const sever_port = 'http://localhost:3001';
+import { HiOutlineSpeakerphone } from 'react-icons/hi';
+
+const server_port = 'http://localhost:3001';
 
 const ReadNotice = () => {
-	const noticeList = useCallback(() => {
+	const [noticeList, setNoticeList] = useState([]);
+
+	const fetchNoticeList = useCallback(() => {
 		axios
-			.get(`${sever_port}/notice`)
-			.then((Response) => {
-				if (Response.data.success === true) {
-					alert('조회성공!!');
+			.get(`${server_port}/notice`)
+			.then((response) => {
+				if (response.data.success === true) {
+					setNoticeList(response.data.notice);
+				} else {
+					console.log('Failed to fetch notices');
 				}
-				return Response.data.notice;
 			})
 			.catch((error) => {
-				console.log(error);
+				console.error('Error fetching notices:', error);
 			});
 	}, []);
+
+	useEffect(() => {
+		fetchNoticeList();
+	}, [fetchNoticeList]);
 	return (
 		<div>
-			<div></div>
+			<div>
+				<div>공지사항 및이벤트</div>
+				<div>글쓰기</div>
+				{noticeList.lenght !== 0 ? (
+					noticeList.map((notice) => (
+						<div key={notice.notice_id}>
+							<HiOutlineSpeakerphone style={{ color: '#d8f7e0' }} />
+							<span>{notice.title}</span>
+						</div>
+					))
+				) : (
+					<div>asdf</div>
+				)}
+			</div>
 		</div>
 	);
 };
