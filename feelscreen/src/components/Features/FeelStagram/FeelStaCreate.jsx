@@ -3,11 +3,14 @@ import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
+import { FaPlus } from 'react-icons/fa';
+import { RiDeleteBin6Line } from 'react-icons/ri';
 
 const SignForm = {
 	title: '',
-	image: new FormData(),
-	tag: ['', '', '', ''],
+	// image: new FormData(),
+	image: [''],
+	tag: [''],
 	description: '',
 };
 
@@ -42,25 +45,39 @@ const Image = styled.div`
 `;
 
 const ImageBox = styled.div`
-	width: 170px;
+	padding: 0;
+	width: 360px;
 	margin-top: 10px;
 	display: grid;
-	grid-template-columns: repeat(2, 1fr); /* 2개의 열로 나눔 */
-	grid-gap: 3px; /* 그리드 아이템 간의 간격 */
-	.image-container {
-		width: 80px;
-		height: 80px;
-		background-size: cover;
-		background-position: center;
-		border: 2px solid black;
-		border-radius: 5px;
-	}
+	grid-template-columns: repeat(5, 1fr);
+	overflow: hidden;
 
 	.image-container input {
 		width: 100%;
 		height: 100%;
 		opacity: 0;
 	}
+
+	#input-file {
+		display: none;
+	}
+
+	img {
+		display: inline-block;
+		width: 80px;
+		height: 80px;
+		margin-right: 10px;
+		border-radius: 5px;
+	}
+`;
+
+const PlusBtn = styled.div`
+	width: 80px;
+	height: 80px;
+	border-radius: 5px;
+	border: 1px solid black;
+	text-align: center;
+	line-height: 110px;
 `;
 
 const Tag = styled.div`
@@ -72,27 +89,36 @@ const Tag = styled.div`
 		width: 150px;
 		height: 15px;
 	}
-	> button {
-		margin-left: 10px;
-		width: 50px;
-		height: 20px;
-	}
 	ul {
 		list-style: none;
 		padding: 0;
 		display: flex;
 		justify-content: flex-start;
 	}
+
+	ul li {
+		color: #4ecb71;
+	}
+	ul li:hover {
+		color: red;
+		transition: 0.3s all;
+	}
 	h6 {
 		color: red;
 	}
 `;
 
+const Chuga = styled.button`
+	margin-left: 10px;
+	width: 50px;
+	height: 20px;
+`;
+
 const PlusTag = styled.span`
 	margin: 0 5px 0 5px;
 	font-size: 15px;
-	color: #4ecb71;
 `;
+
 const Des = styled.div`
 	width: 360px;
 	margin-top: 20px;
@@ -140,7 +166,40 @@ const FeelStaCreate = () => {
 	}, [register, watch]);
 
 	const [tagIndex, setTagIndex] = useState(0);
-	const [imageSrcs, setImageSrcs] = useState(['']); // 이미지 src 상태
+	const [showImages, setShowImages] = useState([]);
+
+	// 이미지 상대경로 저장
+	const handleAddImages = (event) => {
+		let imageLists = event.target.files;
+		let imageUrlLists = [...showImages];
+
+		for (let i = 0; i < imageLists.length; i++) {
+			if (imageLists.length < 5) {
+				const currentImageUrl = URL.createObjectURL(imageLists[i]);
+				imageUrlLists.push(currentImageUrl);
+				setValue(`image.${imageUrlLists.length - 1}`, imageLists[i]);
+				console.log(getValues('image'));
+			} else {
+				alert('사진은 4장까지 선택가능합니다.');
+				window.location.reload();
+				imageLists = '';
+			}
+		}
+
+		if (imageUrlLists.length > 4) {
+			imageUrlLists = imageUrlLists.slice(0, 4);
+			setValue('image', getValues('image').slice(0, 4));
+		}
+
+		setShowImages(imageUrlLists);
+	};
+
+	// 버튼 클릭 시 이미지 삭제
+	const handleDeleteImage = (id) => {
+		setShowImages(showImages.filter((_, index) => index !== id));
+		setValue(`image.${id}`, null);
+		console.log(getValues('image'));
+	};
 
 	const plusTagAdd = () => {
 		const tagInput = document.getElementById('tagInput');
@@ -153,21 +212,25 @@ const FeelStaCreate = () => {
 			if (tagIndex === 3) {
 				tagInput.disabled = true;
 				document.getElementById('addTagButton').disabled = true;
+			} else {
+				document.getElementById('addTagButton').disabled = false;
 			}
 			tagInput.value = '';
 		}
 	};
 
-	const encodeFileToBase64 = (fileBlob, index) => {
-		// 이미지의 인덱스 전달
-		const reader = new FileReader();
-		reader.readAsDataURL(fileBlob);
-		reader.onload = () => {
-			const updatedImageSrcs = [...imageSrcs]; // 이미지 srcs 배열 복사
-			updatedImageSrcs[index] = reader.result; // 특정 인덱스에 새 이미지 데이터 업데이트
-			setImageSrcs(updatedImageSrcs); // 이미지 srcs 상태 업데이트
-		};
+	const handleDeleteTag = (index) => {
+		const tagInput = document.getElementById('tagInput');
+		// 클릭한 태그를 제거하는 로직
+		const updatedTags =
+			getValues('tag').length === 0 ? 0 : [...getValues('tag')];
+		updatedTags.splice(index, 1);
+		setValue('tag', updatedTags);
+		setTagIndex((prevIndex) => prevIndex - 1);
+		tagInput.value = '';
+		console.log(getValues('tag'));
 	};
+
 	const postFeelsta = (data) => {
 		const formData = new FormData();
 
@@ -176,16 +239,22 @@ const FeelStaCreate = () => {
 		formData.append('description', data.description);
 
 		// 이미지 파일 추가
-		formData.append('image', data.image);
+		for (let i = 0; i < data.image.length; i++) {
+			formData.append('image', data.image[i]);
+		}
 
 		// 태그 추가
 		for (let i = 0; i < data.tag.length; i++) {
-			formData.append('tag', data.tag[i]);
+			if (getValues(`tag.${i}`) !== undefined) {
+				formData.append('tag', data.tag[i]);
+			}
 		}
 
 		axios
-			.post('http://localhost:3001/feelsta', {
-				image: data.image,
+			.post('http://localhost:3001/feelsta', formData, {
+				headers: {
+					'Content-Type': 'multipart/form-data',
+				},
 			})
 			.then((Response) => {
 				console.log(Response);
@@ -222,41 +291,55 @@ const FeelStaCreate = () => {
 					/>
 					{errors.title && <Error>{errors.title.message}</Error>}
 				</Title>
+
 				<Image>
 					<h4>이미지</h4>
-					{/* 눌러서 사진 등록 */}
 					<ImageBox>
-						<div
-							className="image-container"
-							style={{ backgroundImage: `url(${imageSrcs[0]})` }}
-						>
-							<input
-								type="file"
-								// name={`img1`} // 동적으로 이름 설정
-								// {...register(`image`)}
-								onChange={(e) => {
-									const file = e.target.files[0]; // 선택된 파일 객체
-									encodeFileToBase64(file, 0); // Base64 인코딩을 시작
-									console.log(file);
-									setValue(`image`, file.name); // 실제 파일 객체를 저장
-									console.log(getValues('image'));
-								}}
-							/>
-						</div>
+						{/* // 저장해둔 이미지들을 순회하면서 화면에 이미지 출력 */}
+						{showImages.map((image, id) => (
+							<div key={id}>
+								<img src={image} alt={`${image}-${id}`} />
+								<button
+									onClick={(e) => {
+										e.preventDefault();
+										handleDeleteImage(id);
+									}}
+								>
+									<RiDeleteBin6Line />
+								</button>
+							</div>
+						))}
+						<label htmlFor="input-file" onChange={handleAddImages}>
+							<input type="file" id="input-file" multiple />
+							<PlusBtn>
+								<FaPlus
+									style={{
+										fontSize: '40px',
+									}}
+								/>
+							</PlusBtn>
+						</label>
 					</ImageBox>
 				</Image>
 				<Tag>
 					<h4>태그 추가</h4>
 					<h6>태그는 4개까지만 가능합니다</h6>
 					<input type="text" {...register(`tag.${tagIndex}`)} id="tagInput" />
-					<button type="button" onClick={plusTagAdd} id="addTagButton">
+					<Chuga type="button" onClick={plusTagAdd} id="addTagButton">
 						추가
-					</button>
+					</Chuga>
 					<br />
 					<ul>
 						{Array.from({ length: tagIndex }, (_, index) => (
 							<li key={index}>
-								<PlusTag>{getValues(`tag.${index}`)}</PlusTag>
+								<PlusTag
+									onClick={(e) => {
+										e.preventDefault();
+										handleDeleteTag(index);
+									}}
+								>
+									{getValues(`tag.${index}`)}
+								</PlusTag>
 							</li>
 						))}
 					</ul>
