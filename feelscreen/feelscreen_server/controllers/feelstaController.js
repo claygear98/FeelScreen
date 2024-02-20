@@ -9,8 +9,8 @@ function feelOne(id, res) {
 	userDB.feelstaOne(id, res);
 }
 
-function feelPost(req, res, urlArr) {
-	userDB.feelstaPost(req, res, urlArr);
+function feelPost(req, res, urlArr, user_id) {
+	userDB.feelstaPost(req, res, urlArr, user_id);
 }
 
 const storage = multer.diskStorage({

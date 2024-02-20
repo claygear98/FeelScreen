@@ -133,10 +133,10 @@ function feelstaOne(id, res) {
 	});
 }
 
-function feelstaPost(req, res, urlArr) {
+function feelstaPost(req, res, urlArr, user_id) {
 	// let [image, tag, title, description] = req.body;
 	let date = new Date();
-	let sql = `INSERT INTO FEELSTA (FEELSTA_TITLE, FEELSTA_CONTENT, FEELSTA_LIKE, FEELSTA_TAG, FEELSTA_DATE, FEELSTA_IMAGE, USER_ID) VALUES ("${req.body.title}", "${req.body.description}", 0, "${req.body.tag}", NOW(), "${urlArr}", 15)`;
+	let sql = `INSERT INTO FEELSTA (FEELSTA_TITLE, FEELSTA_CONTENT, FEELSTA_LIKE, FEELSTA_TAG, FEELSTA_DATE, FEELSTA_IMAGE, USER_ID) VALUES ("${req.body.title}", "${req.body.description}", 0, "${req.body.tag}", NOW(), "${urlArr}", ${user_id})`;
 
 	db.query(sql, function (error, result) {
 		if (error) {
