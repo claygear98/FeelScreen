@@ -65,7 +65,7 @@ app.post('/image', upload.single('image'), async (req, res) => {
 
 //공지 게시물 등록
 app.post('/notice-post', (req, res) => {
-	console.log(req.body.content);
+	// console.log(req.body.content);
 
 	imageNames = imageNames.filter((name) => {
 		if (req.body.content.includes(name)) {
@@ -94,10 +94,11 @@ router.get('/notice', (req, res) => {
 	noticeController.noticeList(res);
 });
 
+//진행 중
 router.get('/feelstadetail', (req, res) => {
 	let { feelsta_id } = req.query;
 
-	console.log(feelsta_id);
+	// console.log(feelsta_id);
 });
 
 router.post(
@@ -111,7 +112,7 @@ router.post(
 			urlArr.push(`/assets/feelsta/${req.files[i].originalname}`);
 		}
 		// let jsonUrl = JSON.stringify(urlArr);
-		console.log(urlArr);
+		// console.log(urlArr);
 
 		feelstaController.feelPost(req, res, urlArr, user_id);
 	}

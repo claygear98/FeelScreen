@@ -74,7 +74,7 @@ function duplicate(sql, req, res) {
 				res.send({ success: false, message: 'DUPLICATE PHONE' });
 			} else {
 				random = Math.floor(Math.random() * 100000);
-				console.log(req.body.phone, ' ', random);
+				// console.log(req.body.phone, ' ', random);
 				axios.post(
 					'https://apis.aligo.in/send/',
 					sms.send(req, res, random, req.body.phone)
@@ -109,7 +109,7 @@ function feelstaAll(res) {
 			console.log(error);
 			res.send({ success: false, message: 'db error' });
 		} else {
-			console.log(result);
+			// console.log(result);
 			res.send({
 				success: true,
 				notice: result,
@@ -124,7 +124,7 @@ function feelstaOne(id, res) {
 			console.log(error);
 			res.send({ success: false, message: 'db error' });
 		} else {
-			console.log(result);
+			// console.log(result);
 			res.send({
 				success: true,
 				notice: result,
