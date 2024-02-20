@@ -251,7 +251,7 @@ const FeelStaCreate = () => {
 		}
 
 		axios
-			.post('http://localhost:3001/feelsta', formData, {
+			.post('http://localhost:3001/feelsta-post', formData, {
 				headers: {
 					'Content-Type': 'multipart/form-data',
 				},
