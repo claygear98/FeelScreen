@@ -103,7 +103,9 @@ router.get('/feelstadetail', (req, res) => {
 router.post(
 	'/feelsta-post',
 	feelstaController.FeelUpload.array('image', 4),
-	(req, res) => {
+	async (req, res) => {
+		let user_id = await JWT.authJWT(req, res);
+
 		let urlArr = new Array();
 		for (let i = 0; i < req.files.length; i++) {
 			urlArr.push(`/assets/feelsta/${req.files[i].originalname}`);
@@ -111,7 +113,7 @@ router.post(
 		// let jsonUrl = JSON.stringify(urlArr);
 		console.log(urlArr);
 
-		feelstaController.feelPost(req, res, urlArr);
+		feelstaController.feelPost(req, res, urlArr, user_id);
 	}
 );
 
