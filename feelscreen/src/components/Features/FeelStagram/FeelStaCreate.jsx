@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { FaPlus } from 'react-icons/fa';
 import { RiDeleteBin6Line } from 'react-icons/ri';
+import { useNavigate } from 'react-router-dom';
 
 const SignForm = {
 	title: '',
@@ -238,6 +239,12 @@ const FeelStaCreate = () => {
 		console.log(getValues('tag'));
 	};
 
+	const navigate = useNavigate();
+
+	const navigateToFeelList = () => {
+		navigate('/feelstafram');
+	};
+
 	const postFeelsta = (data) => {
 		const formData = new FormData();
 
@@ -267,7 +274,7 @@ const FeelStaCreate = () => {
 				console.log(Response);
 				if (Response.status === 201) {
 					alert('게시물 등록 완료!');
-					//네비게이트 어디로
+					navigateToFeelList();
 				} else {
 					alert('게시물 등록이 실패했습니다. 다시 시도해주세요.');
 				}
