@@ -38,9 +38,14 @@ const FeelUpload = multer({
 	},
 });
 
+function feelDetail(feelsta_id, res) {
+	userDB.feelstaDetail(feelsta_id, res);
+}
+
 module.exports = {
 	feelAll,
 	feelOne,
 	feelPost,
 	FeelUpload,
+	feelDetail,
 };

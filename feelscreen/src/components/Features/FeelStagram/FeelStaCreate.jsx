@@ -10,7 +10,7 @@ const SignForm = {
 	title: '',
 	// image: new FormData(),
 	image: [''],
-	tag: ['', '', '', ''],
+	tag: [''],
 	description: '',
 };
 
@@ -89,26 +89,34 @@ const Tag = styled.div`
 		width: 150px;
 		height: 15px;
 	}
-	> button {
-		margin-left: 10px;
-		width: 50px;
-		height: 20px;
-	}
 	ul {
 		list-style: none;
 		padding: 0;
 		display: flex;
 		justify-content: flex-start;
 	}
+
+	ul li {
+		color: #4ecb71;
+	}
+	ul li:hover {
+		color: red;
+		transition: 0.3s all;
+	}
 	h6 {
 		color: red;
 	}
 `;
 
+const Chuga = styled.button`
+	margin-left: 10px;
+	width: 50px;
+	height: 20px;
+`;
+
 const PlusTag = styled.span`
 	margin: 0 5px 0 5px;
 	font-size: 15px;
-	color: #4ecb71;
 `;
 
 const Des = styled.div`
@@ -203,9 +211,23 @@ const FeelStaCreate = () => {
 			if (tagIndex === 3) {
 				tagInput.disabled = true;
 				document.getElementById('addTagButton').disabled = true;
+			} else {
+				document.getElementById('addTagButton').disabled = false;
 			}
 			tagInput.value = '';
 		}
+	};
+
+	const handleDeleteTag = (index) => {
+		const tagInput = document.getElementById('tagInput');
+		// 클릭한 태그를 제거하는 로직
+		const updatedTags =
+			getValues('tag').length === 0 ? 0 : [...getValues('tag')];
+		updatedTags.splice(index, 1);
+		setValue('tag', updatedTags);
+		setTagIndex((prevIndex) => prevIndex - 1);
+		tagInput.value = '';
+		console.log(getValues('tag'));
 	};
 
 	const postFeelsta = (data) => {
@@ -226,12 +248,16 @@ const FeelStaCreate = () => {
 
 		// 태그 추가
 		for (let i = 0; i < data.tag.length; i++) {
-			formData.append('tag', data.tag[i]);
+			if (getValues(`tag.${i}`) !== undefined) {
+				formData.append('tag', data.tag[i]);
+			}
 		}
 
 		axios
 			.post('http://localhost:3001/feelsta-post', formData, {
-				headers: { 'Content-Type': 'multipart/form-data' },
+				headers: {
+					'Content-Type': 'multipart/form-data',
+				},
 			})
 			.then((Response) => {
 				console.log(Response);
@@ -302,14 +328,21 @@ const FeelStaCreate = () => {
 					<h4>태그 추가</h4>
 					<h6>태그는 4개까지만 가능합니다</h6>
 					<input type="text" {...register(`tag.${tagIndex}`)} id="tagInput" />
-					<button type="button" onClick={plusTagAdd} id="addTagButton">
+					<Chuga type="button" onClick={plusTagAdd} id="addTagButton">
 						추가
-					</button>
+					</Chuga>
 					<br />
 					<ul>
 						{Array.from({ length: tagIndex }, (_, index) => (
 							<li key={index}>
-								<PlusTag>{getValues(`tag.${index}`)}</PlusTag>
+								<PlusTag
+									onClick={(e) => {
+										e.preventDefault();
+										handleDeleteTag(index);
+									}}
+								>
+									{getValues(`tag.${index}`)}
+								</PlusTag>
 							</li>
 						))}
 					</ul>

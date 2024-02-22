@@ -98,7 +98,7 @@ router.get('/notice', (req, res) => {
 router.get('/feelstadetail', (req, res) => {
 	let { feelsta_id } = req.query;
 
-	// console.log(feelsta_id);
+	feelstaController.feelDetail(feelsta_id, res);
 });
 
 router.post(
@@ -111,8 +111,8 @@ router.post(
 		for (let i = 0; i < req.files.length; i++) {
 			urlArr.push(`/assets/feelsta/${req.files[i].originalname}`);
 		}
-		// let jsonUrl = JSON.stringify(urlArr);
-		// console.log(urlArr);
+
+		console.log(req.body);
 
 		feelstaController.feelPost(req, res, urlArr, user_id);
 	}
