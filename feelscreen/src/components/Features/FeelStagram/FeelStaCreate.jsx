@@ -42,6 +42,9 @@ const Image = styled.div`
 	width: 360px;
 	margin-top: 20px;
 	text-align: left;
+	> h6 {
+		color: red;
+	}
 `;
 
 const ImageBox = styled.div`
@@ -167,6 +170,7 @@ const FeelStaCreate = () => {
 
 	const [tagIndex, setTagIndex] = useState(0);
 	const [showImages, setShowImages] = useState([]);
+	const [selectedImageCount, setSelectedImageCount] = useState(0); // 이미지 선택된 수
 
 	// 이미지 상대경로 저장
 	const handleAddImages = (event) => {
@@ -174,31 +178,32 @@ const FeelStaCreate = () => {
 		let imageUrlLists = [...showImages];
 
 		for (let i = 0; i < imageLists.length; i++) {
-			if (imageLists.length < 5) {
+			if (selectedImageCount + i < 4) {
+				// 이미지가 4개 미만일 때만 추가
 				const currentImageUrl = URL.createObjectURL(imageLists[i]);
 				imageUrlLists.push(currentImageUrl);
 				setValue(`image.${imageUrlLists.length - 1}`, imageLists[i]);
 				console.log(getValues('image'));
-			} else {
-				alert('사진은 4장까지 선택가능합니다.');
-				window.location.reload();
-				imageLists = '';
 			}
 		}
 
-		if (imageUrlLists.length > 4) {
-			imageUrlLists = imageUrlLists.slice(0, 4);
-			setValue('image', getValues('image').slice(0, 4));
-		}
-
-		setShowImages(imageUrlLists);
+		setSelectedImageCount(imageUrlLists.length); // 선택된 이미지 수 업데이트
+		setShowImages(imageUrlLists.slice(0, 4)); // 최대 4개까지만 보이도록 처리
 	};
 
-	// 버튼 클릭 시 이미지 삭제
+	// 이미지 삭제 처리
 	const handleDeleteImage = (id) => {
 		setShowImages(showImages.filter((_, index) => index !== id));
-		setValue(`image.${id}`, null);
+		setValue(
+			`image`,
+			getValues('image').filter((_, index) => index !== id)
+		);
+		setSelectedImageCount(selectedImageCount - 1); // 이미지 수 감소 처리
 		console.log(getValues('image'));
+
+		// 이미지 삭제 후 파일 입력 필드 리셋
+		const fileInput = document.getElementById('input-file');
+		fileInput.value = ''; // 파일 입력 필드 리셋
 	};
 
 	const plusTagAdd = () => {
@@ -212,8 +217,6 @@ const FeelStaCreate = () => {
 			if (tagIndex === 3) {
 				tagInput.disabled = true;
 				document.getElementById('addTagButton').disabled = true;
-			} else {
-				document.getElementById('addTagButton').disabled = false;
 			}
 			tagInput.value = '';
 		}
@@ -227,6 +230,10 @@ const FeelStaCreate = () => {
 		updatedTags.splice(index, 1);
 		setValue('tag', updatedTags);
 		setTagIndex((prevIndex) => prevIndex - 1);
+		if (tagIndex === 4) {
+			tagInput.disabled = false;
+			document.getElementById('addTagButton').disabled = false;
+		}
 		tagInput.value = '';
 		console.log(getValues('tag'));
 	};
@@ -251,7 +258,7 @@ const FeelStaCreate = () => {
 		}
 
 		axios
-			.post('http://localhost:3001/feelsta-post', formData, {
+			.post('http://localhost:3001/feelsta', formData, {
 				headers: {
 					'Content-Type': 'multipart/form-data',
 				},
@@ -294,6 +301,11 @@ const FeelStaCreate = () => {
 
 				<Image>
 					<h4>이미지</h4>
+					{showImages.length === 4 ? (
+						<h6>사진은 최대4개까지 등록가능합니다.</h6>
+					) : (
+						''
+					)}
 					<ImageBox>
 						{/* // 저장해둔 이미지들을 순회하면서 화면에 이미지 출력 */}
 						{showImages.map((image, id) => (
@@ -323,7 +335,7 @@ const FeelStaCreate = () => {
 				</Image>
 				<Tag>
 					<h4>태그 추가</h4>
-					<h6>태그는 4개까지만 가능합니다</h6>
+					{tagIndex === 4 ? <h6>태그는 최대4개까지 등록가능합니다.</h6> : ''}
 					<input type="text" {...register(`tag.${tagIndex}`)} id="tagInput" />
 					<Chuga type="button" onClick={plusTagAdd} id="addTagButton">
 						추가
