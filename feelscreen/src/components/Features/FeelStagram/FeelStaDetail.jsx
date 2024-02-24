@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
+import { Cookies } from 'react-cookie';
 
 const DetailContainer = styled.div`
 	width: 100%;
@@ -123,7 +125,56 @@ const CommentSet = styled.div`
 		display: none;
 	}
 `;
+
 const FeelStaDetail = () => {
+	const [plus, setPlus] = useState('');
+	const [newComment, setNewComment] = useState([]);
+	const cookies = new Cookies();
+
+	const handleComment = (e) => {
+		const comment = e.target.value;
+		setPlus(comment);
+		console.log(plus);
+	};
+	const handleCommentSubmit = () => {
+		// axios.post('http://localhost:3001/comment-register', {
+		// 	Authorization: cookies.get('Authorization'),
+		// 	Comment: plus,
+		// });
+		// .then((response) => {
+		// 	if (response.data.success === true) {
+		let abc = newComment;
+		abc.push(plus);
+		setNewComment(abc);
+		setPlus('');
+		console.log(newComment);
+		// 	}
+		// });
+	};
+
+	const createComment = useCallback(() => {
+		console.log('aa');
+		return newComment.map((a, i) => (
+			<CommentList>
+				<Comment key={i}>
+					<img
+						src={'/assets/images/2f1.jpg'}
+						alt=""
+						style={{
+							width: '30px',
+							height: '30px',
+							borderRadius: '50%',
+						}}
+					/>
+					<div>
+						<div>사과튀김</div>
+						<div>{a}</div>
+					</div>
+				</Comment>
+			</CommentList>
+		));
+	}, [newComment]);
+
 	return (
 		<DetailContainer>
 			<ItemPreview>
@@ -164,25 +215,49 @@ const FeelStaDetail = () => {
 						<span>갯수</span>
 					</Comments>
 				</ItemBot>
-				<CommentList>
-					<Comment>
-						<img
-							src={'/assets/images/2f1.jpg'}
-							alt=""
-							style={{ width: '30px', height: '30px', borderRadius: '50%' }}
-						/>
-						<div>
-							<div>사과튀김</div>
+				{/* <CommentLists> */}
+				{/* <CommentList>
+						<Comment key={i}>
+							<img
+								src={'/assets/images/2f1.jpg'}
+								alt=""
+								style={{ width: '30px', height: '30px', borderRadius: '50%' }}
+							/>
 							<div>
-								그건 그렇고 디진다 돈까스 진짜 너무 맵더라구요 그래서 집에 있는
-								밤이가 생각나서 엉엉 울었답니다다
+								<div>사과튀김</div>
+								<div>{a}</div>
 							</div>
-						</div>
-					</Comment>
-				</CommentList>
+						</Comment> */}
+				{/* </CommentList> */}
+				{createComment()}
+				{/* {newComment.map((a, i) => (
+					<CommentList>
+						<Comment key={i}>
+							<img
+								src={'/assets/images/2f1.jpg'}
+								alt=""
+								style={{
+									width: '30px',
+									height: '30px',
+									borderRadius: '50%',
+								}}
+							/>
+							<div>
+								<div>사과튀김</div>
+								<div>{a}</div>
+							</div>
+						</Comment>
+					</CommentList>
+				))} */}
+				{/* </CommentLists> */}
+
 				<CommentSet>
-					<InputComment className="scroll"></InputComment>
-					<button>댓글작성</button>
+					<InputComment
+						className="scroll"
+						onChange={handleComment}
+						value={plus}
+					></InputComment>
+					<button onClick={handleCommentSubmit}>댓글작성</button>
 				</CommentSet>
 			</ItemPreview>
 		</DetailContainer>
