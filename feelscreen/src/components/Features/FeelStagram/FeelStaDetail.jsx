@@ -238,7 +238,7 @@ const FeelStaDetail = () => {
 				</ItemTop>
 				<ItemSec>
 					<div>{details.FEELSTA_CONTENT}</div>
-					{tager.FEELSTA_TAG.map((tag) => (
+					{tager.map((tag) => (
 						<span>{tag}</span>
 					))}
 				</ItemSec>
