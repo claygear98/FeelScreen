@@ -1,5 +1,11 @@
 import React from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { FaRegHeart } from 'react-icons/fa';
+import { FaRegCommentAlt } from 'react-icons/fa';
+import { FaHeart } from 'react-icons/fa';
 const ListContainer = styled.div`
 	width: 100%;
 	margin: 0 auto;
@@ -87,7 +93,56 @@ const Comments = styled.span`
 	}
 	margin-left: 10px;
 `;
+
 const FeelStaList = () => {
+	// axios.get(`/feelsta`).then((res) => {
+	// if (res.success === true) {
+	// const feelstaList = res.feelsta;
+	const feelstaList = [
+		{
+			FEELSTA_ID: 13,
+			FEELSTA_TITLE: '오마에와',
+			FEELSTA_IMAGE: '/assets/images/2f1.jpg',
+			FEELSTA_CONTENT:
+				'이번주 토요일 일요일 필스크린에서 대회모드 개같이 조지실분s 구함 100/100000',
+			FEELSTA_DATE: '2022-02-03',
+			FEELSTA_LIKE: 8,
+			FEELSTA_TAG: ['#ㄱㄱ', '#ㄴㄴ', '#ㄷㄷ'],
+			COMMENTS: 234,
+			USERNAME: '박지훈',
+			PROFILEIMAGE: '/assets/images/2f1.jpg',
+		},
+		{
+			FEELSTA_ID: 14,
+			FEELSTA_TITLE: '오마에와',
+			FEELSTA_IMAGE: '/assets/images/2f1.jpg',
+			FEELSTA_CONTENT:
+				'이번주 토요일 일요일 필스크린에서 대회모드 개같이 조지실분s 구함 100/100000',
+			FEELSTA_DATE: '2022-02-03',
+			FEELSTA_LIKE: 8,
+			FEELSTA_TAG: ['#ㄱㄱ', '#ㄴㄴ', '#ㄷㄷ'],
+			COMMENTS: 234,
+			USERNAME: '박지훈',
+			PROFILEIMAGE: '/assets/images/2f1.jpg',
+		},
+		{
+			FEELSTA_ID: 15,
+			FEELSTA_TITLE: '오마에와',
+			FEELSTA_IMAGE: '/assets/images/2f1.jpg',
+			FEELSTA_CONTENT:
+				'이번주 토요일 일요일 필스크린에서 대회모드 개같이 조지실분s 구함 100/100000',
+			FEELSTA_DATE: '2022-02-03',
+			FEELSTA_LIKE: 8,
+			FEELSTA_TAG: ['#ㄱㄱ', '#ㄴㄴ', '#ㄷㄷ'],
+			COMMENTS: 234,
+			USERNAME: '박지훈',
+			PROFILEIMAGE: '/assets/images/2f1.jpg',
+		},
+	];
+	// }
+	// });
+	const navigate = useNavigate();
+
 	return (
 		<ListContainer>
 			<ListInfo>
@@ -99,47 +154,54 @@ const FeelStaList = () => {
 			</ListInfo>
 			<hr></hr>
 			<ListItem>
-				<Item>
-					<ItemPreview>
-						<ItemTop>
-							<img
-								src={'/assets/images/2f1.jpg'}
-								alt=""
-								style={{ width: '60px', height: '60px', borderRadius: '50%' }}
-							/>
-							<NameDate>
-								<div>사과튀김</div>
-								<div>2202.12.12</div>
-							</NameDate>
-						</ItemTop>
-						<ItemSec>
-							<div>
-								이번주 토요일 일요일 필스크린에서 대회모드 개같이 조지실분 구함
-								100/100000
-							</div>
-							<span>#ㄱㄱ</span>
-							<span>#ㄱㄱ</span>
-							<span>#ㄱㄱ</span>
-						</ItemSec>
-						<ItemImg>
-							<img
-								src={'/assets/images/2f1.jpg'}
-								alt=""
-								style={{ width: '300px', borderRadius: '10px' }}
-							/>
-						</ItemImg>
-						<ItemBot>
-							<Likes>
-								<span>하트</span>
-								<span>갯수</span>
-							</Likes>
-							<Comments>
-								<span>댓글</span>
-								<span>갯수</span>
-							</Comments>
-						</ItemBot>
-					</ItemPreview>
-				</Item>
+				{feelstaList.map((a) => (
+					<Item
+						onClick={() =>
+							navigate(`/feelstadetail/feelsta_id=${a.FEELSTA_ID}`)
+						}
+					>
+						<ItemPreview>
+							<ItemTop>
+								<img
+									src={a.PROFILEIMAGE}
+									alt=""
+									style={{ width: '60px', height: '60px', borderRadius: '50%' }}
+								/>
+								<NameDate>
+									<div>{a.USERNAME}</div>
+									<div>{a.FEELSTA_DATE}</div>
+								</NameDate>
+							</ItemTop>
+							<ItemSec>
+								<div>{a.FEELSTA_CONTENT}</div>
+								{a.FEELSTA_TAG.map((tag) => (
+									<span>{tag}</span>
+								))}
+							</ItemSec>
+							<ItemImg>
+								<img
+									src={a.PROFILEIMAGE}
+									alt=""
+									style={{ width: '300px', borderRadius: '10px' }}
+								/>
+							</ItemImg>
+							<ItemBot>
+								<Likes>
+									<span>
+										<FaRegHeart />
+									</span>
+									<span>{a.FEELSTA_LIKE}</span>
+								</Likes>
+								<Comments>
+									<span>
+										<FaRegCommentAlt />
+									</span>
+									<span>{a.COMMENTS}</span>
+								</Comments>
+							</ItemBot>
+						</ItemPreview>
+					</Item>
+				))}
 			</ListItem>
 
 			<button>글쓰기</button>
