@@ -1,14 +1,14 @@
 import React from 'react';
-import { useState } from 'react';
+// import { useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+// import axios from 'axios';
 import { FaRegHeart } from 'react-icons/fa';
 import { FaRegCommentAlt } from 'react-icons/fa';
-import { FaHeart } from 'react-icons/fa';
 const ListContainer = styled.div`
 	width: 100%;
 	margin: 0 auto;
+	position: relative;
 `;
 const ListInfo = styled.div`
 	display: flex;
@@ -92,6 +92,19 @@ const Comments = styled.span`
 		margin: 0 5px 0 0;
 	}
 	margin-left: 10px;
+`;
+
+const Poster = styled.button`
+	width: 110px;
+	height: 50px;
+	border: 2px solid black;
+	border-radius: 20px;
+	background-color: #acf4c0;
+	font-size: 15px;
+	position: fixed;
+	bottom: 90px;
+	right: 20px;
+	opacity: 0.8;
 `;
 
 const FeelStaList = () => {
@@ -204,7 +217,7 @@ const FeelStaList = () => {
 				))}
 			</ListItem>
 
-			<button>글쓰기</button>
+			<Poster onClick={() => navigate('/feelstacreate')}>글쓰기</Poster>
 		</ListContainer>
 	);
 };
