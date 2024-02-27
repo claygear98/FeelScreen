@@ -115,15 +115,15 @@ function feelstaAll(res) {
     (SELECT COUNT(*) FROM COMMENT WHERE COMMENT.FEELSTA_ID = feelsta.FEELSTA_ID) AS COMMENTS,
     USER.USERNAME, 
     USER.PROFILEIMAGE
-FROM FEELSTA
-JOIN USER ON feelsta.USER_ID = USER.USER_ID;`;
-	db.query(sql, function (error, result) {
+	FROM FEELSTA
+	JOIN USER ON feelsta.USER_ID = USER.USER_ID
+	ORDER BY FEELSTA_DATE DESC`;
+
+	db.query(sql, async function (error, result) {
 		if (error) {
-			console.log(error);
 			res.send({ success: false, message: 'db error' });
 		} else {
-			console.log(result);
-			res.send({
+			await res.send({
 				success: true,
 				feelsta: result,
 			});
@@ -190,7 +190,7 @@ function feelstaDetail(feelsta_id, res) {
 }
 
 function noticeList(res) {
-	let sql = `SELECT NOTICE_ID, NOTICETITLE FROM NOTICE`;
+	let sql = `SELECT NOTICE_ID, NOTICETITLE FROM NOTICE ORDER BY NOTICEDATE DESC`;
 
 	db.query(sql, function (error, result) {
 		if (error) {
@@ -209,7 +209,7 @@ function noticePost(title, content, res) {
 	let date = new Date();
 	console.log('date', date);
 	//
-	let sql = `INSERT INTO NOTICE (NOTICETITLE, NOTICECONTENT, NOTICEDATE) VALUES ("${title}", "이 바보들아 너네는 미쳣다", date_format(now(), '%Y-%m-%d %H:%i:%s'))`;
+	let sql = `INSERT INTO NOTICE (NOTICETITLE, NOTICECONTENT, NOTICEDATE) VALUES ("${title}", "${content}", date_format(now(), '%Y-%m-%d %H:%i:%s'))`;
 
 	db.query(sql, function (error, result) {
 		if (error) {
