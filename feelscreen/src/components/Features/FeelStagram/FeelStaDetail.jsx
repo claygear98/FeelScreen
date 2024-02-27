@@ -6,6 +6,7 @@ import { FaHeart } from 'react-icons/fa';
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 import { Cookies } from 'react-cookie';
+import useHeaderInfo from '../Header/HeadStore';
 
 const DetailContainer = styled.div`
 	width: 100%;
@@ -132,12 +133,18 @@ const CommentSet = styled.div`
 
 const FeelStaDetail = () => {
 	const { state } = useLocation();
+
+	let CommentLists = [];
+	let details = [];
+	let tager = [];
+
 	axios
 		.get(`http://localhost:3001/feelstadetail?feelsta_id=${state}`)
 		.then((res) => {
-			if (res.success === true) {
-				const CommentLists = res.comments;
-				const details = res.feelsta;
+			if (res.data.success === true) {
+				CommentLists = res.data.COMMENTS;
+				details = res.data.feelsta;
+				tager = res.data.feelsta.FEELSTA_TAG.split(',');
 			}
 		});
 
@@ -145,15 +152,25 @@ const FeelStaDetail = () => {
 	const [newComment, setNewComment] = useState([]);
 	const cookies = new Cookies();
 
-	const [heart, setHeart] = useState(5);
 	const [isHeart, setIsHeart] = useState(true);
 
+	const { username, userImage } = useHeaderInfo();
 	const handleHeart = () => {
 		setIsHeart(!isHeart);
 		if (isHeart === true) {
-			setHeart(heart + 1);
+			axios.get('http://localhost:3001//feelstalike', {
+				headers: {
+					Authorization: cookies.get('Authorization'),
+					feelsta_id: username,
+				},
+			});
 		} else {
-			setHeart(heart - 1);
+			axios.delete('http://localhost:3001//feelstalike', {
+				headers: {
+					Authorization: cookies.get('Authorization'),
+					feelsta_id: username,
+				},
+			});
 		}
 	};
 
@@ -188,7 +205,7 @@ const FeelStaDetail = () => {
 			<CommentList>
 				<Comment key={i}>
 					<img
-						src={'/assets/images/2f1.jpg'}
+						src={userImage}
 						alt=""
 						style={{
 							width: '30px',
@@ -197,13 +214,13 @@ const FeelStaDetail = () => {
 						}}
 					/>
 					<div>
-						<div>사과튀김</div>
+						<div>{username}</div>
 						<div>{a}</div>
 					</div>
 				</Comment>
 			</CommentList>
 		));
-	}, [newComment]);
+	}, [newComment, userImage, username]);
 
 	return (
 		<DetailContainer>
@@ -221,7 +238,7 @@ const FeelStaDetail = () => {
 				</ItemTop>
 				<ItemSec>
 					<div>{details.FEELSTA_CONTENT}</div>
-					{details.FEELSTA_TAG.map((tag) => (
+					{tager.FEELSTA_TAG.map((tag) => (
 						<span>{tag}</span>
 					))}
 				</ItemSec>
@@ -237,7 +254,7 @@ const FeelStaDetail = () => {
 						<span className="heartPush" onClick={handleHeart}>
 							{isHeart ? <FaRegHeart /> : <FaHeart />}
 						</span>
-						<span>{heart}</span>
+						<span>{details.FEELSTA_LIKE}</span>
 					</Likes>
 					<Comments>
 						<span>
@@ -251,13 +268,13 @@ const FeelStaDetail = () => {
 						<CommentList>
 							<Comment>
 								<img
-									src={'/assets/images/2f1.jpg'}
+									src={a.PROFILEFILE}
 									alt=""
 									style={{ width: '30px', height: '30px', borderRadius: '50%' }}
 								/>
 								<div>
-									<div>{a.comment_id}</div>
-									<div>{a.comment}</div>
+									<div>{a.USER_ID}</div>
+									<div>{a.COMMENT_CONTENT}</div>
 								</div>
 							</Comment>
 						</CommentList>
