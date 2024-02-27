@@ -106,11 +106,10 @@ function feelstaAll(res) {
 	//
 	let sql = `SELECT 
     feelsta.FEELSTA_ID, 
-    feelsta.FEELSTA_TITLE, 
     feelsta.FEELSTA_IMAGE, 
     feelsta.FEELSTA_CONTENT, 
     feelsta.FEELSTA_DATE, 
-    feelsta.FEELSTA_LIKE, 
+    (SELECT COUNT(*) FROM HEART WHERE feelsta.FEELSTA_ID = HEART.FEELSTA_ID), 
     feelsta.FEELSTA_TAG, 
     (SELECT COUNT(*) FROM COMMENT WHERE COMMENT.FEELSTA_ID = feelsta.FEELSTA_ID) AS COMMENTS,
     USER.USERNAME, 
@@ -121,6 +120,7 @@ function feelstaAll(res) {
 
 	db.query(sql, async function (error, result) {
 		if (error) {
+			console.log(error);
 			res.send({ success: false, message: 'db error' });
 		} else {
 			await res.send({
@@ -132,6 +132,34 @@ function feelstaAll(res) {
 }
 
 function feelstaOne(id, res) {
+	let sql = `
+	SELECT 
+		feelsta.FEELSTA_ID, 
+		feelsta.FEELSTA_IMAGE, 
+		feelsta.FEELSTA_CONTENT, 
+		feelsta.FEELSTA_DATE, 
+		feelsta.FEELSTA_LIKE, 
+		feelsta.FEELSTA_TAG, 
+		(
+			SELECT JSON_ARRAYAGG(
+                JSON_OBJECT(
+					'COMMENT_ID', COMMENT.COMMENT_ID,
+					'COMMENT_CONTENT', COMMENT.COMMENT_CONTENT,
+					'USER_ID', COMMENT.USER_ID,
+					'COMMENT_DATE', COMMENT.COMMENT_DATE,
+					'PROFILEFILE', USER.PROFILEIMAGE
+                )
+            )
+			FROM COMMENT
+			JOIN USER ON COMMENT.USER_ID = USER.USER_ID   
+			WHERE COMMENT.FEELSTA_ID = feelsta.FEELSTA_ID
+		) AS COMMENTS,
+		USER.USERNAME, 
+		USER.PROFILEIMAGE
+	FROM FEELSTA
+	JOIN USER ON feelsta.USER_ID = USER.USER_ID
+	WHERE feelsta.FEELSTA_ID = ${id}`;
+
 	db.query(sql, function (error, result) {
 		if (error) {
 			console.log(error);
@@ -147,41 +175,13 @@ function feelstaOne(id, res) {
 }
 
 function feelstaPost(req, res, urlArr, user_id) {
-	let sql = `INSERT INTO FEELSTA (FEELSTA_TITLE, FEELSTA_CONTENT, FEELSTA_LIKE, FEELSTA_TAG, FEELSTA_DATE, FEELSTA_IMAGE, USER_ID) VALUES ("${req.body.title}", "${req.body.description}", 0, "${req.body.tag}",CURDATE(), "${urlArr}", ${user_id})`;
+	let sql = `INSERT INTO FEELSTA (FEELSTA_CONTENT, FEELSTA_LIKE, FEELSTA_TAG, FEELSTA_DATE, FEELSTA_IMAGE, USER_ID) VALUES ("${req.body.description}", 0, "${req.body.tag}",CURDATE(), "${urlArr}", 15)`;
 
 	db.query(sql, function (error, result) {
 		if (error) {
 			console.log(error);
 			res.send({ success: false, message: 'db error' });
 		} else {
-			res.send({
-				success: true,
-			});
-		}
-	});
-}
-
-function feelstaDetail(feelsta_id, res) {
-	let sql = `SELECT 
-	feelsta.FEELSTA_ID, 
-	feelsta.FEELSTA_TITLE, 
-	feelsta.FEELSTA_CONTENT, 
-	feelsta.FEELSTA_DATE, 
-	feelsta.FEELSTA_LIKE, 
-	feelsta.FEELSTA_TAG,
-	feelsta.FEELSTA_IMAGE, 
-	USER.USERNAME, 
-	USER.PROFILEIMAGE 
-	FROM feelsta 
-	JOIN USER ON feelsta.USER_ID = USER.USER_ID
-	WHERE feelsta.FEELSTA_ID=${feelsta_id};`;
-
-	db.query(sql, function (error, result) {
-		if (error) {
-			console.log(error);
-			res.send({ success: false, message: 'db error' });
-		} else {
-			console.log(result);
 			res.send({
 				success: true,
 			});
@@ -232,6 +232,5 @@ module.exports = {
 	noticeList,
 	feelstaOne,
 	feelstaPost,
-	feelstaDetail,
 	noticePost,
 };

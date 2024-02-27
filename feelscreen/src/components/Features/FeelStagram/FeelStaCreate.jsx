@@ -216,7 +216,7 @@ const FeelStaCreate = () => {
 	const navigate = useNavigate();
 
 	const navigateToFeelList = () => {
-		navigate('/feelstafram');
+		navigate('/feelstagram');
 	};
 
 	const postFeelsta = (data) => {
@@ -240,7 +240,7 @@ const FeelStaCreate = () => {
 				formData.append('tag', data.tag[i]);
 			}
 		}
-
+		console.log(formData.getAll('tag'));
 		axios
 			.post('http://localhost:3001/feelsta-post', formData, {
 				headers: {
@@ -251,7 +251,7 @@ const FeelStaCreate = () => {
 				console.log(Response);
 				if (Response.status === 200) {
 					alert('게시물 등록 완료!');
-					navigateToFeelList();
+					// navigateToFeelList();
 				} else {
 					alert('게시물 등록이 실패했습니다. 다시 시도해주세요.');
 				}

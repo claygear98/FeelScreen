@@ -1,5 +1,4 @@
-import React from 'react';
-// import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -108,53 +107,23 @@ const Poster = styled.button`
 `;
 
 const FeelStaList = () => {
-	axios.get(`/feelsta`).then((res) => {
-		if (res.success === true) {
-			const feelstaList = res.feelsta;
-			// const feelstaList = [
-			// 	{
-			// 		FEELSTA_ID: 13,
-			// 		FEELSTA_TITLE: '오마에와',
-			// 		FEELSTA_IMAGE: '/assets/images/2f1.jpg',
-			// 		FEELSTA_CONTENT:
-			// 			'이번주 토요일 일요일 필스크린에서 대회모드 개같이 조지실분s 구함 100/100000',
-			// 		FEELSTA_DATE: '2022-02-03',
-			// 		FEELSTA_LIKE: 8,
-			// 		FEELSTA_TAG: ['#ㄱㄱ', '#ㄴㄴ', '#ㄷㄷ'],
-			// 		COMMENTS: 234,
-			// 		USERNAME: '박지훈',
-			// 		PROFILEIMAGE: '/assets/images/2f1.jpg',
-			// 	},
-			// 	{
-			// 		FEELSTA_ID: 14,
-			// 		FEELSTA_TITLE: '오마에와',
-			// 		FEELSTA_IMAGE: '/assets/images/2f1.jpg',
-			// 		FEELSTA_CONTENT:
-			// 			'이번주 토요일 일wfwfwf요일 필스크린에서 대회모드 개같이 조지실분s 구함 100/100000',
-			// 		FEELSTA_DATE: '2022-02-03',
-			// 		FEELSTA_LIKE: 8,
-			// 		FEELSTA_TAG: ['#ㄱㄱ', '#ㄴㄴ', '#ㄷㄷ'],
-			// 		COMMENTS: 234,
-			// 		USERNAME: '박지훈',
-			// 		PROFILEIMAGE: '/assets/images/2f1.jpg',
-			// 	},
-			// 	{
-			// 		FEELSTA_ID: 15,
-			// 		FEELSTA_TITLE: '오마에와',
-			// 		FEELSTA_IMAGE: '/assets/images/2f1.jpg',
-			// 		FEELSTA_CONTENT:
-			// 			'이번주 토요일 일요일 필스크린에서 대asdffdd회모드 개같이 조지실분s 구함 100/100000',
-			// 		FEELSTA_DATE: '2022-02-03',
-			// 		FEELSTA_LIKE: 8,
-			// 		FEELSTA_TAG: ['#ㄱㄱ', '#ㄴㄴ', '#ㄷㄷ'],
-			// 		COMMENTS: 234,
-			// 		USERNAME: '박지훈',
-			// 		PROFILEIMAGE: '/assets/images/2f1.jpg',
-			// 	},
-			// ];
-		}
-	});
+	const [feelstaList, setFeelstaList] = useState([]);
+	const fetchData = () => {
+		axios.get(`http://localhost:3001/feelsta`).then((response) => {
+			if (response.data.success === true) {
+				setFeelstaList(response.data.feelsta);
+				console.log(feelstaList);
+			}
+		});
+	};
+
 	const navigate = useNavigate();
+
+	// 데이터를 동기적으로 가져오기 위해 useEffect 내부에서 fetchData 함수 호출
+	useEffect(() => {
+		console.log(2);
+		fetchData();
+	}, []); // 빈 배열을 전달하여 컴포넌트가 마운트될 때 한 번만 호출되도록 함
 
 	return (
 		<ListContainer>
@@ -167,13 +136,17 @@ const FeelStaList = () => {
 			</ListInfo>
 			<hr></hr>
 			<ListItem>
-				{feelstaList.map((a) => (
+				{console.log(1)}
+
+				{console.log(feelstaList)}
+				{feelstaList.map((a, i) => (
 					<Item
 						onClick={() => {
 							navigate(`/feelstadetail/feelsta_id=${a.FEELSTA_ID}`, {
 								state: a.FEELSTA_ID,
 							});
 						}}
+						key={i}
 					>
 						<ItemPreview>
 							<ItemTop>
