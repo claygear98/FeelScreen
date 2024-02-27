@@ -64,14 +64,14 @@ const ReadNotice = () => {
 					<div className="">글쓰기</div>
 				</NoticeHeader>
 				{noticeList.length !== 0 ? (
-					noticeList.map((notice) => (
+					noticeList.map((notice, index) => (
 						<NoticeCards>
-							<div key={notice.notice_id} className="noticeItem">
+							<div key={notice.NOTICE_ID} className="noticeItem">
 								<div>
 									<HiOutlineSpeakerphone
 										style={{ color: '#d8f7e0', backgroundColor: '#4ecb71' }}
 									/>
-									<span>{notice.title}</span>
+									<span>{notice.NOTICETITLE}</span>
 								</div>
 								<div>사장님</div>
 							</div>
