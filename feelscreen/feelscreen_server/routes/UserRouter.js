@@ -6,6 +6,7 @@ const signController = require('../controllers/signController.js');
 const noticeController = require('../controllers/noticeController.js');
 const mainController = require('../controllers/mainController.js');
 const feelstaController = require('../controllers/feelstaController.js');
+const commentController = require('../controllers/commentController.js');
 const imageMove = require('./imageMove.js');
 const cors = require('cors');
 const path = require('path');
@@ -101,6 +102,7 @@ router.get('/feelstadetail', (req, res) => {
 	feelstaController.feelDetail(feelsta_id, res);
 });
 
+//필스타 등록
 router.post(
 	'/feelsta-post',
 	feelstaController.FeelUpload.array('image', 4),
@@ -117,6 +119,13 @@ router.post(
 		feelstaController.feelPost(req, res, urlArr, user_id);
 	}
 );
+
+//댓글 등록
+router.post('/feelsta/comment-register', async (req, res) => {
+	let user_id = await JWT.authJWT(req, res);
+
+	commentController.feelComment(req, res, user_id);
+});
 
 app.use('/', express.static(path.join(__dirname, 'images')));
 app.use('/', router);

@@ -19,7 +19,7 @@ const FeelStaList = () => {
 				</li>
 			</ul>
 
-			<button>글쓰기</button>
+			{/* <button onClick={}>글쓰기</button> */}
 		</div>
 	);
 };
