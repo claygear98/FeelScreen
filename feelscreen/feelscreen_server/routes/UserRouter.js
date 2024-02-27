@@ -65,20 +65,19 @@ app.post('/image', upload.single('image'), async (req, res) => {
 });
 
 //공지 게시물 등록
-app.post('/notice-post', (req, res) => {
-	// console.log(req.body.content);
-
+app.post('/notice-post', async (req, res) => {
 	imageNames = imageNames.filter((name) => {
 		if (req.body.content.includes(name)) {
 			return name;
 		}
 	});
 
-	// console.log(imageNames);
 	let from = './images';
 	let to = '../../public/assets/notice';
 
-	imageMove.moveImage(from, to, imageNames, res);
+	await imageMove.moveImage(from, to, imageNames, req, res);
+
+	// noticeController.noticePost(req.body.title, req.body.content, res);
 });
 
 //헤더 요청

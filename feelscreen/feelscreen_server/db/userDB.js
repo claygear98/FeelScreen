@@ -147,16 +147,13 @@ function feelstaOne(id, res) {
 }
 
 function feelstaPost(req, res, urlArr, user_id) {
-	// let [image, tag, title, description] = req.body;
-
-	let sql = `INSERT INTO FEELSTA (FEELSTA_TITLE, FEELSTA_CONTENT, FEELSTA_LIKE, FEELSTA_TAG, FEELSTA_DATE, FEELSTA_IMAGE, USER_ID) VALUES ("${req.body.title}", "${req.body.description}", 0, "${req.body.tag}",CURDATE(), "${urlArr}", 15)`;
+	let sql = `INSERT INTO FEELSTA (FEELSTA_TITLE, FEELSTA_CONTENT, FEELSTA_LIKE, FEELSTA_TAG, FEELSTA_DATE, FEELSTA_IMAGE, USER_ID) VALUES ("${req.body.title}", "${req.body.description}", 0, "${req.body.tag}",CURDATE(), "${urlArr}", ${user_id})`;
 
 	db.query(sql, function (error, result) {
 		if (error) {
 			console.log(error);
 			res.send({ success: false, message: 'db error' });
 		} else {
-			// console.log(result);
 			res.send({
 				success: true,
 			});
@@ -208,6 +205,24 @@ function noticeList(res) {
 	});
 }
 
+function noticePost(title, content, res) {
+	let date = new Date();
+	console.log('date', date);
+	//
+	let sql = `INSERT INTO NOTICE (NOTICETITLE, NOTICECONTENT, NOTICEDATE) VALUES ("${title}", "이 바보들아 너네는 미쳣다", date_format(now(), '%Y-%m-%d %H:%i:%s'))`;
+
+	db.query(sql, function (error, result) {
+		if (error) {
+			console.log(error);
+			res.send({ success: false, message: 'db error' });
+		} else {
+			res.send({
+				success: true,
+			});
+		}
+	});
+}
+
 module.exports = {
 	logIn,
 	allow,
@@ -218,4 +233,5 @@ module.exports = {
 	feelstaOne,
 	feelstaPost,
 	feelstaDetail,
+	noticePost,
 };
