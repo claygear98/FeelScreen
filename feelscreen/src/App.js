@@ -8,10 +8,7 @@ import Notice from './pages/Notice';
 import Mypage from './pages/Mypage';
 import Mypost from './pages/Mypost';
 import FeelstaCreate from './pages/FeelstaCreate';
-// import Mypage from './pages/Mypage';
-import DetailNotice from './components/Features/Notice/DetailNotice';
-import PostNotice from './components/Features/Notice/PostNotice';
-// import Mypost from './pages/Mypost';
+import FeelstaDetail from './pages/FeelstaDetail';
 
 function App() {
 	return (
@@ -24,6 +21,7 @@ function App() {
 					<Route path="/notice" element={<Notice />} />
 					<Route path="/feelstagram" element={<Feelstagram />} />
 					<Route path="/feelstacreate" element={<FeelstaCreate />} />
+					<Route path="/feelstadetail/:id" element={<FeelstaDetail />} />
 					<Route path="/mypage" element={<Mypage />} />
 					<Route path="/mypost" element={<Mypost />} />
 					<Route path="notice">
