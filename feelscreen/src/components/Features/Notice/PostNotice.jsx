@@ -7,8 +7,44 @@ import axios from 'axios';
 const sever_port = 'http://localhost:3001';
 
 const PostNoticeFrom = styled.form`
+	box-sizing: border-box;
+	width: 100%;
+	height: 600px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+
+	input {
+		width: 100%;
+		height: 40px;
+		font-size: 1.2em;
+	}
+	> div:last-child {
+		padding-right: 10px;
+		display: flex;
+		justify-content: right;
+	}
+`;
+const Submit = styled.div`
+	width: 100px;
+	height: 50px;
+	color: #ffffff;
+	font-size: 20px;
+	line-height: 50px;
+	display: block;
+	background-color: #4ecb71;
+`;
+const TitleForm = styled.div`
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	padding: 10px;
+`;
+const Editor = styled.div`
+	height: 400px;
+	padding: 6px;
 	.ck-editor__editable {
-		height: 250px;
+		height: 300px;
 	}
 	.ck-content {
 		font-size: 12px;
@@ -16,14 +52,9 @@ const PostNoticeFrom = styled.form`
 	.hi {
 		width: 100%;
 		height: 30px;
-		background-color: blue;
+		background-color: #4ecb71;
 		color: white;
 		line-height: 30px;
-	}
-	input {
-		width: 100%;
-		height: 40px;
-		font-size: 1.2em;
 	}
 `;
 const PostNotice = () => {
@@ -61,16 +92,22 @@ const PostNotice = () => {
 
 	return (
 		<PostNoticeFrom>
-			<h1>공지 제목</h1>
-			<textarea
-				cols={50}
-				placeholder="공지제목을 입력해 주세요"
-				onChange={onChangeTitle}
-				value={Title}
-			/>
-			<div className="hi">본문내용</div>
-			<ContentEditor SetContent={SetContent} data={Content} />
-			<div onClick={onSubmitPost}>작성완료</div>
+			<TitleForm>
+				<h2>공지 제목</h2>
+				<textarea
+					cols={45}
+					placeholder="공지제목을 입력해 주세요"
+					onChange={onChangeTitle}
+					value={Title}
+				/>
+			</TitleForm>
+			<Editor>
+				<div className="hi">본문내용</div>
+				<ContentEditor SetContent={SetContent} data={Content} />
+			</Editor>
+			<div>
+				<Submit onClick={onSubmitPost}>작성완료</Submit>
+			</div>
 		</PostNoticeFrom>
 	);
 };
