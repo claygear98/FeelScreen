@@ -74,7 +74,7 @@ const PostNotice = () => {
 		axios
 			.post(`${sever_port}/notice-post`, {
 				title: Title,
-				content: Content,
+				content: Content.replaceAll('"', "'"),
 			})
 			.then((Response) => {
 				if (Response.data.success === true) {
