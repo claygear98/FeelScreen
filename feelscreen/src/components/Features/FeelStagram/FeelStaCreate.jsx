@@ -8,7 +8,6 @@ import { RiDeleteBin6Line } from 'react-icons/ri';
 import { useNavigate } from 'react-router-dom';
 
 const SignForm = {
-	title: '',
 	// image: new FormData(),
 	image: [''],
 	tag: [''],
@@ -24,19 +23,6 @@ const Container = styled.div`
 
 const FeelstaForm = styled.form`
 	width: 360px;
-`;
-
-const Title = styled.div`
-	width: 360px; /* Full width */
-	margin-top: 20px;
-	text-align: left;
-	input {
-		width: 350px;
-		margin-top: 10px;
-		height: 25px;
-		border-radius: 10px;
-		border: 2px solid black;
-	}
 `;
 
 const Image = styled.div`
@@ -143,21 +129,9 @@ const Done = styled.button`
 	border: 2px solid black;
 	border-radius: 5px;
 `;
-const Error = styled.span`
-	font-size: 11px;
-	font-weight: 600;
-	color: red;
-`;
 
 const FeelStaCreate = () => {
-	const {
-		register,
-		formState: { errors },
-		handleSubmit,
-		getValues,
-		setValue,
-		watch,
-	} = useForm({
+	const { register, handleSubmit, getValues, setValue, watch } = useForm({
 		mode: 'onChange',
 		defaultValues: SignForm,
 	});
@@ -248,8 +222,7 @@ const FeelStaCreate = () => {
 	const postFeelsta = (data) => {
 		const formData = new FormData();
 
-		// 제목과 설명 추가
-		formData.append('title', data.title);
+		//설명 추가
 		formData.append('description', data.description);
 
 		// 이미지 파일 추가
@@ -265,7 +238,7 @@ const FeelStaCreate = () => {
 		}
 
 		axios
-			.post('http://localhost:3001/feelsta', formData, {
+			.post('http://localhost:3001/feelsta-post', formData, {
 				headers: {
 					'Content-Type': 'multipart/form-data',
 				},
@@ -286,25 +259,6 @@ const FeelStaCreate = () => {
 		<Container>
 			<FeelstaForm onSubmit={handleSubmit(postFeelsta)}>
 				<h2>게시글 작성</h2>
-				<Title>
-					<h4>제목</h4>
-					<input
-						type="text"
-						{...register('title', {
-							validate: {
-								check: () => {
-									if (
-										getValues('title').length > 40 ||
-										getValues('title').length < 2
-									) {
-										return '제목을 2~20자로 설정해주세요!';
-									}
-								},
-							},
-						})}
-					/>
-					{errors.title && <Error>{errors.title.message}</Error>}
-				</Title>
 
 				<Image>
 					<h4>이미지</h4>

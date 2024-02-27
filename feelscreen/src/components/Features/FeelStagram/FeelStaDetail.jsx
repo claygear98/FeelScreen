@@ -3,8 +3,9 @@ import styled from 'styled-components';
 import { FaRegHeart } from 'react-icons/fa';
 import { FaRegCommentAlt } from 'react-icons/fa';
 import { FaHeart } from 'react-icons/fa';
-// import axios from 'axios';
-// import { Cookies } from 'react-cookie';
+import axios from 'axios';
+import { useLocation } from 'react-router-dom';
+import { Cookies } from 'react-cookie';
 
 const DetailContainer = styled.div`
 	width: 100%;
@@ -130,9 +131,19 @@ const CommentSet = styled.div`
 `;
 
 const FeelStaDetail = () => {
+	const { state } = useLocation();
+	axios
+		.get(`http://localhost:3001/feelstadetail?feelsta_id=${state}`)
+		.then((res) => {
+			if (res.success === true) {
+				const CommentLists = res.comments;
+				const details = res.feelsta;
+			}
+		});
+
 	const [plus, setPlus] = useState('');
 	const [newComment, setNewComment] = useState([]);
-	// const cookies = new Cookies();
+	const cookies = new Cookies();
 
 	const [heart, setHeart] = useState(5);
 	const [isHeart, setIsHeart] = useState(true);
@@ -152,37 +163,23 @@ const FeelStaDetail = () => {
 		console.log(plus);
 	};
 
-	// axios.get('http://localhost:3001/feelsta/comment-list').then((res) => {
-	// if (res.success === true) {
-	// const commentList = res.comments;
-
-	const commentList = [
-		{ comment_id: '사과1튀김', comment: '야호1야호' },
-		{ comment_id: '사과2튀김', comment: '야호2야호' },
-		{ comment_id: '사과3튀김', comment: '야호3야호' },
-		{ comment_id: '사과3튀김', comment: '야호3야호' },
-		{ comment_id: '사과3튀김', comment: '야호3야호' },
-	];
-
-	// }
-	// });
-
 	const handleCommentSubmit = () => {
 		if (plus !== '') {
-			// axios.post('http://localhost:3001/comment-register', {
-			// 	Authorization: cookies.get('Authorization'),
-			// 	Comment: plus,
-			// });
-			// .then((response) => {
-			// 	if (response.data.success === true) {
-			let abc = newComment;
-			abc.push(plus);
-			setNewComment(abc);
-			setPlus('');
-			console.log(newComment);
+			axios
+				.post('http://localhost:3001/comment-register', {
+					Authorization: cookies.get('Authorization'),
+					Comment: plus,
+				})
+				.then((response) => {
+					if (response.data.success === true) {
+						let abc = newComment;
+						abc.push(plus);
+						setNewComment(abc);
+						setPlus('');
+						console.log(newComment);
+					}
+				});
 		}
-		// 	}
-		// });
 	};
 
 	const createComment = useCallback(() => {
@@ -213,27 +210,24 @@ const FeelStaDetail = () => {
 			<ItemPreview>
 				<ItemTop>
 					<img
-						src={'/assets/images/2f1.jpg'}
+						src={details.PROFILEIMAGE}
 						alt=""
 						style={{ width: '60px', height: '60px', borderRadius: '50%' }}
 					/>
 					<NameDate>
-						<div>사과튀김</div>
-						<div>2202.12.12</div>
+						<div>{details.USERNAME}</div>
+						<div>{details.FEELSTA_DATE}</div>
 					</NameDate>
 				</ItemTop>
 				<ItemSec>
-					<div>
-						이번주 토요일 일요일 필스크린에서 대회모드 개같이 조지실분 구함
-						100/100000
-					</div>
-					<span>#ㄱㄱ</span>
-					<span>#ㄱㄱ</span>
-					<span>#ㄱㄱ</span>
+					<div>{details.FEELSTA_CONTENT}</div>
+					{details.FEELSTA_TAG.map((tag) => (
+						<span>{tag}</span>
+					))}
 				</ItemSec>
 				<ItemImg>
 					<img
-						src={'/assets/images/2f1.jpg'}
+						src={details.FEELSTA_IMAGE}
 						alt=""
 						style={{ width: '300px', borderRadius: '10px' }}
 					/>
@@ -249,11 +243,11 @@ const FeelStaDetail = () => {
 						<span>
 							<FaRegCommentAlt />
 						</span>
-						<span>{commentList.length}</span>
+						<span>{CommentLists.length}</span>
 					</Comments>
 				</ItemBot>
 				<div>
-					{commentList.map((a) => (
+					{CommentLists.map((a) => (
 						<CommentList>
 							<Comment>
 								<img

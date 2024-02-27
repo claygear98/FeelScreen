@@ -2,7 +2,7 @@ import React from 'react';
 // import { useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-// import axios from 'axios';
+import axios from 'axios';
 import { FaRegHeart } from 'react-icons/fa';
 import { FaRegCommentAlt } from 'react-icons/fa';
 const ListContainer = styled.div`
@@ -108,52 +108,52 @@ const Poster = styled.button`
 `;
 
 const FeelStaList = () => {
-	// axios.get(`/feelsta`).then((res) => {
-	// if (res.success === true) {
-	// const feelstaList = res.feelsta;
-	const feelstaList = [
-		{
-			FEELSTA_ID: 13,
-			FEELSTA_TITLE: '오마에와',
-			FEELSTA_IMAGE: '/assets/images/2f1.jpg',
-			FEELSTA_CONTENT:
-				'이번주 토요일 일요일 필스크린에서 대회모드 개같이 조지실분s 구함 100/100000',
-			FEELSTA_DATE: '2022-02-03',
-			FEELSTA_LIKE: 8,
-			FEELSTA_TAG: ['#ㄱㄱ', '#ㄴㄴ', '#ㄷㄷ'],
-			COMMENTS: 234,
-			USERNAME: '박지훈',
-			PROFILEIMAGE: '/assets/images/2f1.jpg',
-		},
-		{
-			FEELSTA_ID: 14,
-			FEELSTA_TITLE: '오마에와',
-			FEELSTA_IMAGE: '/assets/images/2f1.jpg',
-			FEELSTA_CONTENT:
-				'이번주 토요일 일요일 필스크린에서 대회모드 개같이 조지실분s 구함 100/100000',
-			FEELSTA_DATE: '2022-02-03',
-			FEELSTA_LIKE: 8,
-			FEELSTA_TAG: ['#ㄱㄱ', '#ㄴㄴ', '#ㄷㄷ'],
-			COMMENTS: 234,
-			USERNAME: '박지훈',
-			PROFILEIMAGE: '/assets/images/2f1.jpg',
-		},
-		{
-			FEELSTA_ID: 15,
-			FEELSTA_TITLE: '오마에와',
-			FEELSTA_IMAGE: '/assets/images/2f1.jpg',
-			FEELSTA_CONTENT:
-				'이번주 토요일 일요일 필스크린에서 대회모드 개같이 조지실분s 구함 100/100000',
-			FEELSTA_DATE: '2022-02-03',
-			FEELSTA_LIKE: 8,
-			FEELSTA_TAG: ['#ㄱㄱ', '#ㄴㄴ', '#ㄷㄷ'],
-			COMMENTS: 234,
-			USERNAME: '박지훈',
-			PROFILEIMAGE: '/assets/images/2f1.jpg',
-		},
-	];
-	// }
-	// });
+	axios.get(`/feelsta`).then((res) => {
+		if (res.success === true) {
+			const feelstaList = res.feelsta;
+			// const feelstaList = [
+			// 	{
+			// 		FEELSTA_ID: 13,
+			// 		FEELSTA_TITLE: '오마에와',
+			// 		FEELSTA_IMAGE: '/assets/images/2f1.jpg',
+			// 		FEELSTA_CONTENT:
+			// 			'이번주 토요일 일요일 필스크린에서 대회모드 개같이 조지실분s 구함 100/100000',
+			// 		FEELSTA_DATE: '2022-02-03',
+			// 		FEELSTA_LIKE: 8,
+			// 		FEELSTA_TAG: ['#ㄱㄱ', '#ㄴㄴ', '#ㄷㄷ'],
+			// 		COMMENTS: 234,
+			// 		USERNAME: '박지훈',
+			// 		PROFILEIMAGE: '/assets/images/2f1.jpg',
+			// 	},
+			// 	{
+			// 		FEELSTA_ID: 14,
+			// 		FEELSTA_TITLE: '오마에와',
+			// 		FEELSTA_IMAGE: '/assets/images/2f1.jpg',
+			// 		FEELSTA_CONTENT:
+			// 			'이번주 토요일 일wfwfwf요일 필스크린에서 대회모드 개같이 조지실분s 구함 100/100000',
+			// 		FEELSTA_DATE: '2022-02-03',
+			// 		FEELSTA_LIKE: 8,
+			// 		FEELSTA_TAG: ['#ㄱㄱ', '#ㄴㄴ', '#ㄷㄷ'],
+			// 		COMMENTS: 234,
+			// 		USERNAME: '박지훈',
+			// 		PROFILEIMAGE: '/assets/images/2f1.jpg',
+			// 	},
+			// 	{
+			// 		FEELSTA_ID: 15,
+			// 		FEELSTA_TITLE: '오마에와',
+			// 		FEELSTA_IMAGE: '/assets/images/2f1.jpg',
+			// 		FEELSTA_CONTENT:
+			// 			'이번주 토요일 일요일 필스크린에서 대asdffdd회모드 개같이 조지실분s 구함 100/100000',
+			// 		FEELSTA_DATE: '2022-02-03',
+			// 		FEELSTA_LIKE: 8,
+			// 		FEELSTA_TAG: ['#ㄱㄱ', '#ㄴㄴ', '#ㄷㄷ'],
+			// 		COMMENTS: 234,
+			// 		USERNAME: '박지훈',
+			// 		PROFILEIMAGE: '/assets/images/2f1.jpg',
+			// 	},
+			// ];
+		}
+	});
 	const navigate = useNavigate();
 
 	return (
@@ -169,9 +169,11 @@ const FeelStaList = () => {
 			<ListItem>
 				{feelstaList.map((a) => (
 					<Item
-						onClick={() =>
-							navigate(`/feelstadetail/feelsta_id=${a.FEELSTA_ID}`)
-						}
+						onClick={() => {
+							navigate(`/feelstadetail/feelsta_id=${a.FEELSTA_ID}`, {
+								state: a.FEELSTA_ID,
+							});
+						}}
 					>
 						<ItemPreview>
 							<ItemTop>
