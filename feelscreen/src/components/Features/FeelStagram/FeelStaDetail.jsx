@@ -133,14 +133,16 @@ const CommentSet = styled.div`
 
 const FeelStaDetail = () => {
 	const { state } = useLocation();
-	const [comments, setComments] = useState([]);
-	const [details, setDetails] = useState([]);
+
+	const [commentlists, setCommentLists] = useState([]);
+	const [feelsta, setFeelsta] = useState([]);
+
 	axios
 		.get(`http://localhost:3001/feelstadetail?feelsta_id=${state}`)
 		.then((res) => {
 			if (res.data.success === true) {
-				setComments(res.data.feelsta[0]);
-				setDetails(res.data.feelsta);
+				setCommentLists(res.data.COMMENTS);
+				setFeelsta(res.data.feelsta);
 			}
 		});
 
@@ -214,34 +216,31 @@ const FeelStaDetail = () => {
 				</Comment>
 			</CommentList>
 		));
-	}, [newComment, userImage, username]);
-	useEffect(() => {
-		commenting();
-	}, [comments]);
+	}, [newComment]);
 
 	return (
 		<DetailContainer>
 			<ItemPreview>
 				<ItemTop>
 					<img
-						src={details.PROFILEIMAGE}
+						src={feelsta.PROFILEIMAGE}
 						alt=""
 						style={{ width: '60px', height: '60px', borderRadius: '50%' }}
 					/>
 					<NameDate>
-						<div>{details.USERNAME}</div>
-						<div>{details.FEELSTA_DATE}</div>
+						<div>{feelsta.USERNAME}</div>
+						<div>{feelsta.FEELSTA_DATE}</div>
 					</NameDate>
 				</ItemTop>
 				<ItemSec>
-					<div>{details.FEELSTA_CONTENT}</div>
-					{/* {details.FEELSTA_TAG.split(',').map((tag, index) => (
-						<span key={index}>{tag}</span>
+					<div>{feelsta.FEELSTA_CONTENT}</div>
+					{/* {feelsta.FEELSTA_TAG.split(',').map((tag) => (
+						<span>{tag}</span>
 					))} */}
 				</ItemSec>
 				<ItemImg>
 					<img
-						src={details.FEELSTA_IMAGE}
+						src={feelsta.FEELSTA_IMAGE}
 						alt=""
 						style={{ width: '300px', borderRadius: '10px' }}
 					/>
@@ -251,21 +250,21 @@ const FeelStaDetail = () => {
 						<span className="heartPush" onClick={handleHeart}>
 							{isHeart ? <FaRegHeart /> : <FaHeart />}
 						</span>
-						<span>{details.FEELSTA_LIKE}</span>
+						<span>{feelsta.FEELSTA_LIKE}</span>
 					</Likes>
 					<Comments>
 						<span>
 							<FaRegCommentAlt />
 						</span>
-						<span>{comments.length}</span>
+						{/* <span>{commentlists.length}</span> */}
 					</Comments>
 				</ItemBot>
 				<div>
-					{comments.map((a) => (
+					{/* {commentlists.map((a) => (
 						<CommentList>
 							<Comment>
 								<img
-									src={`/assets/${a.PROFILEIMAGE}`}
+									src={a.PROFILEIMAGE}
 									alt=""
 									style={{ width: '30px', height: '30px', borderRadius: '50%' }}
 								/>
@@ -275,7 +274,7 @@ const FeelStaDetail = () => {
 								</div>
 							</Comment>
 						</CommentList>
-					))}
+					))} */}
 					{/* {createComment} */}
 				</div>
 				<CommentSet>

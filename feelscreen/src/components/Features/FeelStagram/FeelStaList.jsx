@@ -141,8 +141,6 @@ const FeelStaList = () => {
 			</ListInfo>
 			<hr></hr>
 			<ListItem>
-				{console.log(1)}
-
 				{console.log(feelstaList)}
 				{feelstaList.map((a, i) => (
 					<Item
