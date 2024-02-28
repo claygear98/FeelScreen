@@ -69,6 +69,7 @@ const ItemSec = styled.div`
 	}
 	span {
 		color: #4ecb71;
+		margin-right: 5px;
 	}
 `;
 const ItemImg = styled.div`
@@ -108,11 +109,15 @@ const Poster = styled.button`
 
 const FeelStaList = () => {
 	const [feelstaList, setFeelstaList] = useState([]);
+
 	const fetchData = () => {
 		axios.get(`http://localhost:3001/feelsta`).then((response) => {
+			console.log(response);
 			if (response.data.success === true) {
 				setFeelstaList(response.data.feelsta);
+
 				console.log(feelstaList);
+				console.log(response);
 			}
 		});
 	};
@@ -162,8 +167,8 @@ const FeelStaList = () => {
 							</ItemTop>
 							<ItemSec>
 								<div>{a.FEELSTA_CONTENT}</div>
-								{a.FEELSTA_TAG.map((tag) => (
-									<span>{tag}</span>
+								{a.FEELSTA_TAG.split(',').map((tag, index) => (
+									<span key={index}>{tag}</span>
 								))}
 							</ItemSec>
 							<ItemImg>

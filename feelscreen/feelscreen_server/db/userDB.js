@@ -109,7 +109,7 @@ function feelstaAll(res) {
     feelsta.FEELSTA_IMAGE, 
     feelsta.FEELSTA_CONTENT, 
     feelsta.FEELSTA_DATE, 
-    (SELECT COUNT(*) FROM HEART WHERE feelsta.FEELSTA_ID = HEART.FEELSTA_ID), 
+    (SELECT COUNT(FEELSTA_ID) FROM HEART WHERE feelsta.FEELSTA_ID = HEART.FEELSTA_ID), 
     feelsta.FEELSTA_TAG, 
     (SELECT COUNT(*) FROM COMMENT WHERE COMMENT.FEELSTA_ID = feelsta.FEELSTA_ID) AS COMMENTS,
     USER.USERNAME, 
@@ -168,7 +168,7 @@ function feelstaOne(id, res) {
 			// console.log(result);
 			res.send({
 				success: true,
-				notice: result,
+				feelsta: result,
 			});
 		}
 	});

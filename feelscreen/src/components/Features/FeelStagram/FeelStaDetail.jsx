@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import styled from 'styled-components';
 import { FaRegHeart } from 'react-icons/fa';
 import { FaRegCommentAlt } from 'react-icons/fa';
@@ -133,18 +133,14 @@ const CommentSet = styled.div`
 
 const FeelStaDetail = () => {
 	const { state } = useLocation();
-
-	let CommentLists = [];
-	let details = [];
-	let tager = [];
-
+	const [comments, setComments] = useState([]);
+	const [details, setDetails] = useState([]);
 	axios
 		.get(`http://localhost:3001/feelstadetail?feelsta_id=${state}`)
 		.then((res) => {
 			if (res.data.success === true) {
-				CommentLists = res.data.COMMENTS;
-				details = res.data.feelsta;
-				tager = res.data.feelsta.FEELSTA_TAG.split(',');
+				setComments(res.data.feelsta[0]);
+				setDetails(res.data.feelsta);
 			}
 		});
 
@@ -198,9 +194,7 @@ const FeelStaDetail = () => {
 				});
 		}
 	};
-
-	const createComment = useCallback(() => {
-		console.log('aa');
+	const commenting = useCallback(() => {
 		return newComment.map((a, i) => (
 			<CommentList>
 				<Comment key={i}>
@@ -221,6 +215,9 @@ const FeelStaDetail = () => {
 			</CommentList>
 		));
 	}, [newComment, userImage, username]);
+	useEffect(() => {
+		commenting();
+	}, [comments]);
 
 	return (
 		<DetailContainer>
@@ -238,9 +235,9 @@ const FeelStaDetail = () => {
 				</ItemTop>
 				<ItemSec>
 					<div>{details.FEELSTA_CONTENT}</div>
-					{tager.map((tag) => (
-						<span>{tag}</span>
-					))}
+					{/* {details.FEELSTA_TAG.split(',').map((tag, index) => (
+						<span key={index}>{tag}</span>
+					))} */}
 				</ItemSec>
 				<ItemImg>
 					<img
@@ -260,15 +257,15 @@ const FeelStaDetail = () => {
 						<span>
 							<FaRegCommentAlt />
 						</span>
-						<span>{CommentLists.length}</span>
+						<span>{comments.length}</span>
 					</Comments>
 				</ItemBot>
 				<div>
-					{CommentLists.map((a) => (
+					{comments.map((a) => (
 						<CommentList>
 							<Comment>
 								<img
-									src={a.PROFILEFILE}
+									src={`/assets/${a.PROFILEIMAGE}`}
 									alt=""
 									style={{ width: '30px', height: '30px', borderRadius: '50%' }}
 								/>
@@ -279,7 +276,7 @@ const FeelStaDetail = () => {
 							</Comment>
 						</CommentList>
 					))}
-					{createComment()}
+					{/* {createComment} */}
 				</div>
 				<CommentSet>
 					<InputComment
