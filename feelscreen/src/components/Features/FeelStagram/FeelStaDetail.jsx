@@ -137,19 +137,21 @@ const FeelStaDetail = () => {
 	const [feelsta, setFeelsta] = useState({});
 	const [commentsLists, setCommentsLists] = useState([]);
 
-	axios
-		.get(`http://localhost:3001/feelstadetail?feelsta_id=${state}`)
-		.then((res) => {
-			if (res.data.success === true) {
-				// Feelsta 데이터를 상태에 설정
-				setFeelsta(res.data.feelsta[0]);
-				// Comment 데이터를 상태에 설정
-				setCommentsLists(res.data.feelsta[0].COMMENTS);
-			}
-		})
-		.catch((error) => {
-			console.error('Error fetching data: ', error);
-		});
+	useEffect(() => {
+		axios
+			.get(`http://localhost:3001/feelstadetail?feelsta_id=${state}`)
+			.then((res) => {
+				if (res.data.success === true) {
+					// Feelsta 데이터를 상태에 설정
+					setFeelsta(res.data.feelsta[0]);
+					// Comment 데이터를 상태에 설정
+					setCommentsLists(res.data.feelsta[0].COMMENTS);
+				}
+			})
+			.catch((error) => {
+				console.error('Error fetching data: ', error);
+			});
+	}, []);
 
 	const [plus, setPlus] = useState('');
 	const [newComment, setNewComment] = useState([]);
