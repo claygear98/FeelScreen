@@ -135,19 +135,30 @@ const FeelStaDetail = () => {
 	const { state } = useLocation();
 
 	const [commentlists, setCommentLists] = useState([]);
-	const [feelsta, setFeelsta] = useState([]);
+	const [feelsta, setFeelsta] = useState('');
+	let tags = [];
 
-	axios
-		.get(`http://localhost:3001/feelstadetail?feelsta_id=${state}`)
-		.then((res) => {
-			if (res.data.success === true) {
-				// setCommentLists(res.data.feelsta.COMMENTS);
-				setFeelsta(res.data.feelsta[0]);
-			}
-		})
-		.then(() => {
-			console.log(feelsta);
-		});
+	const fetchData = useCallback(() => {
+		axios
+			.get(`http://localhost:3001/feelstadetail?feelsta_id=${state}`)
+			.then((res) => {
+				if (res.data.success === true) {
+					// Feelsta 데이터를 상태에 설정
+					setFeelsta(res.data.feelsta[0]);
+					// Comment 데이터를 상태에 설정
+					setCommentLists(res.data.feelsta[0].COMMENTS);
+					tags = feelsta.FEELSTA_TAG.split(',');
+				}
+			})
+			.catch((error) => {
+				console.error('Error fetching data: ', error);
+			});
+	}, [state]);
+
+	// 컴포넌트가 마운트될 때 데이터를 가져오도록 설정
+	useEffect(() => {
+		fetchData();
+	}, [fetchData]);
 
 	const [plus, setPlus] = useState('');
 	const [newComment, setNewComment] = useState([]);
@@ -241,7 +252,7 @@ const FeelStaDetail = () => {
 				</ItemTop>
 				<ItemSec>
 					<div>{feelsta.FEELSTA_CONTENT}</div>
-					{feelsta.FEELSTA_TAG.split(',').map((tag) => (
+					{tags.map((tag) => (
 						<span>{tag}</span>
 					))}
 				</ItemSec>
