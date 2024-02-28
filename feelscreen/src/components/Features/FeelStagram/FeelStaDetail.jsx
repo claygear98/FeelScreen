@@ -141,7 +141,7 @@ const FeelStaDetail = () => {
 		.get(`http://localhost:3001/feelstadetail?feelsta_id=${state}`)
 		.then((res) => {
 			if (res.data.success === true) {
-				setCommentLists(res.data.COMMENTS);
+				setCommentLists(res.data.feelsta.COMMENTS);
 				setFeelsta(res.data.feelsta);
 			}
 		});
@@ -218,6 +218,10 @@ const FeelStaDetail = () => {
 		));
 	}, [newComment]);
 
+	useEffect(() => {
+		commenting();
+	}, [commenting]);
+
 	return (
 		<DetailContainer>
 			<ItemPreview>
@@ -256,11 +260,11 @@ const FeelStaDetail = () => {
 						<span>
 							<FaRegCommentAlt />
 						</span>
-						{/* <span>{commentlists.length}</span> */}
+						<span>{commentlists.length}</span>
 					</Comments>
 				</ItemBot>
 				<div>
-					{/* {commentlists.map((a) => (
+					{commentlists.map((a) => (
 						<CommentList>
 							<Comment>
 								<img
@@ -274,8 +278,8 @@ const FeelStaDetail = () => {
 								</div>
 							</Comment>
 						</CommentList>
-					))} */}
-					{/* {createComment} */}
+					))}
+					{commenting}
 				</div>
 				<CommentSet>
 					<InputComment
