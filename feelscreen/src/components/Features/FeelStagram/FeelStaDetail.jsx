@@ -141,9 +141,12 @@ const FeelStaDetail = () => {
 		.get(`http://localhost:3001/feelstadetail?feelsta_id=${state}`)
 		.then((res) => {
 			if (res.data.success === true) {
-				setCommentLists(res.data.feelsta.COMMENTS);
-				setFeelsta(res.data.feelsta);
+				// setCommentLists(res.data.feelsta.COMMENTS);
+				setFeelsta(res.data.feelsta[0]);
 			}
+		})
+		.then(() => {
+			console.log(feelsta);
 		});
 
 	const [plus, setPlus] = useState('');
