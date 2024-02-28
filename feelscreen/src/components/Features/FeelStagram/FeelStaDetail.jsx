@@ -234,9 +234,9 @@ const FeelStaDetail = () => {
 				</ItemTop>
 				<ItemSec>
 					<div>{feelsta.FEELSTA_CONTENT}</div>
-					{/* {feelsta.FEELSTA_TAG.split(',').map((tag) => (
+					{feelsta.FEELSTA_TAG.split(',').map((tag) => (
 						<span>{tag}</span>
-					))} */}
+					))}
 				</ItemSec>
 				<ItemImg>
 					<img
