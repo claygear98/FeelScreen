@@ -98,7 +98,7 @@ router.get('/notice', (req, res) => {
 router.get('/feelstadetail', (req, res) => {
 	let { feelsta_id } = req.query;
 
-	feelstaController.feelDetail(feelsta_id, res);
+	feelstaController.feelOne(feelsta_id, res);
 });
 
 //필스타 등록

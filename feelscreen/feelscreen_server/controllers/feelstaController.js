@@ -10,6 +10,7 @@ function feelOne(id, res) {
 }
 
 function feelPost(req, res, urlArr, user_id) {
+	console.log(req.body.tag);
 	userDB.feelstaPost(req, res, urlArr, user_id);
 }
 
@@ -38,14 +39,9 @@ const FeelUpload = multer({
 	},
 });
 
-function feelDetail(feelsta_id, res) {
-	userDB.feelstaDetail(feelsta_id, res);
-}
-
 module.exports = {
 	feelAll,
 	feelOne,
 	feelPost,
 	FeelUpload,
-	feelDetail,
 };

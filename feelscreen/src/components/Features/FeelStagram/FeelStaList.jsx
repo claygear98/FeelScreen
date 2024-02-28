@@ -1,5 +1,4 @@
-import React from 'react';
-// import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -109,15 +108,23 @@ const Poster = styled.button`
 `;
 
 const FeelStaList = () => {
-	let feelstaList = [];
-	let tager = [];
-	axios.get(`/feelsta`).then((res) => {
-		if (res.success === true) {
-			feelstaList = res.feelsta;
-			tager = res.FEELSTA_TAG.split(',');
-		}
-	});
+	const [feelstaList, setFeelstaList] = useState([]);
+	const fetchData = () => {
+		axios.get(`http://localhost:3001/feelsta`).then((response) => {
+			if (response.data.success === true) {
+				setFeelstaList(response.data.feelsta);
+				console.log(feelstaList);
+			}
+		});
+	};
+
 	const navigate = useNavigate();
+
+	// 데이터를 동기적으로 가져오기 위해 useEffect 내부에서 fetchData 함수 호출
+	useEffect(() => {
+		console.log(2);
+		fetchData();
+	}, []); // 빈 배열을 전달하여 컴포넌트가 마운트될 때 한 번만 호출되도록 함
 
 	return (
 		<ListContainer>
@@ -130,13 +137,15 @@ const FeelStaList = () => {
 			</ListInfo>
 			<hr></hr>
 			<ListItem>
-				{feelstaList.map((a) => (
+				{console.log(feelstaList)}
+				{feelstaList.map((a, i) => (
 					<Item
 						onClick={() => {
 							navigate(`/feelstadetail/feelsta_id=${a.FEELSTA_ID}`, {
 								state: a.FEELSTA_ID,
 							});
 						}}
+						key={i}
 					>
 						<ItemPreview>
 							<ItemTop>
@@ -152,7 +161,7 @@ const FeelStaList = () => {
 							</ItemTop>
 							<ItemSec>
 								<div>{a.FEELSTA_CONTENT}</div>
-								{tager.map((tag) => (
+								{a.FEELSTA_TAG.split(',').map((tag) => (
 									<span>{tag}</span>
 								))}
 							</ItemSec>

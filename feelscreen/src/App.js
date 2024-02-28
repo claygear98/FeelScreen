@@ -26,8 +26,13 @@ function App() {
 					<Route path="/mypost" element={<Mypost />} />
 					<Route path="notice">
 						<Route path="read" element={<Notice />} />
+<<<<<<< HEAD
 						{/* <Route path="detail" element={<DetailNotice />} /> */}
 						{/* <Route path="post" element={<PostNotice />} /> */}
+=======
+						{/* <Route path="detail" element={<DetailNotice />} />
+						<Route path="post" element={<PostNotice />} /> */}
+>>>>>>> 7a837fedb1a6ef159018608da4f97f2e06401136
 					</Route>
 					{/* <Route path="fillstagram" element={<Fillstagram />} /> */}
 					{/* <Route path="mypage" element={<Mypage />} /> */}
