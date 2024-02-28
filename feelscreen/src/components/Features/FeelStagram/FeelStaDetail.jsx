@@ -134,29 +134,22 @@ const CommentSet = styled.div`
 const FeelStaDetail = () => {
 	const { state } = useLocation();
 
-	let feelsta = [];
-	let commentsLists = [];
+	const [feelsta, setFeelsta] = useState({});
+	const [commentsLists, setCommentsLists] = useState([]);
 
-	const fetchData = useCallback(() => {
-		axios
-			.get(`http://localhost:3001/feelstadetail?feelsta_id=${state}`)
-			.then((res) => {
-				if (res.data.success === true) {
-					// Feelsta 데이터를 상태에 설정
-					feelsta.push(...res.data.feelsta);
-					// Comment 데이터를 상태에 설정
-					commentsLists.push(...res.data.feelsta.COMMENTS);
-				}
-			})
-			.catch((error) => {
-				console.error('Error fetching data: ', error);
-			});
-	}, [state]);
-
-	// 컴포넌트가 마운트될 때 데이터를 가져오도록 설정
-	useEffect(() => {
-		fetchData();
-	}, [fetchData]);
+	axios
+		.get(`http://localhost:3001/feelstadetail?feelsta_id=${state}`)
+		.then((res) => {
+			if (res.data.success === true) {
+				// Feelsta 데이터를 상태에 설정
+				setFeelsta(res.data.feelsta[0]);
+				// Comment 데이터를 상태에 설정
+				setCommentsLists(res.data.feelsta[0].COMMENTS);
+			}
+		})
+		.catch((error) => {
+			console.error('Error fetching data: ', error);
+		});
 
 	const [plus, setPlus] = useState('');
 	const [newComment, setNewComment] = useState([]);
