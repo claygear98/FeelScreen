@@ -134,8 +134,8 @@ const CommentSet = styled.div`
 const FeelStaDetail = () => {
 	const { state } = useLocation();
 
-	const [commentlists, setCommentLists] = useState([]);
-	const [feelsta, setFeelsta] = useState('');
+	let feelsta = [];
+	let commentsLists = [];
 
 	const fetchData = useCallback(() => {
 		axios
@@ -143,9 +143,9 @@ const FeelStaDetail = () => {
 			.then((res) => {
 				if (res.data.success === true) {
 					// Feelsta 데이터를 상태에 설정
-					setFeelsta(res.data.feelsta[0]);
+					feelsta.push(...res.data.feelsta);
 					// Comment 데이터를 상태에 설정
-					setCommentLists(res.data.feelsta[0].COMMENTS);
+					commentsLists.push(...res.data.feelsta.COMMENTS);
 				}
 			})
 			.catch((error) => {
@@ -272,11 +272,11 @@ const FeelStaDetail = () => {
 						<span>
 							<FaRegCommentAlt />
 						</span>
-						<span>{commentlists.length}</span>
+						<span>{commentsLists.length}</span>
 					</Comments>
 				</ItemBot>
 				<div>
-					{commentlists.map((a) => (
+					{commentsLists.map((a) => (
 						<CommentList>
 							<Comment>
 								<img
