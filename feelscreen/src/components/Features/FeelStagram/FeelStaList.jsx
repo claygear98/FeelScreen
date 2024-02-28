@@ -141,11 +141,10 @@ const FeelStaList = () => {
 			</ListInfo>
 			<hr></hr>
 			<ListItem>
-				{console.log(feelstaList)}
 				{feelstaList.map((a, i) => (
 					<Item
 						onClick={() => {
-							navigate(`/feelstadetail/feelsta_id=${a.FEELSTA_ID}`, {
+							navigate(`/feelstadetail/${a.FEELSTA_ID}`, {
 								state: a.FEELSTA_ID,
 							});
 						}}

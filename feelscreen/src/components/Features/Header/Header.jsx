@@ -52,7 +52,7 @@ const Header = () => {
 			</Hello>
 			<UserImage>
 				{/*  */}
-				<img src={`${userImage}`} alt="userImage" />
+				<img src={`/${userImage}`} alt="userImage" />
 			</UserImage>
 		</HeaderDiv>
 	);
