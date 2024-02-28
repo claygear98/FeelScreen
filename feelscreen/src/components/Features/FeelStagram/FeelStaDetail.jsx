@@ -137,7 +137,7 @@ const FeelStaDetail = () => {
 	const [feelsta, setFeelsta] = useState({});
 	const [commentsLists, setCommentsLists] = useState([]);
 
-	useEffect(() => {
+	const callDetail = () => {
 		axios
 			.get(`http://localhost:3001/feelstadetail?feelsta_id=${state}`)
 			.then((res) => {
@@ -151,6 +151,10 @@ const FeelStaDetail = () => {
 			.catch((error) => {
 				console.error('Error fetching data: ', error);
 			});
+	};
+
+	useEffect(() => {
+		callDetail();
 	}, []);
 
 	const [plus, setPlus] = useState('');
