@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
-// import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { HiOutlineSpeakerphone } from 'react-icons/hi';
 
@@ -35,8 +34,24 @@ const NoticeCards = styled.div`
 		}
 	}
 `;
+const NoticeItem = styled.div`
+	display: flex;
+	flex-direction: column;
+	.title_writer {
+		display: flex;
+		justify-content: space-between;
+		padding: 10px;
+		background-color: #d9d9d9;
+		border-radius: 5px;
+	}
+	.content {
+		padding: 10px;
+		text-align: initial;
+	}
+`;
 const ReadNotice = () => {
 	const [noticeList, setNoticeList] = useState([]);
+	const [detail, setDetail] = useState([]);
 
 	const fetchNoticeList = useCallback(() => {
 		axios
@@ -44,6 +59,7 @@ const ReadNotice = () => {
 			.then((response) => {
 				if (response.data.success === true) {
 					setNoticeList(response.data.notice);
+					console.log('Failed notices');
 				} else {
 					console.log('Failed to fetch notices');
 				}
@@ -56,6 +72,20 @@ const ReadNotice = () => {
 	useEffect(() => {
 		fetchNoticeList();
 	}, [fetchNoticeList]);
+
+	const handleDetail = (id) => {
+		axios.get(`${server_port}/notice?notice_id=${id}`).then((response) => {
+			if ((response.data.success = true)) {
+				response.data.notice.NOTICECONTENT =
+					response.data.notice.NOTICECONTENT.replaceAll(/^style.*?;/g, '');
+			}
+		});
+	};
+	console.log(
+		"<p>나는 사장</p><p>너는 손님!</p><p>&nbsp;</p><p>난 둥이다멍</p><figure class='image'><img style='aspect-ratio:128/128;' src='http://localhost:3001/개구리.png' width='128' height='128'></figure>"
+			.replace(/style='(.*?)'/g, '') // style 속성 제거
+			.replace(/<img(.*?)>/g, '<img$1 />') // 이미지 태그에 닫힌 태그 추가
+	);
 	return (
 		<div>
 			<div>
@@ -63,29 +93,47 @@ const ReadNotice = () => {
 					<div>공지사항 및이벤트</div>
 					<div className="">글쓰기</div>
 				</NoticeHeader>
-				{noticeList.length !== 0 ? (
+				{1 !== 1 ? (
 					noticeList.map((notice, index) => (
 						<NoticeCards>
-							<div key={notice.NOTICE_ID} className="noticeItem">
-								<div>
-									<HiOutlineSpeakerphone
-										style={{ color: '#d8f7e0', backgroundColor: '#4ecb71' }}
-									/>
-									<span>{notice.NOTICETITLE}</span>
+							<NoticeItem
+								key={notice.NOTICE_ID}
+								className="noticeItem"
+								onClick={handleDetail(notice.NOTICE_ID)}
+							>
+								<div className="title_writer">
+									<div>
+										<HiOutlineSpeakerphone
+											style={{ color: '#d8f7e0', backgroundColor: '#4ecb71' }}
+										/>
+										<span>{notice.NOTICETITLE}</span>
+									</div>
+									<div>사장님</div>
 								</div>
-								<div>사장님</div>
-							</div>
+								<div className="content"></div>
+							</NoticeItem>
 						</NoticeCards>
 					))
 				) : (
 					<NoticeCards>
-						<div className="noticeItem">
-							<div>
-								<HiOutlineSpeakerphone style={{ color: '#d8f7e0' }} />
-								<span>아직없음</span>
+						<NoticeItem className="noticeItem">
+							<div className="title_writer">
+								<div>
+									<HiOutlineSpeakerphone style={{ color: '#d8f7e0' }} />
+									<span>아직없음</span>
+								</div>
+								<div>사장님</div>
 							</div>
-							<div>사장님</div>
-						</div>
+							<div className="content">
+								<p>나는 사장</p>
+								<p>너는 손님!</p>
+								<p>&nbsp;</p>
+								<p>난 둥이다멍</p>
+								<figure class="image">
+									<img src="/assets/1f.png" width="128" height="128" />
+								</figure>
+							</div>
+						</NoticeItem>
 						<div className="noticeItem">
 							<div>
 								<HiOutlineSpeakerphone style={{ color: '#d8f7e0' }} />
