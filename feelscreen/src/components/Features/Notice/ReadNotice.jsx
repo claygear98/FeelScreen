@@ -83,8 +83,8 @@ const ReadNotice = () => {
 	};
 	console.log(
 		"<p>나는 사장</p><p>너는 손님!</p><p>&nbsp;</p><p>난 둥이다멍</p><figure class='image'><img style='aspect-ratio:128/128;' src='http://localhost:3001/개구리.png' width='128' height='128'></figure>"
-			.replace(/style='(.*?)'/g, '') // style 속성 제거
-			.replace(/<img(.*?)>/g, '<img$1 />') // 이미지 태그에 닫힌 태그 추가
+			.replaceAll(/style='(.*?)'/g, '') // style 속성 제거
+			.replaceAll(/<img(.*?)>/g, '<img$1 />') // 이미지 태그에 닫힌 태그 추가
 	);
 	return (
 		<div>
@@ -93,7 +93,7 @@ const ReadNotice = () => {
 					<div>공지사항 및이벤트</div>
 					<div className="">글쓰기</div>
 				</NoticeHeader>
-				{1 !== 1 ? (
+				{noticeList.length !== 0 ? (
 					noticeList.map((notice, index) => (
 						<NoticeCards>
 							<NoticeItem
