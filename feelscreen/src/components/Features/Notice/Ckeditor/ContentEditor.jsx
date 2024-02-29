@@ -52,7 +52,7 @@ const ContentEditor = ({ SetContent }) => {
 			<CKEditor
 				config={{
 					extraPlugins: [uploadPlugin],
-					config: { editorConfiguration },
+					autoformat: ['image'],
 				}}
 				editor={ClassicEditor}
 				data="<p>공지 입력</p>"

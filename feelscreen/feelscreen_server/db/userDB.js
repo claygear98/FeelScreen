@@ -206,9 +206,10 @@ function noticeList(res) {
 }
 
 function noticePost(title, content, res) {
-	let date = new Date();
-	console.log('date', date);
-	//
+	// content = content
+	// 	.replaceAll(/style='(.*?)'/g, '')
+	// 	.replaceAll(/<img(.*?)>/g, '<img$1 />'); // 이미지 태그에 닫힌 태그 추가
+
 	let sql = `INSERT INTO NOTICE (NOTICETITLE, NOTICECONTENT, NOTICEDATE) VALUES ("${title}", "${content}", date_format(now(), '%Y-%m-%d %H:%i:%s'))`;
 
 	db.query(sql, function (error, result) {

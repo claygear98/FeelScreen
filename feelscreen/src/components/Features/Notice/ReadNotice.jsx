@@ -73,19 +73,6 @@ const ReadNotice = () => {
 		fetchNoticeList();
 	}, [fetchNoticeList]);
 
-	const handleDetail = (id) => {
-		axios.get(`${server_port}/notice?notice_id=${id}`).then((response) => {
-			if ((response.data.success = true)) {
-				response.data.notice.NOTICECONTENT =
-					response.data.notice.NOTICECONTENT.replaceAll(/^style.*?;/g, '');
-			}
-		});
-	};
-	console.log(
-		"<p>나는 사장</p><p>너는 손님!</p><p>&nbsp;</p><p>난 둥이다멍</p><figure class='image'><img style='aspect-ratio:128/128;' src='http://localhost:3001/개구리.png' width='128' height='128'></figure>"
-			.replaceAll(/style='(.*?)'/g, '') // style 속성 제거
-			.replaceAll(/<img(.*?)>/g, '<img$1 />') // 이미지 태그에 닫힌 태그 추가
-	);
 	return (
 		<div>
 			<div>
