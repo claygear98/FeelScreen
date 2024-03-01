@@ -95,34 +95,38 @@ const ReadNotice = () => {
 					<div className="">글쓰기</div>
 				</NoticeHeader>
 				{noticeList.length !== 0 ? (
-					noticeList.map((notice, index) => (
-						<NoticeCards>
-							<NoticeItem
-								key={notice.NOTICE_ID}
-								className="noticeItem"
-								onClick={() => handleDetail(notice.NOTICE_ID)}
-							>
-								<div className="title_writer">
-									<div>
-										<HiOutlineSpeakerphone
-											style={{ color: '#d8f7e0', backgroundColor: '#4ecb71' }}
-										/>
-										<span>{notice.NOTICETITLE}</span>
+					noticeList.map((notice, index) => {
+						return (
+							<NoticeCards>
+								<NoticeItem
+									key={notice.NOTICE_ID}
+									className="noticeItem"
+									onClick={() => handleDetail(notice.NOTICE_ID)}
+								>
+									<div className="title_writer">
+										<div>
+											<HiOutlineSpeakerphone
+												style={{ color: '#d8f7e0', backgroundColor: '#4ecb71' }}
+											/>
+											<span>{notice.NOTICETITLE}</span>
+										</div>
+										<div>사장님</div>
 									</div>
-									<div>사장님</div>
-								</div>
-								<div className="content">
-									{detail.NOTICE_ID === focus ? (
-										<div
-											dangerouslySetInnerHTML={{ __html: detail.NOTICECONTENT }}
-										/>
-									) : (
-										''
-									)}
-								</div>
-							</NoticeItem>
-						</NoticeCards>
-					))
+									<div className="content">
+										{detail.NOTICE_ID === focus ? (
+											<div
+												dangerouslySetInnerHTML={{
+													__html: detail.NOTICECONTENT,
+												}}
+											/>
+										) : (
+											''
+										)}
+									</div>
+								</NoticeItem>
+							</NoticeCards>
+						);
+					})
 				) : (
 					<NoticeCards>
 						<NoticeItem className="noticeItem">
