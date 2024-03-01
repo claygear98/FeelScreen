@@ -80,7 +80,7 @@ app.post('/notice-post', async (req, res) => {
 	// noticeController.noticePost(req.body.title, req.body.content, res);
 });
 
-router.get('/notice', (req, res) => {
+router.get('/noticeDetail', (req, res) => {
 	let { notice_id } = req.query;
 	noticeController.noticeDetail(notice_id, res);
 });
