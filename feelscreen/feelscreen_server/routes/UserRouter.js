@@ -80,6 +80,11 @@ app.post('/notice-post', async (req, res) => {
 	// noticeController.noticePost(req.body.title, req.body.content, res);
 });
 
+router.get('/notice', (req, res) => {
+	let { notice_id } = req.query;
+	noticeController.noticeDetail(notice_id, res);
+});
+
 //헤더 요청
 router.post('/header', async (req, res) => {
 	mainController.header(await JWT.authJWT(req, res), res);

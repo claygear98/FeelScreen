@@ -224,6 +224,21 @@ function noticePost(title, content, res) {
 	});
 }
 
+function noticeDetail(notice_id, res) {
+	let sql = `SELECT NOTICE_ID, NOTICETITLE, NOTICECONTENT, NOTICEDATE FROM NOTICE WHERE NOTICE_ID = ${notice_id}`;
+
+	db.query(sql, function (error, result) {
+		if (error) {
+			console.log(error);
+			res.send({ success: false, message: 'db error' });
+		} else {
+			res.send({
+				success: true,
+				notice: result,
+			});
+		}
+	});
+}
 module.exports = {
 	logIn,
 	allow,
@@ -234,4 +249,5 @@ module.exports = {
 	feelstaOne,
 	feelstaPost,
 	noticePost,
+	noticeDetail,
 };
