@@ -95,7 +95,7 @@ const ReadNotice = () => {
 					<div className="">글쓰기</div>
 				</NoticeHeader>
 				{noticeList.length !== 0 ? (
-					noticeList.map((notice, index) => {
+					noticeList.map((notice) => {
 						return (
 							<NoticeCards>
 								<NoticeItem
