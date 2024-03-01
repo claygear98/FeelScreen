@@ -60,12 +60,12 @@ router.post('/sign-up/phone', (req, res) => {
 router.post('/sign-up/code', signController.code);
 
 //공지 사진 업로드
-app.post('/image', upload.single('image'), async (req, res) => {
+router.post('/image', upload.single('image'), async (req, res) => {
 	res.status(200).json(req.file);
 });
 
 //공지 게시물 등록
-app.post('/notice-post', async (req, res) => {
+router.post('/notice-post', async (req, res) => {
 	imageNames = imageNames.filter((name) => {
 		if (req.body.content.includes(name)) {
 			return name;
