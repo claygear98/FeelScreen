@@ -108,10 +108,13 @@ const ReadNotice = () => {
 									<div>사장님</div>
 								</div>
 								<div className="content">
-									{detail.NOTICE_ID === focus
-										? (document.getElementsByClassName('content').innerHtml =
-												detail.NOTICECONTENT)
-										: ''}
+									{detail.NOTICE_ID === focus ? (
+										<div
+											dangerouslySetInnerHTML={{ __html: detail.NOTICECONTENT }}
+										/>
+									) : (
+										''
+									)}
 								</div>
 							</NoticeItem>
 						</NoticeCards>
