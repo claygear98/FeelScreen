@@ -76,8 +76,6 @@ router.post('/notice-post', async (req, res) => {
 	let to = '../../public/assets/notice';
 
 	await imageMove.moveImage(from, to, imageNames, req, res);
-
-	// noticeController.noticePost(req.body.title, req.body.content, res);
 });
 
 router.get('/noticeDetail', (req, res) => {
