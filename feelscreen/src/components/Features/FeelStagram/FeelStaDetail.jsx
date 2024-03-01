@@ -274,8 +274,8 @@ const FeelStaDetail = () => {
 							<span>
 								<FaRegCommentAlt />
 							</span>
-							{/* 댓글이 없으면 오류가 납니다 list에서 들어갈때 */}
-							<span>{commentsLists.length}</span>
+							{/* 댓글이 없으면 오류가 납니다 list에서 들어갈때 이거 일단 길이가 0 보다 크면 뜨고 아니면 0으로 뜨게 해놔서 한번다시 해보세요 */}
+							<span>{commentsLists.length > 0 ? commentsLists.length : 0}</span>
 						</Comments>
 					</ItemBot>
 					<div>

@@ -109,13 +109,33 @@ const Poster = styled.button`
 
 const FeelStaList = () => {
 	const [feelstaList, setFeelstaList] = useState([]);
+	const [sortList, setSortList] = useState('latest');
+	const [toSearch, setToSearch] = useState('');
+	const [searchType, setSearchType] = useState('fromtitle');
 
-	const fetchData = () => {
+	const handleFilterChange = (e) => {
+		setSortList(e.target.value);
+	};
+
+	const handleSearchChange = (e) => {
+		setToSearch(e.target.value);
+	};
+
+	const getList = () => {
 		axios.get(`http://localhost:3001/feelsta`).then((response) => {
 			console.log(response);
 			if (response.data.success === true) {
-				setFeelstaList(response.data.feelsta);
-
+				let dataList = response.data.feelsta;
+				if (sortList === 'latest') {
+					dataList = dataList.sort((a, b) => {
+						console.log('data');
+						return new Date(b.FEELSTA_DATE) - new Date(a.FEELSTA_DATE);
+					});
+				} else if (sortList === 'likest') {
+					console.log('dataaa');
+					dataList = dataList.sort((a, b) => b.FEELSTA_LIKE - a.FEELSTA_LIKE);
+				}
+				setFeelstaList(dataList);
 				console.log(feelstaList);
 				console.log(response);
 			}
@@ -124,18 +144,30 @@ const FeelStaList = () => {
 
 	const navigate = useNavigate();
 
-	// 데이터를 동기적으로 가져오기 위해 useEffect 내부에서 fetchData 함수 호출
+	// 데이터를 동기적으로 가져오기 위해 useEffect 내부에서 getList 함수 호출
 	useEffect(() => {
 		console.log(2);
-		fetchData();
-	}, []); // 빈 배열을 전달하여 컴포넌트가 마운트될 때 한 번만 호출되도록 함
+		getList();
+	}, [sortList]); // sortList 전달하여 sortList값이 변경 될 때만 호출되도록 함
 
 	return (
 		<ListContainer>
 			<ListInfo>
-				<button>게시물 정렬</button>
+				<select name="selection" id="selection" onChange={handleFilterChange}>
+					<option value="latest">최신순</option>
+					<option value="likest">추천순</option>
+				</select>
 				<div>
-					<input type="text"></input>
+					<select name="search" id="search">
+						<option value="fromtitle">제목</option>
+						<option value="tagging">태그</option>
+					</select>
+					<input
+						type="text"
+						value={toSearch}
+						onChange={handleSearchChange}
+						placeholder="검색어를 입력하세요"
+					></input>
 					<button>검색</button>
 				</div>
 			</ListInfo>
