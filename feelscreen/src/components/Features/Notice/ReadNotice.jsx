@@ -86,6 +86,13 @@ const ReadNotice = () => {
 				}
 			});
 	};
+	const isSame = (a, b) => {
+		if (a === b) {
+			return b;
+		} else {
+			return 0;
+		}
+	};
 	return (
 		<div>
 			<div>
@@ -112,7 +119,7 @@ const ReadNotice = () => {
 										<div>사장님</div>
 									</div>
 									<div className="content">
-										{(notice.NOTICE_ID === detail.NOTICE_ID) === focus ? (
+										{isSame(notice.NOTICE_ID, detail.NOTICE_ID) === focus ? (
 											<div
 												dangerouslySetInnerHTML={{
 													__html: detail.NOTICECONTENT,

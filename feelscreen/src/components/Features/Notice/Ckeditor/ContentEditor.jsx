@@ -29,7 +29,7 @@ const ContentEditor = ({ SetContent }) => {
 							)
 							.then((res) => {
 								resolve({
-									default: `/assets/notice/${res.data.originalname}`,
+									default: `${sever_port}/${res.data.originalname}`,
 								});
 								console.log(res);
 							})
