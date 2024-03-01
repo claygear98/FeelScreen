@@ -78,11 +78,14 @@ const ReadNotice = () => {
 			.get(`${server_port}/noticeDetail?notice_id=${id}`)
 			.then((response) => {
 				if ((response.data.success = true)) {
-					response.data.notice.NOTICECONTENT.length !== undefined
-						? (response.data.notice.NOTICECONTENT =
-								response.data.notice.NOTICECONTENT.replaceAll('"', ''))
-						: '';
-					setDetail(response.data.notice);
+					// response.data.notice.NOTICECONTENT.length !== undefined
+					// 	? (response.data.notice.NOTICECONTENT =
+					// 			response.data.notice.NOTICECONTENT.replaceAll('"', ''))
+					// 	: '';
+					console.log(response.data.notice[0].NOTICECONTENT);
+					response.data.notice[0].NOTICECONTENT =
+						response.data.notice[0].NOTICECONTENT.replaceAll('"', '');
+					setDetail(response.data.notice[0]);
 					setFocus(id);
 				}
 			});
@@ -95,9 +98,9 @@ const ReadNotice = () => {
 					<div className="">글쓰기</div>
 				</NoticeHeader>
 				{noticeList.length !== 0 ? (
-					noticeList.map((notice) => {
-						return (
-							<NoticeCards>
+					<NoticeCards>
+						{noticeList.map((notice, index) => {
+							return (
 								<NoticeItem
 									key={notice.NOTICE_ID}
 									className="noticeItem"
@@ -124,9 +127,9 @@ const ReadNotice = () => {
 										)}
 									</div>
 								</NoticeItem>
-							</NoticeCards>
-						);
-					})
+							);
+						})}
+					</NoticeCards>
 				) : (
 					<NoticeCards>
 						<NoticeItem className="noticeItem">
