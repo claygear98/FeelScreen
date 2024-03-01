@@ -134,7 +134,7 @@ const ReadNotice = () => {
 								<p>너는 손님!</p>
 								<p>&nbsp;</p>
 								<p>난 둥이다멍</p>
-								<figure class="image">
+								<figure className="image">
 									<img src="/assets/1f.png" width="128" height="128" />
 								</figure>
 							</div>
