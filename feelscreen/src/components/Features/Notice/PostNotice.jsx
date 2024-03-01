@@ -93,7 +93,7 @@ const PostNotice = () => {
 	useEffect(() => {
 		const handleBackEvent = () => {
 			axios
-				.delete(`${sever_port}/notice-post`)
+				.get(`${sever_port}/imagedelete`)
 				.then((res) => {
 					console.log(res);
 				})
