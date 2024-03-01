@@ -109,7 +109,8 @@ const ReadNotice = () => {
 								</div>
 								<div className="content">
 									{detail.NOTICE_ID === focus
-										? detail.map((detailNotice) => detail.NOTICECONTENT)
+										? (document.getElementsByClassName('content').innerHtml =
+												detail.NOTICECONTENT)
 										: ''}
 								</div>
 							</NoticeItem>
