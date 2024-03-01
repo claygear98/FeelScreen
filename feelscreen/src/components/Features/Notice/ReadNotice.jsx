@@ -74,14 +74,16 @@ const ReadNotice = () => {
 	}, [fetchNoticeList]);
 
 	const handleDetail = (id) => {
-		axios.get(`${server_port}/notice?notice_id=${id}`).then((response) => {
-			if ((response.data.success = true)) {
-				response.data.notice.NOTICECONTENT =
-					response.data.notice.NOTICECONTENT.replaceAll('"', '');
-				setDetail(response.data.notice);
-				setFocus(id);
-			}
-		});
+		axios
+			.get(`${server_port}/noticeDetail?notice_id=${id}`)
+			.then((response) => {
+				if ((response.data.success = true)) {
+					response.data.notice.NOTICECONTENT =
+						response.data.notice.NOTICECONTENT.replaceAll('"', '');
+					setDetail(response.data.notice);
+					setFocus(id);
+				}
+			});
 	};
 	return (
 		<div>
