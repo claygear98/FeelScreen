@@ -78,10 +78,9 @@ const ReadNotice = () => {
 			.get(`${server_port}/noticeDetail?notice_id=${id}`)
 			.then((response) => {
 				if ((response.data.success = true)) {
-					response.data.notice.NOTICECONTENT.length !== undefined
-						? (response.data.notice.NOTICECONTENT =
-								response.data.notice.NOTICECONTENT.replaceAll('"', ''))
-						: '';
+					response.data.notice.NOTICECONTENT =
+						response.data.notice.NOTICECONTENT.replaceAll('"', '');
+
 					setDetail(response.data.notice);
 					setFocus(id);
 				}
