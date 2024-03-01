@@ -52,7 +52,7 @@ const NoticeItem = styled.div`
 const ReadNotice = () => {
 	const [noticeList, setNoticeList] = useState([]);
 	const [detail, setDetail] = useState([]);
-
+	const [focus, setFocus] = useState(-1);
 	const fetchNoticeList = useCallback(() => {
 		axios
 			.get(`${server_port}/notice`)
@@ -78,7 +78,8 @@ const ReadNotice = () => {
 			if ((response.data.success = true)) {
 				response.data.notice.NOTICECONTENT =
 					response.data.notice.NOTICECONTENT.replaceAll('"', '');
-				setDetail(response.data);
+				setDetail(response.data.notice);
+				setFocus(id);
 			}
 		});
 	};
@@ -106,7 +107,11 @@ const ReadNotice = () => {
 									</div>
 									<div>사장님</div>
 								</div>
-								<div className="content"></div>
+								<div className="content">
+									{detail.NOTICE_ID === focus
+										? detail.map((detailNotice) => detail.NOTICECONTENT)
+										: ''}
+								</div>
 							</NoticeItem>
 						</NoticeCards>
 					))
