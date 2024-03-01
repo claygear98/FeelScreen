@@ -95,9 +95,9 @@ const ReadNotice = () => {
 					<div className="">글쓰기</div>
 				</NoticeHeader>
 				{noticeList.length !== 0 ? (
-					noticeList.map((notice, index) => {
-						return (
-							<NoticeCards>
+					<NoticeCards>
+						{noticeList.map((notice, index) => {
+							return (
 								<NoticeItem
 									key={notice.NOTICE_ID}
 									className="noticeItem"
@@ -124,9 +124,9 @@ const ReadNotice = () => {
 										)}
 									</div>
 								</NoticeItem>
-							</NoticeCards>
-						);
-					})
+							);
+						})}
+					</NoticeCards>
 				) : (
 					<NoticeCards>
 						<NoticeItem className="noticeItem">
