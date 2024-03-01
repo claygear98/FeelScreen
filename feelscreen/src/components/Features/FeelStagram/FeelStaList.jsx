@@ -121,6 +121,8 @@ const FeelStaList = () => {
 		setToSearch(e.target.value);
 	};
 
+	//검색결과 에 따라서 렌더링 시킬꺼 난항을 겪는중
+
 	const getList = () => {
 		axios.get(`http://localhost:3001/feelsta`).then((response) => {
 			console.log(response);
