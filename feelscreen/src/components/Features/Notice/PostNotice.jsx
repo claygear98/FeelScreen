@@ -1,5 +1,5 @@
 //not yet
-import React, { useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import styled from 'styled-components';
 import ContentEditor from './Ckeditor/ContentEditor';
 import { useNavigate } from 'react-router-dom';
@@ -62,6 +62,7 @@ const PostNotice = () => {
 	const [Title, SetTitle] = useState('');
 	// const [editor, setEditor] = useState(null);
 	const navigate = useNavigate();
+
 	const onChangeTitle = useCallback(
 		(e) => {
 			SetTitle(e.target.value);
@@ -89,7 +90,25 @@ const PostNotice = () => {
 				console.log(error);
 			});
 	};
+	useEffect(() => {
+		const handleBackEvent = () => {
+			axios
+				.delete(`${sever_port}/notice-post`)
+				.then((res) => {
+					console.log(res);
+				})
+				.catch((err) => {
+					console.log(err);
+				});
+			// 뒤로가기 할 때 수행할 동작을 여기에 추가합니다.
+		};
 
+		window.addEventListener('popstate', handleBackEvent);
+
+		return () => {
+			window.removeEventListener('popstate', handleBackEvent);
+		};
+	}, []);
 	return (
 		<PostNoticeFrom>
 			<TitleForm>
