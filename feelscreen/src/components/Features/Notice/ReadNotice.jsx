@@ -112,7 +112,7 @@ const ReadNotice = () => {
 										<div>사장님</div>
 									</div>
 									<div className="content">
-										{detail.NOTICE_ID === focus ? (
+										{(notice.NOTICE_ID === detail.NOTICE_ID) === focus ? (
 											<div
 												dangerouslySetInnerHTML={{
 													__html: detail.NOTICECONTENT,
