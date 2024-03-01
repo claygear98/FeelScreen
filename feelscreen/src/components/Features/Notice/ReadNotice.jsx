@@ -78,6 +78,7 @@ const ReadNotice = () => {
 			.get(`${server_port}/noticeDetail?notice_id=${id}`)
 			.then((response) => {
 				if ((response.data.success = true)) {
+					console.log(response.data.notice);
 					response.data.notice.NOTICECONTENT =
 						response.data.notice.NOTICECONTENT.replaceAll('"', '');
 					setDetail(response.data.notice);
