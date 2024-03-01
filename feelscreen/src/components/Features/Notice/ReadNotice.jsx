@@ -100,7 +100,7 @@ const ReadNotice = () => {
 							<NoticeItem
 								key={notice.NOTICE_ID}
 								className="noticeItem"
-								onClick={handleDetail(notice.NOTICE_ID)}
+								onClick={() => handleDetail(notice.NOTICE_ID)}
 							>
 								<div className="title_writer">
 									<div>
