@@ -110,15 +110,9 @@ const Poster = styled.button`
 const FeelStaList = () => {
 	const [feelstaList, setFeelstaList] = useState([]);
 	const [sortList, setSortList] = useState('latest');
-	const [toSearch, setToSearch] = useState('');
-	const [searchType, setSearchType] = useState('fromtitle');
 
 	const handleFilterChange = (e) => {
 		setSortList(e.target.value);
-	};
-
-	const handleSearchChange = (e) => {
-		setToSearch(e.target.value);
 	};
 
 	//검색결과 에 따라서 렌더링 시킬꺼 난항을 겪는중
@@ -128,29 +122,130 @@ const FeelStaList = () => {
 			console.log(response);
 			if (response.data.success === true) {
 				let dataList = response.data.feelsta;
+				// let dataList = [
+				// 	{
+				// 		FEELSTA_ID: 1,
+				// 		PROFILEIMAGE: '../public/logo192.png',
+				// 		USERNAME: '사과튀김',
+				// 		FEELSTA_DATE: '2024-02-02',
+				// 		FEELSTA_TAG: '#야호,#간만세,#검색기능구현,#마뜨급나',
+
+				// 		FEELSTA_IMAGE: '../public/logo192.png',
+				// 		FEELSTA_LIKE: 1232,
+				// 		FEELSTA_CONTENT: '골프함칠사람없나요?1',
+				// 		COMMENTS: 1123,
+				// 	},
+				// 	{
+				// 		FEELSTA_ID: 2,
+				// 		PROFILEIMAGE: '../public/logo192.png',
+				// 		USERNAME: '사과튀김2',
+				// 		FEELSTA_DATE: '2024-02-02',
+				// 		FEELSTA_TAG: '#야호,#간만세,#검색기능구현',
+				// 		FEELSTA_IMAGE: '../public/logo192.png',
+				// 		FEELSTA_LIKE: 1233,
+				// 		FEELSTA_CONTENT: '골프함칠사람없나요?123',
+				// 		COMMENTS: 1123,
+				// 	},
+				// 	{
+				// 		FEELSTA_ID: 3,
+				// 		PROFILEIMAGE: '../public/logo192.png',
+				// 		USERNAME: '사과튀김3',
+				// 		FEELSTA_DATE: '2024-02-02',
+				// 		FEELSTA_TAG: '#야호,#간만세,#검색기능구현',
+				// 		FEELSTA_IMAGE: '../public/logo192.png',
+				// 		FEELSTA_LIKE: 1234,
+				// 		FEELSTA_CONTENT: '골프함칠사람없나요?1442341',
+				// 		COMMENTS: 1123,
+				// 	},
+				// ];
 				if (sortList === 'latest') {
 					dataList = dataList.sort((a, b) => {
-						console.log('data');
 						return new Date(b.FEELSTA_DATE) - new Date(a.FEELSTA_DATE);
 					});
 				} else if (sortList === 'likest') {
-					console.log('dataaa');
 					dataList = dataList.sort((a, b) => b.FEELSTA_LIKE - a.FEELSTA_LIKE);
 				}
 				setFeelstaList(dataList);
-				console.log(feelstaList);
-				console.log(response);
 			}
 		});
 	};
-
-	const navigate = useNavigate();
 
 	// 데이터를 동기적으로 가져오기 위해 useEffect 내부에서 getList 함수 호출
 	useEffect(() => {
 		console.log(2);
 		getList();
 	}, [sortList]); // sortList 전달하여 sortList값이 변경 될 때만 호출되도록 함
+
+	const [toSearch, setToSearch] = useState('');
+	const [searchType, setSearchType] = useState('fromtitle');
+
+	const handleSearchChange = (e) => {
+		setSearchType(e.target.value);
+	};
+
+	const handleTypeChange = (e) => {
+		setToSearch(e.target.value);
+	};
+
+	const searchSubmit = () => {
+		axios.get(`http://localhost:3001/feelsta`).then((response) => {
+			console.log(response);
+			if (response.data.success === true) {
+				let dataLists = response.data.feelsta;
+				// let dataLists = [
+				// 	{
+				// 		FEELSTA_ID: 1,
+				// 		PROFILEIMAGE: '../public/logo192.png',
+				// 		USERNAME: '사과튀김',
+				// 		FEELSTA_DATE: '2024-02-02',
+				// 		FEELSTA_TAG: '#야호,#간만세,#검색기능구현,#마뜨급나',
+				// 		FEELSTA_IMAGE: '../public/logo192.png',
+				// 		FEELSTA_LIKE: 1232,
+				// 		FEELSTA_CONTENT: '골프함칠사람없나요?1',
+				// 		COMMENTS: 1123,
+				// 	},
+				// 	{
+				// 		FEELSTA_ID: 2,
+
+				// 		PROFILEIMAGE: '../public/logo192.png',
+				// 		USERNAME: '사과튀김2',
+				// 		FEELSTA_DATE: '2024-02-02',
+				// 		FEELSTA_TAG: '#야호,#간만세,#검색기능구현',
+				// 		FEELSTA_IMAGE: '../public/logo192.png',
+				// 		FEELSTA_LIKE: 1233,
+				// 		FEELSTA_CONTENT: '골프함칠사람없나요?123',
+				// 		COMMENTS: 1123,
+				// 	},
+				// 	{
+				// 		FEELSTA_ID: 3,
+
+				// 		PROFILEIMAGE: '../public/logo192.png',
+				// 		USERNAME: '사과튀김3',
+				// 		FEELSTA_DATE: '2024-02-02',
+				// 		FEELSTA_TAG: '#야호,#간만세,#검색기능구현',
+				// 		FEELSTA_IMAGE: '../public/logo192.png',
+				// 		FEELSTA_LIKE: 1234,
+				// 		FEELSTA_CONTENT: '골프함칠사람없나요?1442341',
+				// 		COMMENTS: 1123,
+				// 	},
+				// ];
+				if (searchType === 'fromtitle') {
+					dataLists = dataLists.filter((item) =>
+						item.FEELSTA_CONTENT.includes(toSearch)
+					);
+					console.log(dataLists);
+				} else if (searchType === 'tagging') {
+					dataLists = dataLists.filter((item) =>
+						item.FEELSTA_TAG.includes(toSearch)
+					);
+					console.log(dataLists);
+				}
+				setFeelstaList(dataLists);
+			}
+		});
+	};
+
+	const navigate = useNavigate();
 
 	return (
 		<ListContainer>
@@ -160,17 +255,24 @@ const FeelStaList = () => {
 					<option value="likest">추천순</option>
 				</select>
 				<div>
-					<select name="search" id="search">
+					<select name="search" id="search" onChange={handleSearchChange}>
 						<option value="fromtitle">제목</option>
 						<option value="tagging">태그</option>
 					</select>
 					<input
 						type="text"
 						value={toSearch}
-						onChange={handleSearchChange}
+						onChange={handleTypeChange}
 						placeholder="검색어를 입력하세요"
 					></input>
-					<button>검색</button>
+					<button
+						onClick={(e) => {
+							e.preventDefault();
+							searchSubmit();
+						}}
+					>
+						검색
+					</button>
 				</div>
 			</ListInfo>
 			<hr></hr>
