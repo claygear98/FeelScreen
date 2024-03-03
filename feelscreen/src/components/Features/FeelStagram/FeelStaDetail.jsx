@@ -165,20 +165,20 @@ const FeelStaDetail = () => {
 	const [isHeart, setIsHeart] = useState(true);
 
 	const { username, userImage } = useHeaderInfo();
-	const handleHeart = () => {
+	const handleHeart = (FEELSTA_ID) => {
 		setIsHeart(!isHeart);
 		if (isHeart === true) {
 			axios.get('http://localhost:3001//feelstalike', {
 				headers: {
 					Authorization: cookies.get('Authorization'),
-					feelsta_id: username,
+					feelsta_id: FEELSTA_ID,
 				},
 			});
 		} else {
 			axios.delete('http://localhost:3001//feelstalike', {
 				headers: {
 					Authorization: cookies.get('Authorization'),
-					feelsta_id: username,
+					feelsta_id: FEELSTA_ID,
 				},
 			});
 		}
@@ -264,8 +264,17 @@ const FeelStaDetail = () => {
 				</ItemImg>
 				<ItemBot>
 					<Likes>
-						<span className="heartPush" onClick={handleHeart}>
-							{isHeart ? <FaRegHeart /> : <FaHeart />}
+						<span
+							className="heartPush"
+							onClick={() => {
+								handleHeart(feelsta.FEELSTA_ID);
+							}}
+						>
+							{feelsta.LIKE_NAME && feelsta.LIKE_NAME.includes(username) ? (
+								<FaHeart />
+							) : (
+								<FaRegHeart />
+							)}
 						</span>
 						<span>{feelsta.FEELSTA_LIKE}</span>
 					</Likes>
