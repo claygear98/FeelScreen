@@ -4,6 +4,11 @@ import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 const sever_port = 'http://localhost:3001';
 const apiAdress = 'image';
+const editorConfiguration = {
+	image: {
+		outputType: 'auto',
+	},
+};
 const ContentEditor = ({ SetContent }) => {
 	function uploadAdapter(loader) {
 		return {
@@ -24,7 +29,7 @@ const ContentEditor = ({ SetContent }) => {
 							)
 							.then((res) => {
 								resolve({
-									default: `${sever_port}/${res.data.originalname}`,
+									default: `/assets/notice/${res.data.originalname}`,
 								});
 								console.log(res);
 							})
@@ -47,6 +52,7 @@ const ContentEditor = ({ SetContent }) => {
 			<CKEditor
 				config={{
 					extraPlugins: [uploadPlugin],
+					autoParagraph: false,
 				}}
 				editor={ClassicEditor}
 				data="<p>공지 입력</p>"

@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
-// import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { HiOutlineSpeakerphone } from 'react-icons/hi';
 
@@ -35,15 +34,32 @@ const NoticeCards = styled.div`
 		}
 	}
 `;
+const NoticeItem = styled.div`
+	display: flex;
+	flex-direction: column;
+	.title_writer {
+		display: flex;
+		justify-content: space-between;
+		padding: 10px;
+		background-color: #d9d9d9;
+		border-radius: 5px;
+	}
+	.content {
+		padding: 10px;
+		text-align: initial;
+	}
+`;
 const ReadNotice = () => {
 	const [noticeList, setNoticeList] = useState([]);
-
+	const [detail, setDetail] = useState([]);
+	const [focus, setFocus] = useState(-1);
 	const fetchNoticeList = useCallback(() => {
 		axios
 			.get(`${server_port}/notice`)
 			.then((response) => {
 				if (response.data.success === true) {
 					setNoticeList(response.data.notice);
+					console.log('Failed notices');
 				} else {
 					console.log('Failed to fetch notices');
 				}
@@ -56,6 +72,31 @@ const ReadNotice = () => {
 	useEffect(() => {
 		fetchNoticeList();
 	}, [fetchNoticeList]);
+
+	const handleDetail = (id) => {
+		axios
+			.get(`${server_port}/noticeDetail?notice_id=${id}`)
+			.then((response) => {
+				if ((response.data.success = true)) {
+					// response.data.notice.NOTICECONTENT.length !== undefined
+					// 	? (response.data.notice.NOTICECONTENT =
+					// 			response.data.notice.NOTICECONTENT.replaceAll('"', ''))
+					// 	: '';
+					console.log(response.data.notice[0].NOTICECONTENT);
+					response.data.notice[0].NOTICECONTENT =
+						response.data.notice[0].NOTICECONTENT.replaceAll('"', '');
+					setDetail(response.data.notice[0]);
+					setFocus(id);
+				}
+			});
+	};
+	const isSame = (a, b) => {
+		if (a === b) {
+			return b;
+		} else {
+			return 0;
+		}
+	};
 	return (
 		<div>
 			<div>
@@ -64,28 +105,58 @@ const ReadNotice = () => {
 					<div className="">글쓰기</div>
 				</NoticeHeader>
 				{noticeList.length !== 0 ? (
-					noticeList.map((notice, index) => (
-						<NoticeCards>
-							<div key={notice.NOTICE_ID} className="noticeItem">
+					<NoticeCards>
+						{noticeList.map((notice, index) => {
+							return (
+								<NoticeItem
+									key={notice.NOTICE_ID}
+									className="noticeItem"
+									onClick={() => handleDetail(notice.NOTICE_ID)}
+								>
+									<div className="title_writer">
+										<div>
+											<HiOutlineSpeakerphone
+												style={{ color: '#d8f7e0', backgroundColor: '#4ecb71' }}
+											/>
+											<span>{notice.NOTICETITLE}</span>
+										</div>
+										<div>사장님</div>
+									</div>
+									<div className="content">
+										{isSame(notice.NOTICE_ID, detail.NOTICE_ID) === focus ? (
+											<div
+												dangerouslySetInnerHTML={{
+													__html: detail.NOTICECONTENT,
+												}}
+											/>
+										) : (
+											''
+										)}
+									</div>
+								</NoticeItem>
+							);
+						})}
+					</NoticeCards>
+				) : (
+					<NoticeCards>
+						<NoticeItem className="noticeItem">
+							<div className="title_writer">
 								<div>
-									<HiOutlineSpeakerphone
-										style={{ color: '#d8f7e0', backgroundColor: '#4ecb71' }}
-									/>
-									<span>{notice.NOTICETITLE}</span>
+									<HiOutlineSpeakerphone style={{ color: '#d8f7e0' }} />
+									<span>아직없음</span>
 								</div>
 								<div>사장님</div>
 							</div>
-						</NoticeCards>
-					))
-				) : (
-					<NoticeCards>
-						<div className="noticeItem">
-							<div>
-								<HiOutlineSpeakerphone style={{ color: '#d8f7e0' }} />
-								<span>아직없음</span>
+							<div className="content">
+								<p>나는 사장</p>
+								<p>너는 손님!</p>
+								<p>&nbsp;</p>
+								<p>난 둥이다멍</p>
+								<figure className="image">
+									<img src="/assets/1f.png" width="128" height="128" />
+								</figure>
 							</div>
-							<div>사장님</div>
-						</div>
+						</NoticeItem>
 						<div className="noticeItem">
 							<div>
 								<HiOutlineSpeakerphone style={{ color: '#d8f7e0' }} />

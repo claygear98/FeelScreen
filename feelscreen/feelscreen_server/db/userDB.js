@@ -4,6 +4,7 @@ const axios = require('axios');
 const sms = require('../sms/aligo_sms.js');
 const redisClient = require('../JWT/redis.js');
 const crypto = require('crypto');
+
 //redis 연결
 redisClient.on('connect', () => {
 	console.info('Redis connected!');
@@ -109,7 +110,7 @@ function feelstaAll(res) {
     feelsta.FEELSTA_IMAGE, 
     feelsta.FEELSTA_CONTENT, 
     feelsta.FEELSTA_DATE, 
-    (SELECT COUNT(FEELSTA_ID) FROM HEART WHERE feelsta.FEELSTA_ID = HEART.FEELSTA_ID), 
+    (SELECT COUNT(FEELSTA_ID) FROM HEART WHERE feelsta.FEELSTA_ID = HEART.FEELSTA_ID) AS FEELSTA_LIKE, 
     feelsta.FEELSTA_TAG, 
     (SELECT COUNT(*) FROM COMMENT WHERE COMMENT.FEELSTA_ID = feelsta.FEELSTA_ID) AS COMMENTS,
     USER.USERNAME, 
@@ -137,8 +138,8 @@ function feelstaOne(id, res) {
 		feelsta.FEELSTA_ID, 
 		feelsta.FEELSTA_IMAGE, 
 		feelsta.FEELSTA_CONTENT, 
-		feelsta.FEELSTA_DATE, 
-		feelsta.FEELSTA_LIKE, 
+		feelsta.FEELSTA_DATE,
+		(SELECT COUNT(FEELSTA_ID) FROM HEART WHERE feelsta.FEELSTA_ID = HEART.FEELSTA_ID) AS FEELSTA_LIKE,
 		feelsta.FEELSTA_TAG, 
 		(
 			SELECT JSON_ARRAYAGG(
@@ -175,7 +176,7 @@ function feelstaOne(id, res) {
 }
 
 function feelstaPost(req, res, urlArr, user_id) {
-	let sql = `INSERT INTO FEELSTA (FEELSTA_CONTENT, FEELSTA_LIKE, FEELSTA_TAG, FEELSTA_DATE, FEELSTA_IMAGE, USER_ID) VALUES ("${req.body.description}", 0, "${req.body.tag}",CURDATE(), "${urlArr}", 15)`;
+	let sql = `INSERT INTO FEELSTA (FEELSTA_CONTENT, FEELSTA_LIKE, FEELSTA_TAG, FEELSTA_DATE, FEELSTA_IMAGE, USER_ID) VALUES ("${req.body.description}", 0, "${req.body.tag}",date_format(now(), '%Y-%m-%d %H:%i:%s'), "${urlArr}", 15)`;
 
 	db.query(sql, function (error, result) {
 		if (error) {
@@ -206,9 +207,10 @@ function noticeList(res) {
 }
 
 function noticePost(title, content, res) {
-	let date = new Date();
-	console.log('date', date);
-	//
+	// content = content
+	// 	.replaceAll(/style='(.*?)'/g, '')
+	// 	.replaceAll(/<img(.*?)>/g, '<img$1 />'); // 이미지 태그에 닫힌 태그 추가
+
 	let sql = `INSERT INTO NOTICE (NOTICETITLE, NOTICECONTENT, NOTICEDATE) VALUES ("${title}", "${content}", date_format(now(), '%Y-%m-%d %H:%i:%s'))`;
 
 	db.query(sql, function (error, result) {
@@ -223,6 +225,21 @@ function noticePost(title, content, res) {
 	});
 }
 
+function noticeDetail(notice_id, res) {
+	let sql = `SELECT NOTICE_ID, NOTICETITLE, NOTICECONTENT, NOTICEDATE FROM NOTICE WHERE NOTICE_ID = ${notice_id}`;
+
+	db.query(sql, function (error, result) {
+		if (error) {
+			console.log(error);
+			res.send({ success: false, message: 'db error' });
+		} else {
+			res.send({
+				success: true,
+				notice: result,
+			});
+		}
+	});
+}
 module.exports = {
 	logIn,
 	allow,
@@ -233,4 +250,5 @@ module.exports = {
 	feelstaOne,
 	feelstaPost,
 	noticePost,
+	noticeDetail,
 };

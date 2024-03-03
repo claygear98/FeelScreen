@@ -60,12 +60,15 @@ router.post('/sign-up/phone', (req, res) => {
 router.post('/sign-up/code', signController.code);
 
 //공지 사진 업로드
-app.post('/image', upload.single('image'), async (req, res) => {
+router.post('/image', upload.single('image'), async (req, res) => {
 	res.status(200).json(req.file);
 });
 
+router.post('/imagedelete', (req, res) => {
+	console.log('뒤로가기 확인 완');
+});
 //공지 게시물 등록
-app.post('/notice-post', async (req, res) => {
+router.post('/notice-post', async (req, res) => {
 	imageNames = imageNames.filter((name) => {
 		if (req.body.content.includes(name)) {
 			return name;
@@ -76,8 +79,11 @@ app.post('/notice-post', async (req, res) => {
 	let to = '../../public/assets/notice';
 
 	await imageMove.moveImage(from, to, imageNames, req, res);
+});
 
-	// noticeController.noticePost(req.body.title, req.body.content, res);
+router.get('/noticeDetail', (req, res) => {
+	let { notice_id } = req.query;
+	noticeController.noticeDetail(notice_id, res);
 });
 
 //헤더 요청

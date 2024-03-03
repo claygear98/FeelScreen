@@ -8,7 +8,11 @@ function noticeList(res) {
 	userDB.noticeList(res);
 }
 
+function noticeDetail(notice_id, res) {
+	userDB.noticeDetail(notice_id, res);
+}
 module.exports = {
 	noticePost,
 	noticeList,
+	noticeDetail,
 };
