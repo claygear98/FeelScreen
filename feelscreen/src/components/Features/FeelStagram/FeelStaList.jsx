@@ -115,7 +115,7 @@ const FeelStaList = () => {
 	const [feelstaList, setFeelstaList] = useState([]);
 	const [sortList, setSortList] = useState('latest');
 	const [isHeart, setIsHeart] = useState(false);
-	const { username, userImage } = useHeaderInfo();
+	const { username } = useHeaderInfo();
 	const cookies = new Cookies();
 
 	const handleHeart = () => {
@@ -268,11 +268,14 @@ const FeelStaList = () => {
 							<ItemBot>
 								<Likes>
 									<span className="heartPush" onClick={handleHeart}>
-										{a.LIKE_NAME.map((val) =>
-											val.USER_NAME.includes(username)
-												? (<FaHeart />)`${setIsHeart(true)}`
-												: (<FaRegHeart />)`${setIsHeart(false)}`
-										)}
+										{a.LIKE_NAME &&
+											a.LIKE_NAME.map((val) =>
+												val.USER_NAME === username ? (
+													<FaHeart />
+												) : (
+													<FaRegHeart />
+												)
+											)}
 									</span>
 									<span>{a.FEELSTA_LIKE}</span>
 								</Likes>
