@@ -11,7 +11,6 @@ const usePreventGoBack = () => {
 		axios.get('http://localhost:3001/imagedelete').then((res) => {
 			console.log(res);
 		});
-		prompt('저장안됩니다이');
 		// 2-2. 토스트 메세지를 출력한다.
 	};
 

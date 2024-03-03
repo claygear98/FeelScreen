@@ -1,5 +1,4 @@
 const db = require('../db/databaseSet.js');
-// const jwt = require('../JWT/jwt-util.js');
 
 function feelstaAll(res) {
 	//
@@ -10,9 +9,10 @@ function feelstaAll(res) {
     feelsta.FEELSTA_DATE, 
     (SELECT COUNT(FEELSTA_ID) FROM HEART WHERE feelsta.FEELSTA_ID = HEART.FEELSTA_ID) AS FEELSTA_LIKE,
     (SELECT JSON_ARRAYAGG(
-            JSON_OBJECT(
-                'USER_NAME', HEART.USER_NAME
-            )) FROM HEART
+		JSON_OBJECT(
+			'USER_NAME', USER.USERNAME
+		)) FROM HEART
+		JOIN USER ON HEART.USER_ID = USER.USER_ID
             WHERE HEART.FEELSTA_ID = FEELSTA.FEELSTA_ID) AS LIKE_NAME,
     feelsta.FEELSTA_TAG, 
     (SELECT COUNT(*) FROM COMMENT WHERE COMMENT.FEELSTA_ID = feelsta.FEELSTA_ID) AS COMMENTS,
@@ -46,8 +46,9 @@ function feelstaOne(id, res) {
 		feelsta.FEELSTA_TAG,
         (SELECT JSON_ARRAYAGG(
             JSON_OBJECT(
-                'USER_NAME', HEART.USER_NAME
+                'USER_NAME', USER.USERNAME
             )) FROM HEART
+			JOIN USER ON HEART.USER_ID = USER.USER_ID
             WHERE HEART.FEELSTA_ID = FEELSTA.FEELSTA_ID) AS LIKE_NAME, 
 		(
 			SELECT JSON_ARRAYAGG(
@@ -98,8 +99,36 @@ function feelstaPost(req, res, urlArr, user_id) {
 	});
 }
 
+function feelstaLike(user_id, feelsta_id, res) {
+	let sql = `INSERT INTO HEART (FEELSTA_ID, USER_ID) VALUES (${feelsta_id}, ${user_id})`;
+
+	db.query(sql, function (error, result) {
+		if (error) {
+			console.log(error);
+			res.send({ success: true, message: 'db error' });
+		} else {
+			res.send({ success: true });
+		}
+	});
+}
+
+function feelstaDeleteLike(user_id, feelsta_id, res) {
+	let sql = `DELETE FROM HEART WHERE (FEELSTA_ID = ${feelsta_id} AND USER_ID = ${user_id})`;
+
+	db.query(sql, function (error, result) {
+		if (error) {
+			console.log(error);
+			res.send({ success: true, message: 'db error' });
+		} else {
+			res.send({ success: true });
+		}
+	});
+}
+
 module.exports = {
 	feelstaAll,
 	feelstaOne,
 	feelstaPost,
+	feelstaDeleteLike,
+	feelstaLike,
 };
