@@ -181,21 +181,24 @@ const FeelStaList = () => {
 	};
 
 	const handleHeart = (FEELSTA_ID) => {
-		setIsHeart(!isHeart);
-		if (isHeart === true) {
-			axios.get('http://localhost:3001/feelstalike', {
-				headers: {
-					Authorization: cookies.get('Authorization'),
-					feelsta_id: FEELSTA_ID,
-				},
-			});
+		if (isHeart === false) {
+			axios
+				.get('http://localhost:3001/feelstalike', {
+					headers: {
+						Authorization: cookies.get('Authorization'),
+						feelsta_id: FEELSTA_ID,
+					},
+				})
+				.then(setIsHeart(!isHeart), console.log('get함'));
 		} else {
-			axios.delete('http://localhost:3001/feelstalike', {
-				headers: {
-					Authorization: cookies.get('Authorization'),
-					feelsta_id: FEELSTA_ID,
-				},
-			});
+			axios
+				.delete('http://localhost:3001/feelstalike', {
+					headers: {
+						Authorization: cookies.get('Authorization'),
+						feelsta_id: FEELSTA_ID,
+					},
+				})
+				.then(setIsHeart(!isHeart), console.log('delete함'));
 		}
 	};
 
@@ -232,14 +235,7 @@ const FeelStaList = () => {
 			<hr></hr>
 			<ListItem>
 				{feelstaList.map((a, i) => (
-					<Item
-						onClick={() => {
-							navigate(`/feelstadetail/${a.FEELSTA_ID}`, {
-								state: a.FEELSTA_ID,
-							});
-						}}
-						key={i}
-					>
+					<Item key={i}>
 						<ItemPreview>
 							<ItemTop>
 								<img
@@ -258,7 +254,13 @@ const FeelStaList = () => {
 									<span key={index}>{tag}</span>
 								))}
 							</ItemSec>
-							<ItemImg>
+							<ItemImg
+								onClick={() => {
+									navigate(`/feelstadetail/${a.FEELSTA_ID}`, {
+										state: a.FEELSTA_ID,
+									});
+								}}
+							>
 								<img
 									src={a.PROFILEIMAGE}
 									alt=""

@@ -19,8 +19,8 @@ function authJWT(req, res) {
 }
 
 function authGetJWT(req, res) {
-	if (req.header.Authorization) {
-		const token = req.body.Authorization; // header에서 access token을 가져옵니다.
+	if (req.get('Authorization')) {
+		const token = req.get('Authorization'); // header에서 access token을 가져옵니다.
 		const result = verify(token); // token을 검증합니다.
 		if (result.ok) {
 			// token이 검증되었으면 req에 값을 세팅하고, 다음 콜백함수로 갑니다.
