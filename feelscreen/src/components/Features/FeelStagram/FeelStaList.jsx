@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import FeelstaItem from './FeelstaItem'; // FeelstaItem 컴포넌트 import
+// import axios from 'axios'; // axios import 주석 처리
+
+import FeelstaItem from './FeelstaItem';
 
 const ListContainer = styled.div`
 	width: 100%;
@@ -46,25 +47,50 @@ const FeelStaList = () => {
 		setSortList(e.target.value);
 	};
 
+	const dummyData = [
+		{
+			PROFILEIMAGE: 'profile_image_url_1',
+			USERNAME: 'User 1',
+			FEELSTA_DATE: '2024-03-04',
+			FEELSTA_CONTENT: 'Feelsta content 1',
+			FEELSTA_TAG: 'tag1, tag2',
+			FEELSTA_ID: 1,
+			FEELSTA_LIKE: 10,
+			COMMENTS: 5,
+		},
+		{
+			PROFILEIMAGE: 'profile_image_url_2',
+			USERNAME: 'User 2',
+			FEELSTA_DATE: '2024-03-03',
+			FEELSTA_CONTENT: 'Feelsta content 2',
+			FEELSTA_TAG: 'tag3, tag4',
+			FEELSTA_ID: 2,
+			FEELSTA_LIKE: 20,
+			COMMENTS: 8,
+		},
+		// Add more dummy data as needed
+	];
+
 	const getList = () => {
-		axios.get(`http://localhost:3001/feelsta`).then((response) => {
-			console.log(response);
-			if (response.data.success === true) {
-				let dataList = response.data.feelsta;
-				if (sortList === 'latest') {
-					dataList = dataList.sort(
-						(a, b) => new Date(b.FEELSTA_DATE) - new Date(a.FEELSTA_DATE)
-					);
-				} else if (sortList === 'likest') {
-					dataList = dataList.sort((a, b) => b.FEELSTA_LIKE - a.FEELSTA_LIKE);
-				}
-				setFeelstaList(dataList);
-			}
-		});
+		// Simulate API call with dummy data
+		// axios.get(`http://localhost:3001/feelsta`).then((response) => {
+		// 	console.log(response);
+		// 	if (response.data.success === true) {
+		// 		let dataList = response.data.feelsta;
+		// 		if (sortList === 'latest') {
+		// 			dataList = dataList.sort((a, b) => new Date(b.FEELSTA_DATE) - new Date(a.FEELSTA_DATE));
+		// 		} else if (sortList === 'likest') {
+		// 			dataList = dataList.sort((a, b) => b.FEELSTA_LIKE - a.FEELSTA_LIKE);
+		// 		}
+		// 		setFeelstaList(dataList);
+		// 	}
+		// });
+
+		// Set dummy data
+		setFeelstaList(dummyData);
 	};
 
 	useEffect(() => {
-		console.log(2);
 		getList();
 	}, [sortList]);
 
@@ -80,23 +106,8 @@ const FeelStaList = () => {
 	};
 
 	const searchSubmit = () => {
-		axios.get(`http://localhost:3001/feelsta`).then((response) => {
-			console.log(response);
-			if (response.data.success === true) {
-				let dataLists = response.data.feelsta;
-
-				if (searchType === 'fromtitle') {
-					dataLists = dataLists.filter((item) =>
-						item.FEELSTA_CONTENT.includes(toSearch)
-					);
-				} else if (searchType === 'tagging') {
-					dataLists = dataLists.filter((item) =>
-						item.FEELSTA_TAG.includes(toSearch)
-					);
-				}
-				setFeelstaList(dataLists);
-			}
-		});
+		// Simulate search functionality
+		// You can implement search logic here
 	};
 
 	const navigate = useNavigate();
@@ -129,7 +140,7 @@ const FeelStaList = () => {
 					</button>
 				</div>
 			</ListInfo>
-			<hr></hr>
+			<hr />
 			<ListItem>
 				{feelstaList.map((feelsta) => (
 					<FeelstaItem

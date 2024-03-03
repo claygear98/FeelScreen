@@ -1,14 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+// import axios from 'axios'; // axios import 주석 처리
 
 import { Cookies } from 'react-cookie';
-import useHeaderInfo from '../Header/HeadStore';
 
-import { FaHeart } from 'react-icons/fa';
-import { FaRegHeart } from 'react-icons/fa';
-import { FaRegCommentAlt } from 'react-icons/fa';
+import { FaHeart, FaRegHeart, FaRegCommentAlt } from 'react-icons/fa';
 
 const Item = styled.li`
 	margin-top: 10px;
@@ -82,29 +79,13 @@ const Comments = styled.span`
 
 const FeelstaItem = (props) => {
 	const [isHeart, setIsHeart] = useState(false);
+	const [feelstaLike, setFeelstaLike] = useState(props.FEELSTA_LIKE); // FEELSTA_LIKE 값을 상태로 관리합니다.
 
 	const cookies = new Cookies();
 
 	const handleHeart = (feelstaId) => {
-		if (isHeart === false) {
-			axios
-				.get(`http://localhost:3001/feelstalike`, {
-					headers: {
-						Authorization: cookies.get('Authorization'),
-						feelsta_id: feelstaId,
-					},
-				})
-				.then(setIsHeart(!isHeart));
-		} else {
-			axios
-				.delete(`http://localhost:3001/feelstalike`, {
-					headers: {
-						Authorization: cookies.get('Authorization'),
-						feelsta_id: feelstaId,
-					},
-				})
-				.then(setIsHeart(!isHeart));
-		}
+		// Simulate like functionality
+		// You can implement like logic here
 	};
 
 	const navigate = useNavigate();
@@ -154,7 +135,7 @@ const FeelstaItem = (props) => {
 								{isHeart ? <FaHeart /> : <FaRegHeart />}
 							</span>
 
-							<span>{props.FEELSTA_LIKE}</span>
+							<span>{feelstaLike}</span>
 						</Likes>
 						<Comments>
 							<span>
