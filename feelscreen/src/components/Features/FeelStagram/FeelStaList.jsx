@@ -181,7 +181,25 @@ const FeelStaList = () => {
 	};
 
 	const handleHeart = (feelstaId) => {
-		setIsHeart(!isHeart);
+		if (isHeart === false) {
+			axios
+				.get(`http://localhost:3001//feelstalike`, {
+					headers: {
+						Authorization: cookies.get('Authorization'),
+						feelsta_id: feelstaId,
+					},
+				})
+				.then(setIsHeart(!isHeart));
+		} else {
+			axios
+				.delete(`http://localhost:3001//feelstalike`, {
+					headers: {
+						Authorization: cookies.get('Authorization'),
+						feelsta_id: feelstaId,
+					},
+				})
+				.then(setIsHeart(!isHeart));
+		}
 	};
 
 	const navigate = useNavigate();
@@ -252,6 +270,9 @@ const FeelStaList = () => {
 							</ItemImg>
 							<ItemBot>
 								<Likes>
+									{a.LIKE_NAME.includes(username)
+										? setIsHeart(true)
+										: setIsHeart(false)}
 									<span
 										className="heartPush"
 										onClick={() => {
@@ -260,6 +281,7 @@ const FeelStaList = () => {
 									>
 										{isHeart ? <FaHeart /> : <FaRegHeart />}
 									</span>
+
 									<span>{a.FEELSTA_LIKE}</span>
 								</Likes>
 								<Comments>
