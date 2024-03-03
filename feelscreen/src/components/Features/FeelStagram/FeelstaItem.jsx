@@ -153,7 +153,9 @@ const FeelstaItem = (props) => {
 								{isHeart ? <FaHeart /> : <FaRegHeart />}
 							</span>
 
-							<span>{props.FEELSTA_LIKE}</span>
+							<span>
+								{isHeart ? props.FEELSTA_LIKE + 1 : props.FEELSTA_LIKE}
+							</span>
 						</Likes>
 						<Comments>
 							<span>

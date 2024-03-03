@@ -167,7 +167,7 @@ const FeelStaDetail = () => {
 	const [newComment, setNewComment] = useState([]);
 	const cookies = new Cookies();
 
-	const [isHeart, setIsHeart] = useState(true);
+	const [isHeart, setIsHeart] = useState(false);
 
 	const { username, userImage } = useHeaderInfo();
 	const handleHeart = (feelstaId) => {
@@ -280,7 +280,9 @@ const FeelStaDetail = () => {
 						>
 							{isHeart ? <FaHeart /> : <FaRegHeart />}
 						</span>
-						<span>{feelsta.FEELSTA_LIKE}</span>
+						<span>
+							{isHeart ? feelsta.FEELSTA_LIKE : feelsta.FEELSTA_LIKE - 1}
+						</span>
 					</Likes>
 					<Comments>
 						<span>
