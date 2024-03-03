@@ -137,7 +137,7 @@ const FeelstaItem = (props) => {
 						}}
 					>
 						<img
-							src={props.PROFILEIMAGE}
+							src={props.FEELSTA_IMAGE}
 							alt=""
 							style={{ width: '300px', borderRadius: '10px' }}
 						/>

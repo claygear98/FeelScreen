@@ -141,6 +141,7 @@ const FeelStaList = () => {
 						FEELSTA_TAG={feelsta.FEELSTA_TAG}
 						FEELSTA_ID={feelsta.FEELSTA_ID}
 						FEELSTA_LIKE={feelsta.FEELSTA_LIKE}
+						FEELSTA_IMAGE={feelsta.FEELSTA_IMAGE}
 						COMMENTS={feelsta.COMMENTS}
 						LIKE_NAME={feelsta.LIKE_NAME}
 					/>
