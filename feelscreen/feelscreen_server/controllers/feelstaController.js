@@ -1,17 +1,17 @@
 const multer = require('multer');
-const userDB = require('../db/userDB.js');
+const feelstaDB = require('../db/feelstaDB.js');
 
 function feelAll(res) {
-	userDB.feelstaAll(res);
+	feelstaDB.feelstaAll(res);
 }
 
 function feelOne(id, res) {
-	userDB.feelstaOne(id, res);
+	feelstaDB.feelstaOne(id, res);
 }
 
 function feelPost(req, res, urlArr, user_id) {
 	console.log(req.body.tag);
-	userDB.feelstaPost(req, res, urlArr, user_id);
+	feelstaDB.feelstaPost(req, res, urlArr, user_id);
 }
 
 const storage = multer.diskStorage({

@@ -1,3 +1,6 @@
+const db = require('../db/databaseSet.js');
+// const jwt = require('../JWT/jwt-util.js');
+
 function feelstaAll(res) {
 	//
 	let sql = `SELECT 
@@ -84,3 +87,9 @@ function feelstaPost(req, res, urlArr, user_id) {
 		}
 	});
 }
+
+module.exports = {
+	feelstaAll,
+	feelstaOne,
+	feelstaPost,
+};
