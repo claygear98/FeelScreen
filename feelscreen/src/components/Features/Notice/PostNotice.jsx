@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import ContentEditor from './Ckeditor/ContentEditor';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import usePreventGoBack from '../../../hooks/usePreventGoBack';
+import usePreventGoBack from './usePreventGoBack';
 
 const sever_port = 'http://localhost:3001';
 
