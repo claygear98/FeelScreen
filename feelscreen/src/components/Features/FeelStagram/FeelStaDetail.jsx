@@ -274,11 +274,8 @@ const FeelStaDetail = () => {
 							<FaRegCommentAlt />
 						</span>
 						<span>
-							{commentsLists &&
-								(commentsLists.length > 0
-									? commentsLists.length
-									: (commentsLists.length = 0))}
-							{!commentsLists && (commentsLists.length === 0 ? '0' : '')}
+							{commentsLists != null &&
+								(commentsLists.length > 0 ? commentsLists.length : 0)}
 						</span>
 					</Comments>
 				</ItemBot>

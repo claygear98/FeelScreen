@@ -64,7 +64,7 @@ router.post('/image', upload.single('image'), async (req, res) => {
 	res.status(200).json(req.file);
 });
 
-router.post('/imagedelete', (req, res) => {
+router.delete('/imagedelete', (req, res) => {
 	console.log('뒤로가기 확인 완');
 });
 //공지 게시물 등록
