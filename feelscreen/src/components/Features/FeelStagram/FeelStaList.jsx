@@ -118,25 +118,6 @@ const FeelStaList = () => {
 	const { username } = useHeaderInfo();
 	const cookies = new Cookies();
 
-	const handleHeart = (feelsta_id) => {
-		setIsHeart(!isHeart);
-		if (isHeart === true) {
-			axios.get('http://localhost:3001/feelstalike', {
-				headers: {
-					Authorization: cookies.get('Authorization'),
-					// feelsta_id: feelsta_id,
-				},
-			});
-		} else {
-			axios.delete('http://localhost:3001/feelstalike', {
-				headers: {
-					Authorization: cookies.get('Authorization'),
-					// feelsta_id: feelsta_id,
-				},
-			});
-		}
-	};
-
 	const handleFilterChange = (e) => {
 		setSortList(e.target.value);
 	};
@@ -197,6 +178,25 @@ const FeelStaList = () => {
 				setFeelstaList(dataLists);
 			}
 		});
+	};
+
+	const handleHeart = (FEELSTA_ID) => {
+		setIsHeart(!isHeart);
+		if (isHeart === true) {
+			axios.get('http://localhost:3001/feelstalike', {
+				headers: {
+					Authorization: cookies.get('Authorization'),
+					feelsta_id: FEELSTA_ID,
+				},
+			});
+		} else {
+			axios.delete('http://localhost:3001/feelstalike', {
+				headers: {
+					Authorization: cookies.get('Authorization'),
+					feelsta_id: FEELSTA_ID,
+				},
+			});
+		}
 	};
 
 	const navigate = useNavigate();
@@ -269,16 +269,15 @@ const FeelStaList = () => {
 								<Likes>
 									<span
 										className="heartPush"
-										onClick={() => handleHeart(a.FEELSTA_ID)}
+										onClick={() => {
+											handleHeart(a.FEELSTA_ID);
+										}}
 									>
-										{a.LIKE_NAME &&
-											a.LIKE_NAME.map((val) =>
-												val.USER_NAME === username ? (
-													<FaHeart />
-												) : (
-													<FaRegHeart />
-												)
-											)}
+										{a.LIKE_NAME && a.LIKE_NAME.includes(username) ? (
+											<FaHeart />
+										) : (
+											<FaRegHeart />
+										)}
 									</span>
 									<span>{a.FEELSTA_LIKE}</span>
 								</Likes>

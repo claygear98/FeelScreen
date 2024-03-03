@@ -135,16 +135,16 @@ router.post('/feelsta/comment-register', async (req, res) => {
 	commentController.feelComment(req, res, user_id);
 });
 
-router.get('feelstalike', async (req, res) => {
+router.get('feelstalike', (req, res) => {
 	console.log('ok');
-	let user_id = await JWT.authGetJWT(req, res);
-	feelstaController.feelLike(user_id, req.header.feelsta_id, res);
+	// let user_id = await JWT.authGetJWT(req, res);
+	// feelstaController.feelLike(user_id, req.header.feelsta_id, res);
 });
 
-router.delete('feelstalike', async (req, res) => {
+router.delete('feelstalike', (req, res) => {
 	console.log('z');
-	let user_id = await JWT.authGetJWT(req, res);
-	feelstaController.feelLike(user_id, req.header.feelsta_id, res);
+	// let user_id = await JWT.authGetJWT(req, res);
+	// feelstaController.feelLike(user_id, req.header.feelsta_id, res);
 });
 
 app.use('/', express.static(path.join(__dirname, 'images')));
