@@ -4,7 +4,7 @@ import { FaRegHeart } from 'react-icons/fa';
 import { FaRegCommentAlt } from 'react-icons/fa';
 import { FaHeart } from 'react-icons/fa';
 import axios from 'axios';
-import { useFetcher, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { Cookies } from 'react-cookie';
 import useHeaderInfo from '../Header/HeadStore';
 

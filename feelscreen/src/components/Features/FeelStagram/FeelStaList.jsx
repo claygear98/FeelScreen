@@ -2,8 +2,12 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { FaHeart } from 'react-icons/fa';
 import { FaRegHeart } from 'react-icons/fa';
 import { FaRegCommentAlt } from 'react-icons/fa';
+import { Cookies } from 'react-cookie';
+import useHeaderInfo from '../Header/HeadStore';
+
 const ListContainer = styled.div`
 	width: 100%;
 	margin: 0 auto;
@@ -110,6 +114,28 @@ const Poster = styled.button`
 const FeelStaList = () => {
 	const [feelstaList, setFeelstaList] = useState([]);
 	const [sortList, setSortList] = useState('latest');
+	const [isHeart, setIsHeart] = useState(false);
+	const { username, userImage } = useHeaderInfo();
+	const cookies = new Cookies();
+
+	const handleHeart = () => {
+		setIsHeart(!isHeart);
+		if (isHeart === true) {
+			axios.get('http://localhost:3001//feelstalike', {
+				headers: {
+					Authorization: cookies.get('Authorization'),
+					feelsta_id: username,
+				},
+			});
+		} else {
+			axios.delete('http://localhost:3001//feelstalike', {
+				headers: {
+					Authorization: cookies.get('Authorization'),
+					feelsta_id: username,
+				},
+			});
+		}
+	};
 
 	const handleFilterChange = (e) => {
 		setSortList(e.target.value);
@@ -122,42 +148,6 @@ const FeelStaList = () => {
 			console.log(response);
 			if (response.data.success === true) {
 				let dataList = response.data.feelsta;
-				// let dataList = [
-				// 	{
-				// 		FEELSTA_ID: 1,
-				// 		PROFILEIMAGE: '../public/logo192.png',
-				// 		USERNAME: '사과튀김',
-				// 		FEELSTA_DATE: '2024-02-02',
-				// 		FEELSTA_TAG: '#야호,#간만세,#검색기능구현,#마뜨급나',
-
-				// 		FEELSTA_IMAGE: '../public/logo192.png',
-				// 		FEELSTA_LIKE: 1232,
-				// 		FEELSTA_CONTENT: '골프함칠사람없나요?1',
-				// 		COMMENTS: 1123,
-				// 	},
-				// 	{
-				// 		FEELSTA_ID: 2,
-				// 		PROFILEIMAGE: '../public/logo192.png',
-				// 		USERNAME: '사과튀김2',
-				// 		FEELSTA_DATE: '2024-02-02',
-				// 		FEELSTA_TAG: '#야호,#간만세,#검색기능구현',
-				// 		FEELSTA_IMAGE: '../public/logo192.png',
-				// 		FEELSTA_LIKE: 1233,
-				// 		FEELSTA_CONTENT: '골프함칠사람없나요?123',
-				// 		COMMENTS: 1123,
-				// 	},
-				// 	{
-				// 		FEELSTA_ID: 3,
-				// 		PROFILEIMAGE: '../public/logo192.png',
-				// 		USERNAME: '사과튀김3',
-				// 		FEELSTA_DATE: '2024-02-02',
-				// 		FEELSTA_TAG: '#야호,#간만세,#검색기능구현',
-				// 		FEELSTA_IMAGE: '../public/logo192.png',
-				// 		FEELSTA_LIKE: 1234,
-				// 		FEELSTA_CONTENT: '골프함칠사람없나요?1442341',
-				// 		COMMENTS: 1123,
-				// 	},
-				// ];
 				if (sortList === 'latest') {
 					dataList = dataList.sort((a, b) => {
 						return new Date(b.FEELSTA_DATE) - new Date(a.FEELSTA_DATE);
@@ -192,43 +182,7 @@ const FeelStaList = () => {
 			console.log(response);
 			if (response.data.success === true) {
 				let dataLists = response.data.feelsta;
-				// let dataLists = [
-				// 	{
-				// 		FEELSTA_ID: 1,
-				// 		PROFILEIMAGE: '../public/logo192.png',
-				// 		USERNAME: '사과튀김',
-				// 		FEELSTA_DATE: '2024-02-02',
-				// 		FEELSTA_TAG: '#야호,#간만세,#검색기능구현,#마뜨급나',
-				// 		FEELSTA_IMAGE: '../public/logo192.png',
-				// 		FEELSTA_LIKE: 1232,
-				// 		FEELSTA_CONTENT: '골프함칠사람없나요?1',
-				// 		COMMENTS: 1123,
-				// 	},
-				// 	{
-				// 		FEELSTA_ID: 2,
 
-				// 		PROFILEIMAGE: '../public/logo192.png',
-				// 		USERNAME: '사과튀김2',
-				// 		FEELSTA_DATE: '2024-02-02',
-				// 		FEELSTA_TAG: '#야호,#간만세,#검색기능구현',
-				// 		FEELSTA_IMAGE: '../public/logo192.png',
-				// 		FEELSTA_LIKE: 1233,
-				// 		FEELSTA_CONTENT: '골프함칠사람없나요?123',
-				// 		COMMENTS: 1123,
-				// 	},
-				// 	{
-				// 		FEELSTA_ID: 3,
-
-				// 		PROFILEIMAGE: '../public/logo192.png',
-				// 		USERNAME: '사과튀김3',
-				// 		FEELSTA_DATE: '2024-02-02',
-				// 		FEELSTA_TAG: '#야호,#간만세,#검색기능구현',
-				// 		FEELSTA_IMAGE: '../public/logo192.png',
-				// 		FEELSTA_LIKE: 1234,
-				// 		FEELSTA_CONTENT: '골프함칠사람없나요?1442341',
-				// 		COMMENTS: 1123,
-				// 	},
-				// ];
 				if (searchType === 'fromtitle') {
 					dataLists = dataLists.filter((item) =>
 						item.FEELSTA_CONTENT.includes(toSearch)
@@ -313,8 +267,10 @@ const FeelStaList = () => {
 							</ItemImg>
 							<ItemBot>
 								<Likes>
-									<span>
-										<FaRegHeart />
+									<span className="heartPush" onClick={handleHeart}>
+										{a.LIKE_NAME.includes(username)
+											? (<FaHeart />)`${setIsHeart(true)}`
+											: (<FaRegHeart />)`${setIsHeart(false)}`}
 									</span>
 									<span>{a.FEELSTA_LIKE}</span>
 								</Likes>
