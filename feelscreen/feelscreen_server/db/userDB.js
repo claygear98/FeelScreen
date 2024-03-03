@@ -4,6 +4,7 @@ const axios = require('axios');
 const sms = require('../sms/aligo_sms.js');
 const redisClient = require('../JWT/redis.js');
 const crypto = require('crypto');
+
 //redis 연결
 redisClient.on('connect', () => {
 	console.info('Redis connected!');
@@ -137,8 +138,8 @@ function feelstaOne(id, res) {
 		feelsta.FEELSTA_ID, 
 		feelsta.FEELSTA_IMAGE, 
 		feelsta.FEELSTA_CONTENT, 
-		feelsta.FEELSTA_DATE, 
-		feelsta.FEELSTA_LIKE, 
+		feelsta.FEELSTA_DATE,
+		(SELECT COUNT(FEELSTA_ID) FROM HEART WHERE feelsta.FEELSTA_ID = HEART.FEELSTA_ID) AS FEELSTA_LIKE,
 		feelsta.FEELSTA_TAG, 
 		(
 			SELECT JSON_ARRAYAGG(
