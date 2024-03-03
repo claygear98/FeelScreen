@@ -268,9 +268,11 @@ const FeelStaList = () => {
 							<ItemBot>
 								<Likes>
 									<span className="heartPush" onClick={handleHeart}>
-										{a.LIKE_NAME.includes(username)
-											? (<FaHeart />)`${setIsHeart(true)}`
-											: (<FaRegHeart />)`${setIsHeart(false)}`}
+										{a.LIKE_NAME.map((val) =>
+											val.USER_NAME.includes(username)
+												? (<FaHeart />)`${setIsHeart(true)}`
+												: (<FaRegHeart />)`${setIsHeart(false)}`
+										)}
 									</span>
 									<span>{a.FEELSTA_LIKE}</span>
 								</Likes>
