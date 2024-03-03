@@ -118,25 +118,6 @@ const FeelStaList = () => {
 	const { username } = useHeaderInfo();
 	const cookies = new Cookies();
 
-	const handleHeart = () => {
-		setIsHeart(!isHeart);
-		if (isHeart === true) {
-			axios.get('http://localhost:3001//feelstalike', {
-				headers: {
-					Authorization: cookies.get('Authorization'),
-					feelsta_id: username,
-				},
-			});
-		} else {
-			axios.delete('http://localhost:3001//feelstalike', {
-				headers: {
-					Authorization: cookies.get('Authorization'),
-					feelsta_id: username,
-				},
-			});
-		}
-	};
-
 	const handleFilterChange = (e) => {
 		setSortList(e.target.value);
 	};
@@ -197,6 +178,25 @@ const FeelStaList = () => {
 				setFeelstaList(dataLists);
 			}
 		});
+	};
+
+	const handleHeart = (FEELSTA_ID) => {
+		setIsHeart(!isHeart);
+		if (isHeart === true) {
+			axios.get('http://localhost:3001//feelstalike', {
+				headers: {
+					Authorization: cookies.get('Authorization'),
+					feelsta_id: FEELSTA_ID,
+				},
+			});
+		} else {
+			axios.delete('http://localhost:3001//feelstalike', {
+				headers: {
+					Authorization: cookies.get('Authorization'),
+					feelsta_id: FEELSTA_ID,
+				},
+			});
+		}
 	};
 
 	const navigate = useNavigate();
@@ -267,14 +267,17 @@ const FeelStaList = () => {
 							</ItemImg>
 							<ItemBot>
 								<Likes>
-									<span className="heartPush" onClick={handleHeart}>
-										{a.LIKE_NAME.map((val) => {
-											if (val.USER_NAME === username) {
-												return <FaHeart />;
-											} else {
-												return <FaRegHeart />;
-											}
-										})}
+									<span
+										className="heartPush"
+										onClick={() => {
+											handleHeart(a.FEELSTA_ID);
+										}}
+									>
+										{a.LIKE_NAME && a.LIKE_NAME.includes(username) ? (
+											<FaHeart />
+										) : (
+											<FaRegHeart />
+										)}
 									</span>
 									<span>{a.FEELSTA_LIKE}</span>
 								</Likes>
