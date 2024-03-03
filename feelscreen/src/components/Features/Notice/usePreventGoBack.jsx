@@ -1,15 +1,20 @@
 import { createBrowserHistory } from 'history';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const usePreventGoBack = () => {
 	const history = createBrowserHistory();
+	const navigate = useNavigate();
 	const preventGoBack = () => {
 		// 2. custom hook에서 실행될 함수를 생성하고, 함수명을 preventGoBack으로 설정한다.
 		history.push(null, '', history.location.href);
 		// 2-1. 현재 상태를 세션 히스토리 스택에 추가(push)한다.
 		axios.get('http://localhost:3001/imagedelete').then((res) => {
-			console.log(res);
+			console.log(123);
+			console.log(12);
+			console.log(1);
+			navigate('/');
 		});
 		// 2-2. 토스트 메세지를 출력한다.
 	};
@@ -27,13 +32,16 @@ const usePreventGoBack = () => {
 		return () => {
 			window.removeEventListener('popstate', preventGoBack);
 			// 3-3. 렌더링이 끝난 이후엔 eventListner을 제거한다.
+			navigate('/');
 		};
+		// eslint-disable-next-line
 	}, []);
+	// eslint-disable-next-line
 
 	useEffect(() => {
 		history.push(null, '', history.location.href);
 		// 4-1. 현재 상태를 세션 히스토리 스택에 추가(push)한다.
-	}, [history.location]);
+	}, [history]);
 	// 4. history.location (pathname)이 변경될때마다,
 };
 

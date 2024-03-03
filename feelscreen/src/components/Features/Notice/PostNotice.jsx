@@ -1,4 +1,3 @@
-//not yet
 import React, { useState, useCallback } from 'react';
 import styled from 'styled-components';
 import ContentEditor from './Ckeditor/ContentEditor';
@@ -93,17 +92,6 @@ const PostNotice = () => {
 				console.log(error);
 			});
 	};
-	//뒤로가기 감지 실패
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
 
 	return (
 		<PostNoticeFrom>
