@@ -183,15 +183,15 @@ const FeelStaList = () => {
 	const handleHeart = (FEELSTA_ID) => {
 		setIsHeart(!isHeart);
 		if (isHeart === true) {
-			axios.get('http://localhost:3001//feelstalike', {
-				headers: {
+			axios.patch('http://localhost:3001/feelstalike', {
+				data: {
 					Authorization: cookies.get('Authorization'),
 					feelsta_id: FEELSTA_ID,
 				},
 			});
 		} else {
-			axios.delete('http://localhost:3001//feelstalike', {
-				headers: {
+			axios.delete('http://localhost:3001/feelstalike', {
+				data: {
 					Authorization: cookies.get('Authorization'),
 					feelsta_id: FEELSTA_ID,
 				},
