@@ -181,38 +181,7 @@ const FeelStaList = () => {
 	};
 
 	const handleHeart = (feelstaId) => {
-		// 현재 상태의 반대 값을 사용하여 토글합니다.
-		const updatedIsHeart = !isHeart;
-
-		if (updatedIsHeart === true) {
-			axios
-				.get('http://localhost:3001/feelstalike', {
-					headers: {
-						Authorization: cookies.get('Authorization'),
-						feelsta_id: feelstaId,
-					},
-				})
-				.then(() => {
-					setIsHeart(updatedIsHeart); // 좋아요 상태를 업데이트합니다.
-				})
-				.catch((error) => {
-					console.error('Error adding like:', error);
-				});
-		} else {
-			axios
-				.delete('http://localhost:3001/feelstalike', {
-					headers: {
-						Authorization: cookies.get('Authorization'),
-						feelsta_id: feelstaId,
-					},
-				})
-				.then(() => {
-					setIsHeart(updatedIsHeart); // 좋아요 상태를 업데이트합니다.
-				})
-				.catch((error) => {
-					console.error('Error canceling like:', error);
-				});
-		}
+		setIsHeart(!isHeart);
 	};
 
 	const navigate = useNavigate();
@@ -289,11 +258,7 @@ const FeelStaList = () => {
 											handleHeart(a.FEELSTA_ID);
 										}}
 									>
-										{a.LIKE_NAME && a.LIKE_NAME.includes(username) ? (
-											<FaHeart />
-										) : (
-											<FaRegHeart />
-										)}
+										{isHeart ? <FaHeart /> : <FaRegHeart />}
 									</span>
 									<span>{a.FEELSTA_LIKE}</span>
 								</Likes>

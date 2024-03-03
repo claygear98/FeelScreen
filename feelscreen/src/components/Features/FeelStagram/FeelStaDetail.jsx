@@ -147,6 +147,11 @@ const FeelStaDetail = () => {
 					setFeelsta(res.data.feelsta[0]);
 					// Comment 데이터를 상태에 설정
 					setCommentsLists(res.data.feelsta[0].COMMENTS);
+					if (feelsta[0].LIKE_NAME.includes(username)) {
+						setIsHeart(true);
+					} else {
+						setIsHeart(false);
+					}
 				}
 			})
 			.catch((error) => {
@@ -165,22 +170,25 @@ const FeelStaDetail = () => {
 	const [isHeart, setIsHeart] = useState(true);
 
 	const { username, userImage } = useHeaderInfo();
-	const handleHeart = (FEELSTA_ID) => {
-		setIsHeart(!isHeart);
-		if (isHeart === true) {
-			axios.patch('http://localhost:3001/feelstalike', {
-				data: {
-					Authorization: cookies.get('Authorization'),
-					feelsta_id: FEELSTA_ID,
-				},
-			});
+	const handleHeart = (feelstaId) => {
+		if (isHeart === false) {
+			axios
+				.get(`http://localhost:3001//feelstalike`, {
+					headers: {
+						Authorization: cookies.get('Authorization'),
+						feelsta_id: feelstaId,
+					},
+				})
+				.then(setIsHeart(!isHeart));
 		} else {
-			axios.delete('http://localhost:3001/feelstalike', {
-				data: {
-					Authorization: cookies.get('Authorization'),
-					feelsta_id: FEELSTA_ID,
-				},
-			});
+			axios
+				.delete(`http://localhost:3001//feelstalike`, {
+					headers: {
+						Authorization: cookies.get('Authorization'),
+						feelsta_id: feelstaId,
+					},
+				})
+				.then(setIsHeart(!isHeart));
 		}
 	};
 
@@ -270,11 +278,7 @@ const FeelStaDetail = () => {
 								handleHeart(feelsta.FEELSTA_ID);
 							}}
 						>
-							{feelsta.LIKE_NAME && feelsta.LIKE_NAME.includes(username) ? (
-								<FaHeart />
-							) : (
-								<FaRegHeart />
-							)}
+							{isHeart ? <FaHeart /> : <FaRegHeart />}
 						</span>
 						<span>{feelsta.FEELSTA_LIKE}</span>
 					</Likes>
