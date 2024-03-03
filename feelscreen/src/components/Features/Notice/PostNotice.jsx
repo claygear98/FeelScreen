@@ -1,9 +1,11 @@
 //not yet
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import styled from 'styled-components';
 import ContentEditor from './Ckeditor/ContentEditor';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import usePreventGoBack from '../../../hooks/usePreventGoBack';
+
 const sever_port = 'http://localhost:3001';
 
 const PostNoticeFrom = styled.form`
@@ -61,6 +63,7 @@ const PostNotice = () => {
 	const [Content, SetContent] = useState('');
 	const [Title, SetTitle] = useState('');
 	// const [editor, setEditor] = useState(null);
+	usePreventGoBack();
 	const navigate = useNavigate();
 
 	const onChangeTitle = useCallback(
@@ -90,25 +93,18 @@ const PostNotice = () => {
 				console.log(error);
 			});
 	};
-	useEffect(() => {
-		const handleBackEvent = () => {
-			axios
-				.get(`${sever_port}/imagedelete`)
-				.then((res) => {
-					console.log(res);
-				})
-				.catch((err) => {
-					console.log(err);
-				});
-			// 뒤로가기 할 때 수행할 동작을 여기에 추가합니다.
-		};
+	//뒤로가기 감지 실패
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
 
-		window.addEventListener('popstate', handleBackEvent);
-
-		return () => {
-			window.removeEventListener('popstate', handleBackEvent);
-		};
-	}, []);
 	return (
 		<PostNoticeFrom>
 			<TitleForm>
