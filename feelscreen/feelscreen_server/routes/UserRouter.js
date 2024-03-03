@@ -10,7 +10,7 @@ const commentController = require('../controllers/commentController.js');
 const imageMove = require('./imageMove.js');
 const cors = require('cors');
 const path = require('path');
-const multer = require('multer'); // (1)
+const multer = require('multer');
 const JWT = require('../JWT/jwtMiddle.js');
 
 let imageNames = [];
@@ -64,9 +64,12 @@ router.post('/image', upload.single('image'), async (req, res) => {
 	res.status(200).json(req.file);
 });
 
-router.delete('/imagedelete', (req, res) => {
+router.get('/imagedelete', (req, res) => {
+	imageMove.imageDelete(imageNames);
+
 	console.log('뒤로가기 확인 완');
 });
+
 //공지 게시물 등록
 router.post('/notice-post', async (req, res) => {
 	imageNames = imageNames.filter((name) => {

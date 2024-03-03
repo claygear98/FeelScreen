@@ -29,6 +29,20 @@ async function moveImage(sourceDir, destDir, imageNames, req, res) {
 	}
 }
 
+async function imageDelete(imageNames) {
+	for (let image of imageNames) {
+		// if (await fs.exists('./image/' + image)) {
+		// 파일이 존재한다면 true 그렇지 않은 경우 false 반환
+		try {
+			await fs.unlink('./image/' + image);
+			console.log('image delete');
+		} catch (error) {
+			console.log(error);
+		}
+	}
+}
+
 module.exports = {
 	moveImage,
+	imageDelete,
 };
