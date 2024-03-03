@@ -269,9 +269,10 @@ const FeelStaList = () => {
 							</ItemImg>
 							<ItemBot>
 								<Likes>
-									{/* {a.LIKE_NAME && a.LIKE_NAME.includes(username)
-										? setIsHeart(true)
-										: setIsHeart(false)} */}
+									{/* {map(a,i)
+										<asdasd {a}/>
+										: setIsHeart(false)} 
+										리스트 따로 빼서 컴포넌트로 만들고 */}
 									<span
 										className="heartPush"
 										onClick={() => {
