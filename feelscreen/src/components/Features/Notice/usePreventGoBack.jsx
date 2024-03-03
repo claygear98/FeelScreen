@@ -1,11 +1,11 @@
 import { createBrowserHistory } from 'history';
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const usePreventGoBack = () => {
-	const history = createBrowserHistory();
 	const navigate = useNavigate();
+	const history = createBrowserHistory();
 	const preventGoBack = () => {
 		// 2. custom hook에서 실행될 함수를 생성하고, 함수명을 preventGoBack으로 설정한다.
 		history.push(null, '', history.location.href);
@@ -14,8 +14,8 @@ const usePreventGoBack = () => {
 			console.log(123);
 			console.log(12);
 			console.log(1);
-			navigate('/');
 		});
+		navigate('/');
 		// 2-2. 토스트 메세지를 출력한다.
 	};
 
@@ -31,12 +31,11 @@ const usePreventGoBack = () => {
 
 		return () => {
 			window.removeEventListener('popstate', preventGoBack);
+
 			// 3-3. 렌더링이 끝난 이후엔 eventListner을 제거한다.
-			navigate('/');
 		};
 		// eslint-disable-next-line
 	}, []);
-	// eslint-disable-next-line
 
 	useEffect(() => {
 		history.push(null, '', history.location.href);

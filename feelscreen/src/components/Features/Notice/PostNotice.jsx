@@ -58,12 +58,18 @@ const Editor = styled.div`
 		line-height: 30px;
 	}
 `;
+
 const PostNotice = () => {
 	const [Content, SetContent] = useState('');
 	const [Title, SetTitle] = useState('');
 	// const [editor, setEditor] = useState(null);
-	usePreventGoBack();
+
 	const navigate = useNavigate();
+	const handlePreventGoBack = () => {
+		navigate('/');
+	};
+
+	usePreventGoBack(handlePreventGoBack);
 
 	const onChangeTitle = useCallback(
 		(e) => {
