@@ -2,6 +2,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import { HiOutlineSpeakerphone } from 'react-icons/hi';
+import { useNavigate } from 'react-router-dom';
+import useHeaderInfo from '../Header/HeadStore';
 
 const server_port = 'http://localhost:3001';
 const NoticeHeader = styled.div`
@@ -53,6 +55,8 @@ const ReadNotice = () => {
 	const [noticeList, setNoticeList] = useState([]);
 	const [detail, setDetail] = useState([]);
 	const [focus, setFocus] = useState(-1);
+	const navigate = useNavigate();
+	const { username } = useHeaderInfo();
 	const fetchNoticeList = useCallback(() => {
 		axios
 			.get(`${server_port}/notice`)
@@ -98,7 +102,18 @@ const ReadNotice = () => {
 			<div>
 				<NoticeHeader>
 					<div>공지사항 및이벤트</div>
-					<div className="">글쓰기</div>
+					{username === '사장님' ? (
+						<div
+							className=""
+							onClick={() => {
+								navigate('/notice/post');
+							}}
+						>
+							글쓰기
+						</div>
+					) : (
+						<div></div>
+					)}
 				</NoticeHeader>
 				{noticeList.length !== 0 ? (
 					<NoticeCards>
@@ -149,7 +164,12 @@ const ReadNotice = () => {
 								<p>&nbsp;</p>
 								<p>난 둥이다멍</p>
 								<figure className="image">
-									<img src="/assets/1f.png" width="128" height="128" />
+									<img
+										src="/assets/1f.png"
+										width="128"
+										height="128"
+										alt="이미지"
+									/>
 								</figure>
 							</div>
 						</NoticeItem>
