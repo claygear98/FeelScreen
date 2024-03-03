@@ -236,50 +236,50 @@ const FeelStaDetail = () => {
 
 	return (
 		<DetailContainer>
-			{
-				<ItemPreview>
-					<ItemTop>
-						<img
-							src={`/${feelsta.PROFILEIMAGE}`}
-							alt=""
-							style={{ width: '60px', height: '60px', borderRadius: '50%' }}
-						/>
-						<NameDate>
-							<div>{feelsta.USERNAME}</div>
-							<div>{feelsta.FEELSTA_DATE}</div>
-						</NameDate>
-					</ItemTop>
-					<ItemSec>
-						<div>{feelsta.FEELSTA_CONTENT}</div>
-						{feelsta.FEELSTA_TAG &&
-							feelsta.FEELSTA_TAG.split(',').map((a, i) => (
-								<span key={i}>{a}</span>
-							))}
-					</ItemSec>
-					<ItemImg>
-						<img
-							src={feelsta.FEELSTA_IMAGE}
-							alt=""
-							style={{ width: '300px', borderRadius: '10px' }}
-						/>
-					</ItemImg>
-					<ItemBot>
-						<Likes>
-							<span className="heartPush" onClick={handleHeart}>
-								{isHeart ? <FaRegHeart /> : <FaHeart />}
-							</span>
-							<span>{feelsta.FEELSTA_LIKE}</span>
-						</Likes>
-						<Comments>
-							<span>
-								<FaRegCommentAlt />
-							</span>
-							{/* 댓글이 없으면 오류가 납니다 list에서 들어갈때 이거 일단 길이가 0 보다 크면 뜨고 아니면 0으로 뜨게 해놔서 한번다시 해보세요 */}
-							<span>{commentsLists.length > 0 ? commentsLists.length : 0}</span>
-						</Comments>
-					</ItemBot>
-					<div>
-						{commentsLists.map((a) => (
+			<ItemPreview>
+				<ItemTop>
+					<img
+						src={`/${feelsta.PROFILEIMAGE}`}
+						alt=""
+						style={{ width: '60px', height: '60px', borderRadius: '50%' }}
+					/>
+					<NameDate>
+						<div>{feelsta.USERNAME}</div>
+						<div>{feelsta.FEELSTA_DATE}</div>
+					</NameDate>
+				</ItemTop>
+				<ItemSec>
+					<div>{feelsta.FEELSTA_CONTENT}</div>
+					{feelsta.FEELSTA_TAG &&
+						feelsta.FEELSTA_TAG.split(',').map((a, i) => (
+							<span key={i}>{a}</span>
+						))}
+				</ItemSec>
+				<ItemImg>
+					<img
+						src={feelsta.FEELSTA_IMAGE}
+						alt=""
+						style={{ width: '300px', borderRadius: '10px' }}
+					/>
+				</ItemImg>
+				<ItemBot>
+					<Likes>
+						<span className="heartPush" onClick={handleHeart}>
+							{isHeart ? <FaRegHeart /> : <FaHeart />}
+						</span>
+						<span>{feelsta.FEELSTA_LIKE}</span>
+					</Likes>
+					<Comments>
+						<span>
+							<FaRegCommentAlt />
+						</span>
+						{/* 댓글이 없으면 오류가 납니다 list에서 들어갈때 이거 일단 길이가 0 보다 크면 뜨고 아니면 0으로 뜨게 해놔서 한번다시 해보세요 */}
+						<span>{commentsLists.length > 0 ? commentsLists.length : 0}</span>
+					</Comments>
+				</ItemBot>
+				<div>
+					{commentsLists &&
+						commentsLists.map((a) => (
 							<CommentList>
 								<Comment>
 									<img
@@ -298,18 +298,17 @@ const FeelStaDetail = () => {
 								</Comment>
 							</CommentList>
 						))}
-						{commenting}
-					</div>
-					<CommentSet>
-						<InputComment
-							className="scroll"
-							onChange={handleComment}
-							value={plus}
-						></InputComment>
-						<button onClick={handleCommentSubmit}>댓글작성</button>
-					</CommentSet>
-				</ItemPreview>
-			}
+					{commenting}
+				</div>
+				<CommentSet>
+					<InputComment
+						className="scroll"
+						onChange={handleComment}
+						value={plus}
+					></InputComment>
+					<button onClick={handleCommentSubmit}>댓글작성</button>
+				</CommentSet>
+			</ItemPreview>
 		</DetailContainer>
 	);
 };
