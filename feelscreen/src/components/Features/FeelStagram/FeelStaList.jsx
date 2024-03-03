@@ -181,38 +181,24 @@ const FeelStaList = () => {
 	};
 
 	const handleHeart = (feelstaId) => {
-		// 현재 상태의 반대 값을 사용하여 토글합니다.
-		let updatedIsHeart = isHeart;
-		console.log(updatedIsHeart);
-		if (!updatedIsHeart) {
+		if (isHeart === false) {
 			axios
-				.get('http://localhost:3001/feelstalike', {
+				.get(`http://localhost:3001/feelstalike`, {
 					headers: {
 						Authorization: cookies.get('Authorization'),
 						feelsta_id: feelstaId,
 					},
 				})
-				.then(() => {
-					setIsHeart(!updatedIsHeart); // 좋아요 상태를 업데이트합니다.
-				})
-				.catch((error) => {
-					console.error('Error adding like:', error);
-				});
+				.then(setIsHeart(!isHeart));
 		} else {
 			axios
-				.delete('http://localhost:3001/feelstalike', {
+				.delete(`http://localhost:3001/feelstalike`, {
 					headers: {
 						Authorization: cookies.get('Authorization'),
 						feelsta_id: feelstaId,
 					},
 				})
-				.then(() => {
-					setIsHeart(!updatedIsHeart); // 좋아요 상태를 업데이트합니다.
-					console.log('바보');
-				})
-				.catch((error) => {
-					console.error('Error canceling like:', error);
-				});
+				.then(setIsHeart(!isHeart));
 		}
 	};
 
@@ -283,18 +269,18 @@ const FeelStaList = () => {
 							</ItemImg>
 							<ItemBot>
 								<Likes>
+									{/* {a.LIKE_NAME && a.LIKE_NAME.includes(username)
+										? setIsHeart(true)
+										: setIsHeart(false)} */}
 									<span
 										className="heartPush"
 										onClick={() => {
 											handleHeart(a.FEELSTA_ID);
 										}}
 									>
-										{a.LIKE_NAME && a.LIKE_NAME.includes(username) ? (
-											<FaHeart />
-										) : (
-											<FaRegHeart />
-										)}
+										{isHeart ? <FaRegHeart /> : <FaHeart />}
 									</span>
+
 									<span>{a.FEELSTA_LIKE}</span>
 								</Likes>
 								<Comments>
