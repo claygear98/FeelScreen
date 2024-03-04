@@ -271,14 +271,19 @@ const FeelStaList = () => {
 								<Likes>
 									{/* {a.LIKE_NAME && a.LIKE_NAME.includes(username)
 										? setIsHeart(true)
-										: setIsHeart(false)} */}
+										: setIsHeart(false)}
+										제안
+										리스트들중 리스트를 하나의 컴포넌트(모양틀)로 따로 뺴서
+										만드는데 거기서 usestate heart만들어서 쓰고 맵을 통해띄워줄때 프롭스를 통해서 정보를 넣어주면 각각의 리스트에 
+										usestate인 heart가 존재하는 셈이 되기떄문에 문제를 해결 할수 있을꺼 같다
+										*/}
 									<span
 										className="heartPush"
 										onClick={() => {
 											handleHeart(a.FEELSTA_ID);
 										}}
 									>
-										{isHeart ? <FaRegHeart /> : <FaHeart />}
+										{isHeart ? <FaHeart /> : <FaRegHeart />}
 									</span>
 
 									<span>{a.FEELSTA_LIKE}</span>
