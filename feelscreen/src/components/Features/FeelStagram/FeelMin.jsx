@@ -1,45 +1,87 @@
 import React from 'react';
+import { useState } from 'react';
+import axios from 'axios';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+
+const FeelMinContainer = styled.div`
+	width: 390px;
+	margin: 0 auto;
+	display: flex;
+	justify-content: space-between;
+	font-size: 10px;
+`;
+const FeelMinItem = styled.div`
+	width: 113px;
+	height: 110px;
+	border: 1.5px solid black;
+	border-radius: 10px;
+	text-align: left;
+	padding: 5px;
+`;
+
+const ItemTop = styled.div`
+	width: 110px;
+	display: flex;
+	margin-bottom: 5px;
+	> img {
+		border: 2px solid black;
+		margin-right: 8px;
+	}
+`;
+
+const ItemContent = styled.div`
+	width: 110px;
+	height: 70px;
+	border: 1px solid black;
+	> div > img {
+		width: 110px;
+		border: 1px solid black;
+	}
+`;
 
 const FeelMin = () => {
 	const navigate = useNavigate();
 
+	const [min, setMin] = useState([]);
+	// const flowThree = () => {
+	// axios.get(url).then((res) => {
+	// setMin(res.data.뭐든)
+	// });
+	// };
+	// axios.get()
+
+	let test = [0, 1, 2];
 	return (
-		<div>
-			{/* {3개 넘겨주면 map으로 뿌리면 된다.} */}
-			{/* <div>
-				<div>
-					<div>
+		<FeelMinContainer>
+			{test.map((a, i) => (
+				<FeelMinItem key={i}>
+					<ItemTop>
 						<img
-							src={props.PROFILEIMAGE}
+							src="../public/logo192.png"
 							alt=""
 							style={{ width: '30px', height: '30px', borderRadius: '50%' }}
 						/>
 						<div>
-							<div>{props.USERNAME}</div>
-							<div>{props.FEELSTA_DATE}</div>
+							<div>서원준</div>
+							<div style={{ fontSize: '8px' }}>2024-02-05</div>
 						</div>
-					</div>
-					<div>
-						<div>{props.FEELSTA_CONTENT}</div>
-					</div>
-					<div
-						onClick={() => {
-							navigate(`/feelstadetail/${props.FEELSTA_ID}`, {
-								state: props.FEELSTA_ID,
-							});
-						}}
-					>
-						<img
-							src={props.PROFILEIMAGE}
-							alt=""
-							style={{ width: '150px', borderRadius: '10px' }}
-						/>
-					</div>
-				</div>
-			</div> */}
-		</div>
+					</ItemTop>
+					<ItemContent>
+						<h5>스크린 조지깅</h5>
+						<div
+						// onClick={() => {
+						// 	navigate(`/feelstadetail/${props.FEELSTA_ID}`, {
+						// 		state: props.FEELSTA_ID,
+						// 	});
+						// }}
+						>
+							<img src="../public/assets/0f.png" alt="" />
+						</div>
+					</ItemContent>
+				</FeelMinItem>
+			))}
+		</FeelMinContainer>
 	);
 };
 
