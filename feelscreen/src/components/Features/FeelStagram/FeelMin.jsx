@@ -7,6 +7,7 @@ const FeelMin = () => {
 
 	return (
 		<div>
+			{/* {3개 넘겨주면 map으로 뿌리면 된다.} */}
 			{/* <div>
 				<div>
 					<div>
