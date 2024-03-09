@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import axios from 'axios';
+import tokenCheckAxios from '../../../hooks/customAxios';
 import { Cookies } from 'react-cookie';
 const SeeMyPost = styled.div`
 	display: flex;
@@ -63,7 +63,7 @@ const MyPost = () => {
 	const cookies = new Cookies();
 	const [mPost, setMPost] = useState([]);
 	const getMyPost = () => {
-		axios
+		tokenCheckAxios
 			.get('http://localhost:3001/user-feelsta', {
 				headers: {
 					Authorization: cookies.get('Authorization'),

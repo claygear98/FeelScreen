@@ -1,7 +1,8 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
-import axios from 'axios';
+// import axios from 'axios';
+import instance from '../../../hooks/customAxios';
 import { useState, useEffect } from 'react';
 import { FaPlus } from 'react-icons/fa';
 import { RiDeleteBin6Line } from 'react-icons/ri';
@@ -241,7 +242,7 @@ const FeelStaCreate = () => {
 			}
 		}
 
-		axios
+		instance
 			.post('http://localhost:3001/feelsta-post', formData, {
 				headers: {
 					'Content-Type': 'multipart/form-data',

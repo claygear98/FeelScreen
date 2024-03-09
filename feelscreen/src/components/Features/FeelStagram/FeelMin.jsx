@@ -45,7 +45,7 @@ const FeelMin = () => {
 
 	const [min, setMin] = useState([]);
 	// const flowThree = () => {
-	// axios.get(url).then((res) => {
+	// axios.get('http://localhost:3001/feelstar-mini').then((res) => {
 	// setMin(res.data.뭐든)
 	// });
 	// };

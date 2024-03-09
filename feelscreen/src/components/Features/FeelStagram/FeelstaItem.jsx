@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-
 import { Cookies } from 'react-cookie';
 
 import { FaHeart } from 'react-icons/fa';
@@ -95,7 +94,7 @@ const FeelstaItem = (props) => {
 	const handleHeart = (feelstaId) => {
 		if (isHeart === false) {
 			axios
-				.get(`http://localhost:3001/feelstalike`, {
+				.get(`/feelstalike`, {
 					headers: {
 						Authorization: cookies.get('Authorization'),
 						feelsta_id: feelstaId,
