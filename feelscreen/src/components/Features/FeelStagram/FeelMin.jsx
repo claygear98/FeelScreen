@@ -49,7 +49,6 @@ const FeelMin = () => {
 	// setMin(res.data.뭐든)
 	// });
 	// };
-	// axios.get()
 
 	let test = [0, 1, 2];
 	return (
