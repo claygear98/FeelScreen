@@ -2,7 +2,7 @@
 const { promisify } = require('util');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
-// const redisClient = require('./redis');
+const redisClient = require('./redis');
 const secret = process.env.SECRET;
 console.log('secret', secret);
 
@@ -17,7 +17,7 @@ module.exports = {
 		return jwt.sign(payload, secret, {
 			// secret으로 sign하여 발급하고 return
 			algorithm: 'HS256', // 암호화 알고리즘
-			expiresIn: '1h', // 유효기간
+			expiresIn: '5m', // 유효기간
 		});
 	},
 
@@ -26,6 +26,7 @@ module.exports = {
 		let decoded = null;
 		try {
 			decoded = jwt.verify(token, secret);
+			console.log(decoded.id);
 			return {
 				ok: true,
 				id: decoded.id,
@@ -44,7 +45,7 @@ module.exports = {
 		return jwt.sign({}, secret, {
 			// refresh token은 payload 없이 발급
 			algorithm: 'HS256',
-			expiresIn: '1d',
+			expiresIn: '10m',
 		});
 	},
 

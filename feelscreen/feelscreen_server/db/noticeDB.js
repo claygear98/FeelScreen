@@ -51,8 +51,22 @@ function noticeDetail(notice_id, res) {
 	});
 }
 
+function noticeMin(res) {
+	let sql = `SELECT NOTICE_ID, NOTICETITLE FROM NOTICE ORDER BY NOTICEDATE DESC LIMIT 3`;
+
+	db.query(sql, function (error, result) {
+		if (error) {
+			console.log(error);
+			res.send({ success: false, message: 'db error' });
+		} else {
+			res.send({ success: true, result: result });
+		}
+	});
+}
+
 module.exports = {
 	noticeDetail,
 	noticeList,
 	noticePost,
+	noticeMin,
 };

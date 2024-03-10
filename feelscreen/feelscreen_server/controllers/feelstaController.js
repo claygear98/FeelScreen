@@ -21,6 +21,11 @@ function feelLike(user_id, feelsta_id, res) {
 function feelDeleteLike(user_id, feelsta_id, res) {
 	feelstaDB.feelstaDeleteLike(user_id, feelsta_id, res);
 }
+
+function feelstaMin(res) {
+	feelstaDB.feelstaMin(res);
+}
+
 const storage = multer.diskStorage({
 	// (2)
 	destination: (req, file, cb) => {
@@ -52,5 +57,6 @@ module.exports = {
 	feelPost,
 	feelLike,
 	feelDeleteLike,
+	feelstaMin,
 	FeelUpload,
 };

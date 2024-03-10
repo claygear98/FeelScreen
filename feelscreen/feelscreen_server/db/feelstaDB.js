@@ -46,7 +46,8 @@ function feelstaOne(id, res) {
             WHERE HEART.FEELSTA_ID = FEELSTA.FEELSTA_ID) AS LIKE_NAME, 
 		(
 			SELECT JSON_ARRAYAGG(
-                JSON_OBJECT(
+                JSON_OBJECT
+				(
 					'COMMENT_ID', COMMENT.COMMENT_ID,
 					'COMMENT_CONTENT', COMMENT.COMMENT_CONTENT,
 					'USER_ID', COMMENT.USER_ID,
@@ -119,10 +120,33 @@ function feelstaDeleteLike(user_id, feelsta_id, res) {
 	});
 }
 
+function feelstaMin(res) {
+	let sql = `SELECT 
+    feelsta.FEELSTA_ID, 
+    feelsta.FEELSTA_IMAGE, 
+    feelsta.FEELSTA_CONTENT, 
+    feelsta.FEELSTA_DATE, 
+    USER.USERNAME, 
+    USER.PROFILEIMAGE
+	FROM FEELSTA
+	JOIN USER ON feelsta.USER_ID = USER.USER_ID
+	ORDER BY FEELSTA_DATE DESC LIMIT 3`;
+
+	db.query(sql, function (error, result) {
+		if (error) {
+			console.log(error);
+			res.send({ success: false, message: 'db error' });
+		} else {
+			res.send({ success: true, result: result });
+		}
+	});
+}
+
 module.exports = {
 	feelstaAll,
 	feelstaOne,
 	feelstaPost,
 	feelstaDeleteLike,
 	feelstaLike,
+	feelstaMin,
 };

@@ -34,11 +34,12 @@ function logIn(sql, password, res) {
 
 				if (result[0].PASSWORD === check) {
 					let user_id = result[0].USER_ID;
-					let accessToken = jwt.sign(user_id); //'Bearer ' +
+					let accessToken = jwt.sign(user_id);
 					let refreshToken = jwt.refresh();
 
 					await redisCli.set(user_id.toString(), refreshToken);
-					await redisCli.set(user_id + 'access', accessToken);
+					// await redisCli.set(user_id + 'access', accessToken);
+
 					res.send({
 						success: true,
 						Authorization: accessToken,
@@ -103,9 +104,26 @@ function header(id, res) {
 	});
 }
 
+function userUpdate(user_id, username, res) {
+	let sql = `UPDATE USER SET USERNAME = ${username} WHERE USER_ID = ${user_id}`;
+
+	db.query(sql, function (error, result) {
+		if (error) {
+			console.log(error);
+			res.send({ success: false, message: 'db error' });
+		} else {
+			res.send({ success: true });
+		}
+	});
+}
+
+function userDelete(user_id, password, res) {}
+
 module.exports = {
 	logIn,
 	allow,
 	duplicate,
 	header,
+	userUpdate,
+	userDelete,
 };

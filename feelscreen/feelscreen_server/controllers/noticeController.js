@@ -12,8 +12,12 @@ function noticeDetail(notice_id, res) {
 	noticeDB.noticeDetail(notice_id, res);
 }
 
+function noticeMin(res) {
+	noticeDB.noticeMin(res);
+}
 module.exports = {
 	noticePost,
 	noticeList,
 	noticeDetail,
+	noticeMin,
 };
