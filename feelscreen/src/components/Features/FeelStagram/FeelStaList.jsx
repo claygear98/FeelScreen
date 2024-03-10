@@ -41,6 +41,8 @@ const Poster = styled.button`
 const FeelStaList = () => {
 	const [feelstaList, setFeelstaList] = useState([]);
 	const [sortList, setSortList] = useState('latest');
+	const [page, setPage] = useState(0);
+	const [isLoading, setIsLoading] = useState(false);
 
 	const handleFilterChange = (e) => {
 		setSortList(e.target.value);
@@ -131,21 +133,22 @@ const FeelStaList = () => {
 			</ListInfo>
 			<hr></hr>
 			<ListItem>
-				{feelstaList.map((feelsta) => (
-					<FeelstaItem
-						key={feelsta.FEELSTA_ID}
-						PROFILEIMAGE={feelsta.PROFILEIMAGE}
-						USERNAME={feelsta.USERNAME}
-						FEELSTA_DATE={feelsta.FEELSTA_DATE}
-						FEELSTA_CONTENT={feelsta.FEELSTA_CONTENT}
-						FEELSTA_TAG={feelsta.FEELSTA_TAG}
-						FEELSTA_ID={feelsta.FEELSTA_ID}
-						FEELSTA_LIKE={feelsta.FEELSTA_LIKE}
-						FEELSTA_IMAGE={feelsta.FEELSTA_IMAGE}
-						COMMENTS={feelsta.COMMENTS}
-						LIKE_NAME={feelsta.LIKE_NAME}
-					/>
-				))}
+				{feelstaList &&
+					feelstaList.map((feelsta) => (
+						<FeelstaItem
+							key={feelsta.FEELSTA_ID}
+							PROFILEIMAGE={feelsta.PROFILEIMAGE}
+							USERNAME={feelsta.USERNAME}
+							FEELSTA_DATE={feelsta.FEELSTA_DATE}
+							FEELSTA_CONTENT={feelsta.FEELSTA_CONTENT}
+							FEELSTA_TAG={feelsta.FEELSTA_TAG}
+							FEELSTA_ID={feelsta.FEELSTA_ID}
+							FEELSTA_LIKE={feelsta.FEELSTA_LIKE}
+							FEELSTA_IMAGE={feelsta.FEELSTA_IMAGE}
+							COMMENTS={feelsta.COMMENTS}
+							LIKE_NAME={feelsta.LIKE_NAME}
+						/>
+					))}
 			</ListItem>
 			<Poster onClick={() => navigate('/feelstacreate')}>글쓰기</Poster>
 		</ListContainer>
