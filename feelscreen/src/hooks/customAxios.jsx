@@ -13,11 +13,13 @@ const tokenCheckAxios = axios.create({
 const tokenChecker = () => {
 	Auth = JSON.parse(base64.decode(Auth.split('.')[1])).exp;
 
-	if (Auth > Date.now()) {
+	console.log(Auth);
+	console.log(Date.now());
+	if (Auth + Date.now() > Date.now()) {
 		return true;
 	} else if (Auth <= Date.now()) {
 		axios
-			.get('url', {
+			.get('http://localhost:3001/refresh', {
 				headers: {
 					Refresh: cookies.get('Refresh'),
 				},

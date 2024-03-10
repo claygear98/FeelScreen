@@ -2,7 +2,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 // import axios from 'axios';
-import instance from '../../../hooks/customAxios';
+import tokenCheckAxios from '../../../hooks/customAxios';
 import { useState, useEffect } from 'react';
 import { FaPlus } from 'react-icons/fa';
 import { RiDeleteBin6Line } from 'react-icons/ri';
@@ -217,7 +217,7 @@ const FeelStaCreate = () => {
 	const navigate = useNavigate();
 
 	const navigateToFeelList = () => {
-		navigate('/feelstafram');
+		navigate('/feelstagram');
 	};
 
 	const postFeelsta = (data) => {
@@ -242,7 +242,7 @@ const FeelStaCreate = () => {
 			}
 		}
 
-		instance
+		tokenCheckAxios
 			.post('http://localhost:3001/feelsta-post', formData, {
 				headers: {
 					'Content-Type': 'multipart/form-data',
@@ -251,8 +251,8 @@ const FeelStaCreate = () => {
 			.then((Response) => {
 				console.log(Response);
 				if (Response.status === 200) {
-					alert('게시물 등록 완료!');
 					navigateToFeelList();
+					alert('게시물 등록 완료!');
 				} else {
 					alert('게시물 등록이 실패했습니다. 다시 시도해주세요.');
 				}

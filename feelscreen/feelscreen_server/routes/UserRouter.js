@@ -12,6 +12,7 @@ const imageMove = require('./imageMove.js');
 const cors = require('cors');
 const path = require('path');
 const multer = require('multer');
+const createToken = require('../JWT/jwt-util.js');
 const JWT = require('../JWT/jwtMiddle.js');
 const JWT_token = require('../JWT/refreshCheck.js');
 const jwt = require('jsonwebtoken');
@@ -115,6 +116,10 @@ router.get('/feelstadetail', (req, res) => {
 	let { feelsta_id } = req.query;
 
 	feelstaController.feelOne(feelsta_id, res);
+});
+
+router.get('/refresh', (req, res) => {
+	res.send({ Authorization: createToken.refresh() });
 });
 
 //필스타 등록(토큰)

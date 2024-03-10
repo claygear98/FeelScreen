@@ -11,6 +11,7 @@ import useHeaderInfo from '../Header/HeadStore';
 
 const Item = styled.li`
 	margin-top: 10px;
+	list-style: none;
 `;
 
 const ItemPreview = styled.div`

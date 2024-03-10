@@ -1,6 +1,6 @@
 const db = require('../db/databaseSet.js');
 
-function feelstaAll(res) {
+function feelstaAll(count, res) {
 	//
 	let sql = `SELECT 
     feelsta.FEELSTA_ID, 
@@ -17,7 +17,8 @@ function feelstaAll(res) {
     USER.PROFILEIMAGE
 	FROM FEELSTA
 	JOIN USER ON feelsta.USER_ID = USER.USER_ID
-	ORDER BY FEELSTA_DATE DESC`;
+	ORDER BY FEELSTA_DATE DESC
+	LIMIT 3 OFFSET ${count}`;
 
 	db.query(sql, async function (error, result) {
 		if (error) {
@@ -80,7 +81,7 @@ function feelstaOne(id, res) {
 }
 
 function feelstaPost(req, res, urlArr, user_id) {
-	let sql = `INSERT INTO FEELSTA (FEELSTA_CONTENT, FEELSTA_LIKE, FEELSTA_TAG, FEELSTA_DATE, FEELSTA_IMAGE, USER_ID) VALUES ("${req.body.description}", 0, "${req.body.tag}",date_format(now(), '%Y-%m-%d %H:%i:%s'), "${urlArr}", 15)`;
+	let sql = `INSERT INTO FEELSTA (FEELSTA_CONTENT, FEELSTA_TAG, FEELSTA_DATE, FEELSTA_IMAGE, USER_ID) VALUES ("${req.body.description}", "${req.body.tag}",date_format(now(), '%Y-%m-%d %H:%i:%s'), "${urlArr}", 15)`;
 
 	db.query(sql, function (error, result) {
 		if (error) {

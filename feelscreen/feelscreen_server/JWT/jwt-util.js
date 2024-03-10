@@ -12,12 +12,12 @@ module.exports = {
 		const payload = {
 			// access token에 들어갈 payload
 			id: user_id,
+			exp: parseInt(Date.now() / 1000) + 6000,
 		};
 
 		return jwt.sign(payload, secret, {
 			// secret으로 sign하여 발급하고 return
 			algorithm: 'HS256', // 암호화 알고리즘
-			expiresIn: '5m', // 유효기간
 		});
 	},
 
@@ -42,10 +42,9 @@ module.exports = {
 
 	// refresh token 발급
 	refresh: () => {
-		return jwt.sign({}, secret, {
+		return jwt.sign({ exp: parseInt(Date.now() / 1000) + 6000 }, secret, {
 			// refresh token은 payload 없이 발급
 			algorithm: 'HS256',
-			expiresIn: '10m',
 		});
 	},
 

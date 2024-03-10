@@ -1,8 +1,13 @@
 const multer = require('multer');
 const feelstaDB = require('../db/feelstaDB.js');
+let count = 0;
 
 function feelAll(res) {
-	feelstaDB.feelstaAll(res);
+	if (count === 0) {
+	} else {
+		count += 3;
+	}
+	feelstaDB.feelstaAll(count, res);
 }
 
 function feelOne(id, res) {

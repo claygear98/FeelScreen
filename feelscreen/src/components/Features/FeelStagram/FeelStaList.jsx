@@ -134,7 +134,12 @@ const FeelStaList = () => {
 			</ListInfo>
 			<hr></hr>
 			{/* <ListItem> */}
-			<List height={800} itemCount={feelstaList.length} width={390}>
+			<List
+				height={800}
+				itemCount={feelstaList.length}
+				width={390}
+				itemSize={350}
+			>
 				{/* {feelstaList &&
 					feelstaList.map((feelsta) => (
 						<FeelstaItem
