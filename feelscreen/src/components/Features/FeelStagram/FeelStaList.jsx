@@ -64,7 +64,6 @@ const FeelStaList = () => {
 	};
 
 	useEffect(() => {
-		console.log(2);
 		getList();
 	}, [sortList]);
 
