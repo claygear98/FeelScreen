@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import tokenCheckAxios from '../../../hooks/customAxios';
+import { Cookies } from 'react-cookie';
 const SeeMyPost = styled.div`
 	display: flex;
 	flex-direction: column;
@@ -58,6 +60,24 @@ const PostDescription = styled.div`
 	}
 `;
 const MyPost = () => {
+	const cookies = new Cookies();
+	const [mPost, setMPost] = useState([]);
+	const getMyPost = () => {
+		tokenCheckAxios
+			.get('http://localhost:3001/user-feelsta', {
+				headers: {
+					Authorization: cookies.get('Authorization'),
+				},
+			})
+			.then((res) => {
+				// setMPost(res.data.feelsta);
+			});
+	};
+
+	useEffect(() => {
+		getMyPost();
+	}, []);
+
 	return (
 		<SeeMyPost>
 			<div>
@@ -66,16 +86,17 @@ const MyPost = () => {
 			</div>
 			<hr />
 			<MyPostList>
-				{/* //반복문 돌릴 li */}
-				<li>
-					<MyPostBox>
-						<PostPic>사진</PostPic>
-						<PostDescription>
-							<div>이번주에 스크린 같이 치실 분~?</div>
-							<div>2023.12.12</div>
-						</PostDescription>
-					</MyPostBox>
-				</li>
+				{mPost.map((a, i) => (
+					<li key={i}>
+						<MyPostBox>
+							<PostPic>사진</PostPic>
+							<PostDescription>
+								<div>이번주에 스크린 같이 치실 분~?</div>
+								<div>2023.12.12</div>
+							</PostDescription>
+						</MyPostBox>
+					</li>
+				))}
 			</MyPostList>
 		</SeeMyPost>
 	);

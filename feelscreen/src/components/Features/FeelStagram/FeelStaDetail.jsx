@@ -4,6 +4,7 @@ import { FaRegHeart } from 'react-icons/fa';
 import { FaRegCommentAlt } from 'react-icons/fa';
 import { FaHeart } from 'react-icons/fa';
 import axios from 'axios';
+
 import { useLocation } from 'react-router-dom';
 import { Cookies } from 'react-cookie';
 import useHeaderInfo from '../Header/HeadStore';
@@ -100,7 +101,6 @@ const Comment = styled.li`
 		font-size: 15px;
 		margin-bottom: 5px;
 	}
-
 	> div > div {
 		font-size: 13px;
 	}
@@ -134,7 +134,6 @@ const CommentSet = styled.div`
 
 const FeelStaDetail = () => {
 	const { state } = useLocation();
-
 	const [feelsta, setFeelsta] = useState({});
 	const [commentsLists, setCommentsLists] = useState([]);
 
@@ -167,7 +166,7 @@ const FeelStaDetail = () => {
 	const [newComment, setNewComment] = useState([]);
 	const cookies = new Cookies();
 
-	const [isHeart, setIsHeart] = useState(false);
+	const [isHeart, setIsHeart] = useState(true);
 
 	const { username, userImage } = useHeaderInfo();
 	const handleHeart = (feelstaId) => {
@@ -280,9 +279,7 @@ const FeelStaDetail = () => {
 						>
 							{isHeart ? <FaHeart /> : <FaRegHeart />}
 						</span>
-						<span>
-							{isHeart ? feelsta.FEELSTA_LIKE : feelsta.FEELSTA_LIKE - 1}
-						</span>
+						<span>{feelsta.FEELSTA_LIKE}</span>
 					</Likes>
 					<Comments>
 						<span>
