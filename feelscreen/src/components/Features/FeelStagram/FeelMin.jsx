@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useState } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
@@ -44,38 +44,41 @@ const FeelMin = () => {
 	const navigate = useNavigate();
 
 	const [min, setMin] = useState([]);
-	// const flowThree = () => {
-	// axios.get('http://localhost:3001/feelstar-mini').then((res) => {
-	// setMin(res.data.뭐든)
-	// });
-	// };
+	const flowThree = () => {
+		axios.get('http://localhost:3001/feelstarmin').then((res) => {
+			setMin(res.data.뭐든);
+		});
+	};
 
-	let test = [0, 1, 2];
+	useEffect(() => {
+		flowThree();
+	}, []);
+
 	return (
 		<FeelMinContainer>
-			{test.map((a, i) => (
+			{min.map((a, i) => (
 				<FeelMinItem key={i}>
 					<ItemTop>
 						<img
-							src="../public/logo192.png"
+							src={a.PROFILEIMAGE}
 							alt=""
 							style={{ width: '30px', height: '30px', borderRadius: '50%' }}
 						/>
 						<div>
-							<div>서원준</div>
-							<div style={{ fontSize: '8px' }}>2024-02-05</div>
+							<div>{a.USERNAME}</div>
+							<div style={{ fontSize: '8px' }}>{a.FEELSTA_DATE}</div>
 						</div>
 					</ItemTop>
 					<ItemContent>
-						<h5>스크린 조지깅</h5>
+						<h5>{a.FEELSTA_CONTENT}</h5>
 						<div
-						// onClick={() => {
-						// 	navigate(`/feelstadetail/${props.FEELSTA_ID}`, {
-						// 		state: props.FEELSTA_ID,
-						// 	});
-						// }}
+							onClick={() => {
+								navigate(`/feelstadetail/${a.FEELSTA_ID}`, {
+									state: a.FEELSTA_ID,
+								});
+							}}
 						>
-							<img src="../public/assets/0f.png" alt="" />
+							<img src={a.FEELSTA_IMAGE} alt="" />
 						</div>
 					</ItemContent>
 				</FeelMinItem>

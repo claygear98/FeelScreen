@@ -77,6 +77,7 @@ const MyPost = () => {
 	useEffect(() => {
 		getMyPost();
 	}, []);
+
 	return (
 		<SeeMyPost>
 			<div>

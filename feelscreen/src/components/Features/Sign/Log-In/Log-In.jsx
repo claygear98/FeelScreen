@@ -1,5 +1,4 @@
 import React from 'react';
-// import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import axios from 'axios';
@@ -66,23 +65,6 @@ const Error = styled.span`
 `;
 
 function LogIn() {
-	// let Auth =
-	// 	'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IuyEnOybkOykgCIsInBob25lIjoiMDEwODgzMTM5NTYiLCJwYXNzd29yZCI6IjEyMzQxMjM0ciIsImV4cCI6MzB9.3Mc4a-ECbIYPt-zyRZbxCwUuFfbbEhCoRm8IGYlX-zg';
-
-	// Auth = JSON.parse(base64.decode(Auth.split('.')[1])).exp;
-	// // let now = 100;
-	// if (Auth - 20 > Date.now()) {
-	// 	console.log('다음행동');
-	// } else {
-	// 	if (120 > 100) {
-	// 		console.log('리프레쉬토큰 보내서 Access 토큰 재발행');
-	// 	} else {
-	// 		console.log('재로그인 실시!');
-	// 	}
-	// }
-	// console.log(Auth);
-	// console.log(Date.now());
-
 	const cookies = new Cookies();
 	const {
 		register,
