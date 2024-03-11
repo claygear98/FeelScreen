@@ -11,13 +11,16 @@ const tokenCheckAxios = axios.create({
 });
 
 const tokenChecker = () => {
-	Auth = JSON.parse(base64.decode(Auth.split('.')[1])).exp;
+	Auth = Auth.split('.');
+	Auth = Auth[1];
+	Auth = JSON.parse(base64.decode(Auth));
+	Auth = Auth.exp + Date.now();
 
 	console.log(Auth);
 	console.log(Date.now());
-	if (Auth + Date.now() > Date.now()) {
+	if (Auth < Date.now()) {
 		return true;
-	} else if (Auth <= Date.now()) {
+	} else if (Auth >= Date.now()) {
 		axios
 			.get('http://localhost:3001/refresh', {
 				headers: {
@@ -38,16 +41,15 @@ tokenCheckAxios.interceptors.request.use(
 		const TFcheck = tokenChecker();
 		if (TFcheck === true) {
 			return config;
+		} else {
+			alert('로그인 유효기간 만료! 다시 로그인해주세요.');
 		}
-	},
-	function (error) {
-		// 요청 오류가 있는 작업 수행
-		const navigate = useNavigate();
-		alert('로그인 유효기간 만료! 다시 로그인해주세요.');
-		navigate('/log-in');
-
-		return Promise.reject(error);
 	}
+	// function (error) {
+	// 	// 요청 오류가 있는 작업 수행
+
+	// 	return Promise.reject(error);
+	// }
 );
 
 // 응답 인터셉터 추가하기
@@ -60,9 +62,8 @@ tokenCheckAxios.interceptors.response.use(
 	function (error) {
 		// 2xx 외의 범위에 있는 상태 코드는 이 함수를 트리거 합니다.
 		// 응답 오류가 있는 작업 수행
-		const navigate = useNavigate();
+
 		alert('로그인 유효기간 만료! 다시 로그인해주세요.');
-		navigate('/log-in');
 
 		return Promise.reject(error);
 	}
