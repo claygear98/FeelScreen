@@ -34,7 +34,7 @@ const ItemContent = styled.div`
 	width: 110px;
 	height: 70px;
 	border: 1px solid black;
-	> div > img {
+	> img {
 		width: 110px;
 		border: 1px solid black;
 	}

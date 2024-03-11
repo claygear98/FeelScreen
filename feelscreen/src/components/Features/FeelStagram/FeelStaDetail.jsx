@@ -136,6 +136,7 @@ const FeelStaDetail = () => {
 	const { state } = useLocation();
 	const [feelsta, setFeelsta] = useState({});
 	const [commentsLists, setCommentsLists] = useState([]);
+	const [isHeart, setIsHeart] = useState(pushLikeBtn);
 
 	const callDetail = () => {
 		axios
@@ -146,7 +147,7 @@ const FeelStaDetail = () => {
 					setFeelsta(res.data.feelsta[0]);
 					// Comment 데이터를 상태에 설정
 					setCommentsLists(res.data.feelsta[0].COMMENTS);
-					if (feelsta[0].LIKE_NAME.includes(username)) {
+					if (feelsta[0].LIKE_NAME && feelsta[0].LIKE_NAME.includes(username)) {
 						setIsHeart(true);
 					} else {
 						setIsHeart(false);
@@ -165,8 +166,6 @@ const FeelStaDetail = () => {
 	const [plus, setPlus] = useState('');
 	const [newComment, setNewComment] = useState([]);
 	const cookies = new Cookies();
-
-	const [isHeart, setIsHeart] = useState(true);
 
 	const { username, userImage } = useHeaderInfo();
 	const handleHeart = (feelstaId) => {
@@ -279,7 +278,9 @@ const FeelStaDetail = () => {
 						>
 							{isHeart ? <FaHeart /> : <FaRegHeart />}
 						</span>
-						<span>{feelsta.FEELSTA_LIKE}</span>
+						<span>
+							{isHeart ? feelsta.FEELSTA_LIKE + 1 : feelsta.FEELSTA_LIKE}
+						</span>
 					</Likes>
 					<Comments>
 						<span>
