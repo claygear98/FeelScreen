@@ -46,7 +46,7 @@ const FeelMin = () => {
 	const [min, setMin] = useState([]);
 	const flowThree = () => {
 		axios.get('http://localhost:3001/feelstarmin').then((res) => {
-			setMin(res.data.뭐든);
+			setMin(res.data.result);
 		});
 	};
 
@@ -58,29 +58,30 @@ const FeelMin = () => {
 		<FeelMinContainer>
 			{min.map((a, i) => (
 				<FeelMinItem key={i}>
-					<ItemTop>
-						<img
-							src={a.PROFILEIMAGE}
-							alt=""
-							style={{ width: '30px', height: '30px', borderRadius: '50%' }}
-						/>
-						<div>
-							<div>{a.USERNAME}</div>
-							<div style={{ fontSize: '8px' }}>{a.FEELSTA_DATE}</div>
-						</div>
-					</ItemTop>
-					<ItemContent>
-						<h5>{a.FEELSTA_CONTENT}</h5>
-						<div
-							onClick={() => {
-								navigate(`/feelstadetail/${a.FEELSTA_ID}`, {
-									state: a.FEELSTA_ID,
-								});
-							}}
-						>
+					<div
+						onClick={() => {
+							navigate(`/feelstadetail/${a.FEELSTA_ID}`, {
+								state: a.FEELSTA_ID,
+							});
+						}}
+					>
+						<ItemTop>
+							<img
+								src={a.PROFILEIMAGE}
+								alt=""
+								style={{ width: '30px', height: '30px', borderRadius: '50%' }}
+							/>
+							<div>
+								<div>{a.USERNAME}</div>
+								<div style={{ fontSize: '8px' }}>{a.FEELSTA_DATE}</div>
+							</div>
+						</ItemTop>
+						<ItemContent>
+							<h5>{a.FEELSTA_CONTENT}</h5>
+
 							<img src={a.FEELSTA_IMAGE} alt="" />
-						</div>
-					</ItemContent>
+						</ItemContent>
+					</div>
 				</FeelMinItem>
 			))}
 		</FeelMinContainer>

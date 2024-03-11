@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import FeelstaItem from './FeelstaItem';
-import { FixedSizeList as List } from 'react-window';
 
 const ListContainer = styled.div`
 	width: 100%;
@@ -16,15 +15,15 @@ const ListInfo = styled.div`
 	justify-content: space-around;
 `;
 
-// const ListItem = styled.ul`
-// 	width: 100%;
-// 	list-style: none;
-// 	margin: 0;
-// 	padding: 0;
-// 	display: flex;
-// 	flex-direction: column;
-// 	align-items: center;
-// `;
+const ListItem = styled.ul`
+	width: 100%;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+`;
 
 const Poster = styled.button`
 	width: 110px;
@@ -41,9 +40,38 @@ const Poster = styled.button`
 
 const FeelStaList = () => {
 	const [feelstaList, setFeelstaList] = useState([]);
+	const [stackList, setStackList] = useState([]);
 	const [sortList, setSortList] = useState('latest');
-	const [page, setPage] = useState(0);
 	const [isLoading, setIsLoading] = useState(false);
+
+	const lastContentRef = useRef(null);
+
+	useEffect(() => {
+		const options = {
+			threshold: 0.5,
+		};
+		const observer = new IntersectionObserver((entries) => {
+			if (entries[0].isIntersecting) {
+				axios.get(`http://localhost:3001/feelsta`).then((response) => {
+					if (response.data.success === true) {
+						let dataLists = response.data.feelsta;
+						setStackList([...feelstaList, dataLists]);
+						setIsLoading(!isLoading);
+					}
+				});
+			} else {
+				setIsLoading(!isLoading);
+			}
+		}, options);
+
+		if (lastContentRef.current) {
+			observer.observe(lastContentRef.current);
+		}
+
+		return () => {
+			observer.disconnect();
+		};
+	}, [isLoading, stackList]);
 
 	const handleFilterChange = (e) => {
 		setSortList(e.target.value);
@@ -133,33 +161,24 @@ const FeelStaList = () => {
 				</div>
 			</ListInfo>
 			<hr></hr>
-			{/* <ListItem> */}
-			<List
-				height={800}
-				itemCount={feelstaList.length}
-				width={390}
-				itemSize={350}
-			>
-				{({ index, style }) => (
-					<div style={style}>
+			<ListItem>
+				{stackList &&
+					stackList.map((feelsta) => (
 						<FeelstaItem
-							key={feelstaList[index].FEELSTA_ID}
-							PROFILEIMAGE={feelstaList[index].PROFILEIMAGE}
-							USERNAME={feelstaList[index].USERNAME}
-							FEELSTA_DATE={feelstaList[index].FEELSTA_DATE}
-							FEELSTA_CONTENT={feelstaList[index].FEELSTA_CONTENT}
-							FEELSTA_TAG={feelstaList[index].FEELSTA_TAG}
-							FEELSTA_ID={feelstaList[index].FEELSTA_ID}
-							FEELSTA_LIKE={feelstaList[index].FEELSTA_LIKE}
-							FEELSTA_IMAGE={feelstaList[index].FEELSTA_IMAGE}
-							COMMENTS={feelstaList[index].COMMENTS}
-							LIKE_NAME={feelstaList[index].LIKE_NAME}
+							key={feelsta.FEELSTA_ID}
+							PROFILEIMAGE={feelsta.PROFILEIMAGE}
+							USERNAME={feelsta.USERNAME}
+							FEELSTA_DATE={feelsta.FEELSTA_DATE}
+							FEELSTA_CONTENT={feelsta.FEELSTA_CONTENT}
+							FEELSTA_TAG={feelsta.FEELSTA_TAG}
+							FEELSTA_ID={feelsta.FEELSTA_ID}
+							FEELSTA_LIKE={feelsta.FEELSTA_LIKE}
+							FEELSTA_IMAGE={feelsta.FEELSTA_IMAGE}
+							COMMENTS={feelsta.COMMENTS}
+							LIKE_NAME={feelsta.LIKE_NAME}
 						/>
-					</div>
-				)}
-			</List>
-
-			{/* </ListItem> */}
+					))}
+			</ListItem>
 			<Poster onClick={() => navigate('/feelstacreate')}>글쓰기</Poster>
 		</ListContainer>
 	);
