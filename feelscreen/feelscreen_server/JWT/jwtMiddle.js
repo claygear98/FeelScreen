@@ -21,7 +21,7 @@ const authJWT = (req, res, next) => {
 	}
 };
 
-const authGetJWT = (req, res) => {
+const authGetJWT = (req, res, next) => {
 	if (req.get('Authorization')) {
 		const token = req.get('Authorization'); // header에서 access token을 가져옵니다.
 		const result = verify(token); // token을 검증합니다.
