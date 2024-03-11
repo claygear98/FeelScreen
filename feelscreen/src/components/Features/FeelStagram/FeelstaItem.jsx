@@ -118,7 +118,13 @@ const FeelstaItem = (props) => {
 
 	return (
 		<div>
-			<Item>
+			<Item
+				onClick={() => {
+					navigate(`/feelstadetail/${props.FEELSTA_ID}`, {
+						state: props.FEELSTA_ID,
+					});
+				}}
+			>
 				<ItemPreview>
 					<ItemTop>
 						<img
@@ -137,13 +143,7 @@ const FeelstaItem = (props) => {
 							<span key={index}>{tag}</span>
 						))}
 					</ItemSec>
-					<ItemImg
-						onClick={() => {
-							navigate(`/feelstadetail/${props.FEELSTA_ID}`, {
-								state: props.FEELSTA_ID,
-							});
-						}}
-					>
+					<ItemImg>
 						<img
 							src={props.FEELSTA_IMAGE}
 							alt=""
@@ -154,7 +154,8 @@ const FeelstaItem = (props) => {
 						<Likes>
 							<span
 								className="heartPush"
-								onClick={() => {
+								onClick={(e) => {
+									e.preventDefault();
 									handleHeart(props.FEELSTA_ID);
 								}}
 							>
