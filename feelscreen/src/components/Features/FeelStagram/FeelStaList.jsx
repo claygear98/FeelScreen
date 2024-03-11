@@ -90,6 +90,7 @@ const FeelStaList = () => {
 					dataList = dataList.sort((a, b) => b.FEELSTA_LIKE - a.FEELSTA_LIKE);
 				}
 				setFeelstaList(dataList);
+				setStackList(dataList);
 			}
 		});
 	};

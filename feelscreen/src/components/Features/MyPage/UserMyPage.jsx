@@ -113,14 +113,14 @@ const MyPage = () => {
 
 	function onSubmit(data) {
 		console.log(data.id);
-		const Access = cookies.get('userId');
 		tokenCheckAxios
-			.patch(`/allow/${Access}`, {
+			.patch(`/modify-user`, {
+				Authorization: cookies.get('Authorization'),
 				username: data.username,
 			})
 			.then((Response) => {
 				console.log(Response);
-				if (Response.status === 200) {
+				if (Response.success) {
 					alert('아이디(닉네임)이/가 변경되었습니다.');
 					setProfileModifyVisible(false);
 					reset();
@@ -128,7 +128,6 @@ const MyPage = () => {
 				}
 			})
 			.catch((error) => {
-				console.error(error);
 				alert('변경에 실패했습니다. 다시 시도해주세요.');
 			});
 	}

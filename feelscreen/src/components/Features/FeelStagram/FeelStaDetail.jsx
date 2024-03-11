@@ -136,7 +136,6 @@ const FeelStaDetail = () => {
 	const { state } = useLocation();
 	const [feelsta, setFeelsta] = useState({});
 	const [commentsLists, setCommentsLists] = useState([]);
-	const [isHeart, setIsHeart] = useState(pushLikeBtn);
 
 	const callDetail = () => {
 		axios
@@ -167,11 +166,13 @@ const FeelStaDetail = () => {
 	const [newComment, setNewComment] = useState([]);
 	const cookies = new Cookies();
 
+	const [isHeart, setIsHeart] = useState(false);
+
 	const { username, userImage } = useHeaderInfo();
 	const handleHeart = (feelstaId) => {
 		if (isHeart === false) {
 			axios
-				.get(`http://localhost:3001//feelstalike`, {
+				.get(`http://localhost:3001/feelstalike`, {
 					headers: {
 						Authorization: cookies.get('Authorization'),
 						feelsta_id: feelstaId,
@@ -180,7 +181,7 @@ const FeelStaDetail = () => {
 				.then(setIsHeart(!isHeart));
 		} else {
 			axios
-				.delete(`http://localhost:3001//feelstalike`, {
+				.delete(`http://localhost:3001/feelstalike`, {
 					headers: {
 						Authorization: cookies.get('Authorization'),
 						feelsta_id: feelstaId,

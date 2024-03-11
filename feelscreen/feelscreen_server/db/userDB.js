@@ -117,7 +117,42 @@ function userUpdate(user_id, username, res) {
 	});
 }
 
-function userDelete(user_id, password, res) {}
+//탈퇴 전 비밀번호 확인
+function userDelete(user_id, password, res) {
+	let sql = `SELECT PASSWORD, PASSWORDSALT FROM USER WEHRE USER_ID = ${user_id}`;
+
+	db.query(sql, function (error, result) {
+		if (error) {
+			console.log(error);
+			res.send({ success: false, message: 'db error' });
+		} else {
+			let salt = result[0].PASSWORDSALT;
+			let check = crypto
+				.pbkdf2Sync(password, salt, 1, 32, 'sha512')
+				.toString('hex');
+
+			if (result[0].PASSWORD === check) {
+				withDraw(user_id, res);
+			} else {
+				res.send({ success: false, message: 'incorrect password' });
+			}
+		}
+	});
+}
+
+//회원 탈퇴
+function withDraw(user_id, res) {
+	let sql = `DELETE FROM USER WHERE USER_ID = ${user_id}`;
+
+	db.query(sql, function (error, result) {
+		if (error) {
+			console.log(error);
+			res.send({ success: false, message: 'db error' });
+		} else {
+			res.send({ success: true });
+		}
+	});
+}
 
 module.exports = {
 	logIn,
