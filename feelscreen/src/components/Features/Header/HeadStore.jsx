@@ -13,6 +13,7 @@ const useHeaderInfo = create((set) => ({
 				Authorization: cookies.get('Authorization'),
 			})
 			.then((Response) => {
+				console.log(Response);
 				set((state) => ({
 					userImage: Response.data.image,
 					username: Response.data.username,

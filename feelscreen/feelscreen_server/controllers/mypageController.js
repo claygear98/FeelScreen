@@ -3,13 +3,13 @@ const userDB = require('../db/userDB.js');
 const jsonwebtoken = require('jsonwebtoken');
 
 const nameUpdate = (req, res) => {
-	let user_id = jwt.decode(req.get('Authorization')).id;
+	let user_id = req.userId;
 
 	userDB.nameUpdate(user_id, req.get('username'), res);
 };
 
 const userDelete = (req, res) => {
-	let user_id = jwt.decode(req.get('Authorization')).id;
+	let user_id = req.userId;
 
 	userDB.userDelete(user_id, password, res);
 };

@@ -98,9 +98,8 @@ router.get('/noticeDetail', (req, res) => {
 });
 
 //헤더 요청(토큰 필요)
-router.post('/header', async (req, res) => {
-	console.log(jwt.decode(req.body.Authorization).id);
-	mainController.header(jwt.decode(req.body.Authorization).id, res);
+router.post('/header', JWT.authJWT, async (req, res) => {
+	mainController.header(req.userId, res);
 });
 
 //필스타 전체 목록
@@ -118,6 +117,7 @@ router.get('/feelstadetail', (req, res) => {
 	feelstaController.feelOne(feelsta_id, res);
 });
 
+//리프레시 토큰 재요청
 router.get('/refresh', (req, res) => {
 	res.send({ Authorization: createToken.refresh() });
 });
@@ -126,8 +126,9 @@ router.get('/refresh', (req, res) => {
 router.post(
 	'/feelsta-post',
 	feelstaController.FeelUpload.array('image', 4),
+	JWT.authJWT,
 	async (req, res) => {
-		let user_id = JWT.authJWT;
+		let user_id = req.userId;
 
 		let urlArr = new Array();
 		for (let i = 0; i < req.files.length; i++) {
@@ -142,20 +143,20 @@ router.post(
 
 //댓글 등록(토큰)
 router.post('/feelsta/comment-register', JWT.authJWT, async (req, res) => {
-	let user_id = jwt.decode(req.body.Authorization).id;
+	let user_id = req.userId;
 
 	commentController.feelComment(req, res, user_id);
 });
 
 //좋아요 등록
 router.get('/feelstalike', JWT.authGetJWT, async (req, res) => {
-	let user_id = jwt.decode(req.body.Authorization).id;
+	let user_id = req.userId;
 	feelstaController.feelLike(user_id, req.get('feelsta_id'), res);
 });
 
 //좋아요 삭제
 router.delete('/feelstalike', JWT.authGetJWT, async (req, res) => {
-	let user_id = jwt.decode(req.body.Authorization).id;
+	let user_id = req.userId;
 	feelstaController.feelDeleteLike(user_id, req.get('feelsta_id'), res);
 });
 
@@ -167,8 +168,12 @@ router.get('/noticemin', (req, res) => {
 	noticeController.noticeMin(res);
 });
 
+//공지 삭제(진행 중)
 router.delete('/notice', JWT.authJWT, (req, res) => {});
+
+//닉네임 수정
 router.patch('/modify-user', JWT.authJWT, mypageController.nameUpdate);
+
 app.use('/', express.static(path.join(__dirname, 'images')));
 app.use('/', router);
 app.listen(3001, () => {
