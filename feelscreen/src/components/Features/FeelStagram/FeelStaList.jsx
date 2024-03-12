@@ -17,6 +17,7 @@ const ListInfo = styled.div`
 
 const ListItem = styled.ul`
 	width: 100%;
+	height: 500px;
 	list-style: none;
 	margin: 0;
 	padding: 0;
@@ -52,15 +53,7 @@ const FeelStaList = () => {
 		};
 		const observer = new IntersectionObserver((entries) => {
 			if (entries[0].isIntersecting) {
-				axios.get(`http://localhost:3001/feelsta`).then((response) => {
-					if (response.data.success === true) {
-						let dataLists = response.data.feelsta;
-						setStackList([...feelstaList, dataLists]);
-						setIsLoading(!isLoading);
-					}
-				});
-			} else {
-				setIsLoading(!isLoading);
+				loadMoreFeelsta();
 			}
 		}, options);
 
@@ -71,34 +64,35 @@ const FeelStaList = () => {
 		return () => {
 			observer.disconnect();
 		};
-	}, [isLoading, stackList]);
+	}, []);
 
-	const handleFilterChange = (e) => {
-		setSortList(e.target.value);
-	};
+	useEffect(() => {
+		if (sortList === 'latest') {
+			setStackList(
+				[...feelstaList].sort(
+					(a, b) => new Date(b.FEELSTA_DATE) - new Date(a.FEELSTA_DATE)
+				)
+			);
+		} else if (sortList === 'likest') {
+			setStackList(
+				[...feelstaList].sort((a, b) => b.FEELSTA_LIKE - a.FEELSTA_LIKE)
+			);
+		}
+	}, [sortList]);
 
-	const getList = () => {
+	const loadMoreFeelsta = () => {
 		axios.get(`http://localhost:3001/feelsta`).then((response) => {
-			console.log(response);
 			if (response.data.success === true) {
-				let dataList = response.data.feelsta;
-				if (sortList === 'latest') {
-					dataList = dataList.sort(
-						(a, b) => new Date(b.FEELSTA_DATE) - new Date(a.FEELSTA_DATE)
-					);
-				} else if (sortList === 'likest') {
-					dataList = dataList.sort((a, b) => b.FEELSTA_LIKE - a.FEELSTA_LIKE);
-				}
-				setFeelstaList(dataList);
-				setStackList(dataList);
+				let dataLists = response.data.feelsta;
+				setFeelstaList((prevFeelstaList) => [...prevFeelstaList, ...dataLists]);
+				setIsLoading(true);
 			}
 		});
 	};
 
-	useEffect(() => {
-		console.log(2);
-		getList();
-	}, [sortList]);
+	const handleFilterChange = (e) => {
+		setSortList(e.target.value);
+	};
 
 	const [toSearch, setToSearch] = useState('');
 	const [searchType, setSearchType] = useState('fromtitle');
@@ -164,7 +158,7 @@ const FeelStaList = () => {
 			<hr></hr>
 			<ListItem>
 				{stackList &&
-					stackList.map((feelsta) => (
+					stackList.map((feelsta, index) => (
 						<FeelstaItem
 							key={feelsta.FEELSTA_ID}
 							PROFILEIMAGE={feelsta.PROFILEIMAGE}
@@ -177,6 +171,7 @@ const FeelStaList = () => {
 							FEELSTA_IMAGE={feelsta.FEELSTA_IMAGE}
 							COMMENTS={feelsta.COMMENTS}
 							LIKE_NAME={feelsta.LIKE_NAME}
+							ref={index === stackList.length - 1 ? lastContentRef : null}
 						/>
 					))}
 			</ListItem>

@@ -146,7 +146,7 @@ const FeelStaDetail = () => {
 					setFeelsta(res.data.feelsta[0]);
 					// Comment 데이터를 상태에 설정
 					setCommentsLists(res.data.feelsta[0].COMMENTS);
-					if (feelsta[0].LIKE_NAME.includes(username)) {
+					if (feelsta[0].LIKE_NAME && feelsta[0].LIKE_NAME.includes(username)) {
 						setIsHeart(true);
 					} else {
 						setIsHeart(false);

@@ -30,6 +30,9 @@ const tokenChecker = () => {
 			.then((res) => {
 				cookies.set('Authorization', res.data.Authorization);
 				return true;
+			})
+			.catch((error) => {
+				console.error(error);
 			});
 	}
 };
