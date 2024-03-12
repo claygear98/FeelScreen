@@ -56,12 +56,12 @@ const FeelStaList = () => {
 				axios.get(`http://localhost:3001/feelsta`).then((response) => {
 					if (response.data.success === true) {
 						let dataLists = response.data.feelsta;
-						setStackList([...stackList, dataLists]);
-						setIsLoading(!isLoading);
+						setStackList((prevStackList) => [...prevStackList, ...dataLists]);
+						setIsLoading(false);
 					}
 				});
 			} else {
-				setIsLoading(!isLoading);
+				setIsLoading(true);
 			}
 		}, options);
 
@@ -70,7 +70,7 @@ const FeelStaList = () => {
 		return () => {
 			observer.disconnect();
 		};
-	}, [isLoading, stackList]);
+	}, [lastContentRef]);
 
 	const handleFilterChange = (e) => {
 		setSortList(e.target.value);
