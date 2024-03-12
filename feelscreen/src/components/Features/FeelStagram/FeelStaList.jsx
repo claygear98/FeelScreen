@@ -43,7 +43,6 @@ const FeelStaList = () => {
 	const [feelstaList, setFeelstaList] = useState([]);
 	const [stackList, setStackList] = useState([]);
 	const [sortList, setSortList] = useState('latest');
-	// const [isLoading, setIsLoading] = useState(false);
 
 	const lastContentRef = useRef(null);
 
@@ -57,9 +56,9 @@ const FeelStaList = () => {
 					if (response.data.success === true) {
 						let dataLists = response.data.feelsta;
 						setStackList((prevStackList) => [...prevStackList, ...dataLists]);
-						// setIsLoading(false);
 					}
 				});
+				console.log('감지됨');
 			}
 		}, options);
 
@@ -115,7 +114,6 @@ const FeelStaList = () => {
 			console.log(response);
 			if (response.data.success === true) {
 				let dataLists = response.data.feelsta;
-
 				if (searchType === 'fromtitle') {
 					dataLists = dataLists.filter((item) =>
 						item.FEELSTA_CONTENT.includes(toSearch)
@@ -178,6 +176,7 @@ const FeelStaList = () => {
 							LIKE_NAME={feelsta.LIKE_NAME}
 						/>
 					))}
+
 				<div ref={lastContentRef}></div>
 			</ListItem>
 			<Poster onClick={() => navigate('/feelstacreate')}>글쓰기</Poster>
