@@ -52,7 +52,7 @@ const FeelStaList = () => {
 			threshold: 0.5,
 		};
 		const observer = new IntersectionObserver((entries) => {
-			if (entries[0].isIntersecting) {
+			if (entries.isIntersecting) {
 				axios.get(`http://localhost:3001/feelsta`).then((response) => {
 					if (response.data.success === true) {
 						let dataLists = response.data.feelsta;
