@@ -53,7 +53,15 @@ const FeelStaList = () => {
 		};
 		const observer = new IntersectionObserver((entries) => {
 			if (entries[0].isIntersecting) {
-				loadMoreFeelsta();
+				axios.get(`http://localhost:3001/feelsta`).then((response) => {
+					if (response.data.success === true) {
+						let dataLists = response.data.feelsta;
+						setStackList([...stackList, dataLists]);
+						setIsLoading(!isLoading);
+					}
+				});
+			} else {
+				setIsLoading(!isLoading);
 			}
 		}, options);
 
@@ -64,35 +72,35 @@ const FeelStaList = () => {
 		return () => {
 			observer.disconnect();
 		};
-	}, []);
+	}, [isLoading, stackList]);
 
-	useEffect(() => {
+	const handleFilterChange = (e) => {
+		setSortList(e.target.value);
 		if (sortList === 'latest') {
 			setStackList(
-				[...feelstaList].sort(
+				stackList.sort(
 					(a, b) => new Date(b.FEELSTA_DATE) - new Date(a.FEELSTA_DATE)
 				)
 			);
 		} else if (sortList === 'likest') {
-			setStackList(
-				[...feelstaList].sort((a, b) => b.FEELSTA_LIKE - a.FEELSTA_LIKE)
-			);
+			setStackList(stackList.sort((a, b) => b.FEELSTA_LIKE - a.FEELSTA_LIKE));
 		}
-	}, [sortList]);
+	};
 
-	const loadMoreFeelsta = () => {
+	const getList = () => {
 		axios.get(`http://localhost:3001/feelsta`).then((response) => {
+			console.log(response);
 			if (response.data.success === true) {
-				let dataLists = response.data.feelsta;
-				setFeelstaList((prevFeelstaList) => [...prevFeelstaList, ...dataLists]);
-				setIsLoading(true);
+				let dataList = response.data.feelsta;
+				setFeelstaList(dataList);
+				setStackList(dataList);
 			}
 		});
 	};
 
-	const handleFilterChange = (e) => {
-		setSortList(e.target.value);
-	};
+	useEffect(() => {
+		getList();
+	}, []);
 
 	const [toSearch, setToSearch] = useState('');
 	const [searchType, setSearchType] = useState('fromtitle');
