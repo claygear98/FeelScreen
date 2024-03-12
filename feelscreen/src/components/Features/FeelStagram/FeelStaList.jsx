@@ -15,7 +15,7 @@ const ListInfo = styled.div`
 	justify-content: space-around;
 `;
 
-const ListItem = styled.ul`
+const ListItem = styled.div`
 	width: 100%;
 	height: 500px;
 	list-style: none;
@@ -43,7 +43,7 @@ const FeelStaList = () => {
 	const [feelstaList, setFeelstaList] = useState([]);
 	const [stackList, setStackList] = useState([]);
 	const [sortList, setSortList] = useState('latest');
-	const [isLoading, setIsLoading] = useState(false);
+	// const [isLoading, setIsLoading] = useState(false);
 
 	const lastContentRef = useRef(null);
 
@@ -57,11 +57,9 @@ const FeelStaList = () => {
 					if (response.data.success === true) {
 						let dataLists = response.data.feelsta;
 						setStackList((prevStackList) => [...prevStackList, ...dataLists]);
-						setIsLoading(false);
+						// setIsLoading(false);
 					}
 				});
-			} else {
-				setIsLoading(true);
 			}
 		}, options);
 
@@ -112,6 +110,7 @@ const FeelStaList = () => {
 	};
 
 	const searchSubmit = () => {
+		// feelsta-search로 바꾸던지 해야됨
 		axios.get(`http://localhost:3001/feelsta`).then((response) => {
 			console.log(response);
 			if (response.data.success === true) {
@@ -179,7 +178,7 @@ const FeelStaList = () => {
 							LIKE_NAME={feelsta.LIKE_NAME}
 						/>
 					))}
-				{isLoading && <div ref={lastContentRef}></div>}
+				<div ref={lastContentRef}></div>
 			</ListItem>
 			<Poster onClick={() => navigate('/feelstacreate')}>글쓰기</Poster>
 		</ListContainer>
