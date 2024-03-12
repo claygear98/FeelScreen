@@ -9,7 +9,8 @@ import { FaRegHeart } from 'react-icons/fa';
 import { FaRegCommentAlt } from 'react-icons/fa';
 import useHeaderInfo from '../Header/HeadStore';
 
-const Item = styled.li`
+const Item = styled.div`
+	width: 360px;
 	margin-top: 10px;
 	list-style: none;
 `;

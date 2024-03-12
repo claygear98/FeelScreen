@@ -15,7 +15,7 @@ const ListInfo = styled.div`
 	justify-content: space-around;
 `;
 
-const ListItem = styled.ul`
+const ListItem = styled.div`
 	width: 100%;
 	height: 500px;
 	list-style: none;
@@ -43,7 +43,6 @@ const FeelStaList = () => {
 	const [feelstaList, setFeelstaList] = useState([]);
 	const [stackList, setStackList] = useState([]);
 	const [sortList, setSortList] = useState('latest');
-	const [isLoading, setIsLoading] = useState(false);
 
 	const lastContentRef = useRef(null);
 
@@ -52,27 +51,23 @@ const FeelStaList = () => {
 			threshold: 0.5,
 		};
 		const observer = new IntersectionObserver((entries) => {
-			if (entries[0].isIntersecting) {
+			if (entries.isIntersecting) {
 				axios.get(`http://localhost:3001/feelsta`).then((response) => {
 					if (response.data.success === true) {
 						let dataLists = response.data.feelsta;
-						setStackList([...stackList, dataLists]);
-						setIsLoading(!isLoading);
+						setStackList((prevStackList) => [...prevStackList, ...dataLists]);
 					}
 				});
-			} else {
-				setIsLoading(!isLoading);
+				console.log('감지됨');
 			}
 		}, options);
 
-		if (lastContentRef.current) {
-			observer.observe(lastContentRef.current);
-		}
+		observer.observe(lastContentRef.current);
 
 		return () => {
 			observer.disconnect();
 		};
-	}, [isLoading, stackList]);
+	}, [lastContentRef]);
 
 	const handleFilterChange = (e) => {
 		setSortList(e.target.value);
@@ -114,11 +109,11 @@ const FeelStaList = () => {
 	};
 
 	const searchSubmit = () => {
+		// feelsta-search로 바꾸던지 해야됨
 		axios.get(`http://localhost:3001/feelsta`).then((response) => {
 			console.log(response);
 			if (response.data.success === true) {
 				let dataLists = response.data.feelsta;
-
 				if (searchType === 'fromtitle') {
 					dataLists = dataLists.filter((item) =>
 						item.FEELSTA_CONTENT.includes(toSearch)
@@ -166,7 +161,7 @@ const FeelStaList = () => {
 			<hr></hr>
 			<ListItem>
 				{stackList &&
-					stackList.map((feelsta, index) => (
+					stackList.map((feelsta) => (
 						<FeelstaItem
 							key={feelsta.FEELSTA_ID}
 							PROFILEIMAGE={feelsta.PROFILEIMAGE}
@@ -179,9 +174,10 @@ const FeelStaList = () => {
 							FEELSTA_IMAGE={feelsta.FEELSTA_IMAGE}
 							COMMENTS={feelsta.COMMENTS}
 							LIKE_NAME={feelsta.LIKE_NAME}
-							ref={index === stackList.length - 1 ? lastContentRef : null}
 						/>
 					))}
+
+				<div ref={lastContentRef}></div>
 			</ListItem>
 			<Poster onClick={() => navigate('/feelstacreate')}>글쓰기</Poster>
 		</ListContainer>
