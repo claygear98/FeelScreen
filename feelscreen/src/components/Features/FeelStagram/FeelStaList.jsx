@@ -65,9 +65,7 @@ const FeelStaList = () => {
 			}
 		}, options);
 
-		if (lastContentRef.current) {
-			observer.observe(lastContentRef.current);
-		}
+		observer.observe(lastContentRef.current);
 
 		return () => {
 			observer.disconnect();
@@ -166,7 +164,7 @@ const FeelStaList = () => {
 			<hr></hr>
 			<ListItem>
 				{stackList &&
-					stackList.map((feelsta, index) => (
+					stackList.map((feelsta) => (
 						<FeelstaItem
 							key={feelsta.FEELSTA_ID}
 							PROFILEIMAGE={feelsta.PROFILEIMAGE}
@@ -179,9 +177,9 @@ const FeelStaList = () => {
 							FEELSTA_IMAGE={feelsta.FEELSTA_IMAGE}
 							COMMENTS={feelsta.COMMENTS}
 							LIKE_NAME={feelsta.LIKE_NAME}
-							ref={index === stackList.length - 1 ? lastContentRef : null}
 						/>
 					))}
+				{isLoading && <div ref={lastContentRef}></div>}
 			</ListItem>
 			<Poster onClick={() => navigate('/feelstacreate')}>글쓰기</Poster>
 		</ListContainer>
