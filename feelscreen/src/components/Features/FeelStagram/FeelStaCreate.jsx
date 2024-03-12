@@ -250,7 +250,7 @@ const FeelStaCreate = () => {
 			})
 			.then((Response) => {
 				console.log(Response);
-				if (Response.status === 200) {
+				if (Response.data.success === true) {
 					navigateToFeelList();
 					alert('게시물 등록 완료!');
 				} else {
