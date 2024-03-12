@@ -17,6 +17,7 @@ const ListInfo = styled.div`
 
 const ListItem = styled.ul`
 	width: 100%;
+	height: 500px;
 	list-style: none;
 	margin: 0;
 	padding: 0;
