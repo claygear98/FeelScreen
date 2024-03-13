@@ -56,19 +56,20 @@ const FeelStaList = () => {
 					}
 				});
 				console.log('감지됨');
+				observer.unobserve(lastContentRef.current); // 이 부분 추가
 			}
 		});
 
 		observer.observe(lastContentRef.current);
 
 		return () => {
-			observer.disconnect();
+			observer && observer.disconnect();
 		};
 	}, []);
 
 	useEffect(() => {
 		reRender();
-	}, [reRender]);
+	}, []);
 
 	const handleFilterChange = (e) => {
 		setSortList(e.target.value);
