@@ -42,11 +42,11 @@ const Poster = styled.button`
 `;
 
 const FeelStaList = () => {
-	const [feelstaList, setFeelstaList] = useState([]);
+	// const [feelstaList, setFeelstaList] = useState([]);
 	const [stackList, setStackList] = useState([]);
 	const [sortList, setSortList] = useState('latest');
 	const [ref, inView] = useInView();
-	const lastContentRef = useRef(null);
+	// const lastContentRef = useRef(null);
 	// const reRender = useCallback(() => {
 	// 	const options = {
 	// 		threshold: 0.5,
