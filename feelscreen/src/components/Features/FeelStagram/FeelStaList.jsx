@@ -46,12 +46,9 @@ const FeelStaList = () => {
 
 	const lastContentRef = useRef(null);
 
-	useEffect(() => {
-		const options = {
-			threshold: 0.5,
-		};
+	const reRender = () => {
 		const observer = new IntersectionObserver((entries) => {
-			if (entries.isIntersecting) {
+			if (entries[0].isIntersecting) {
 				axios.get(`http://localhost:3001/feelsta`).then((response) => {
 					if (response.data.success === true) {
 						let dataLists = response.data.feelsta;
@@ -60,14 +57,17 @@ const FeelStaList = () => {
 				});
 				console.log('감지됨');
 			}
-		}, options);
+		});
 
 		observer.observe(lastContentRef.current);
 
-		return () => {
-			observer.disconnect();
-		};
-	}, [lastContentRef]);
+		// return () => {
+		// 	observer.disconnect();
+		// };
+	};
+	useEffect(() => {
+		reRender();
+	}, [lastContentRef, stackList]);
 
 	const handleFilterChange = (e) => {
 		setSortList(e.target.value);
@@ -176,7 +176,6 @@ const FeelStaList = () => {
 							LIKE_NAME={feelsta.LIKE_NAME}
 						/>
 					))}
-
 				<div ref={lastContentRef}></div>
 			</ListItem>
 			<Poster onClick={() => navigate('/feelstacreate')}>글쓰기</Poster>
