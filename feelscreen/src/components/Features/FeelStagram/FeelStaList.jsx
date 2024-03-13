@@ -41,45 +41,79 @@ const Poster = styled.button`
 `;
 
 const FeelStaList = () => {
-	const [feelstaList, setFeelstaList] = useState([]);
 	const [stackList, setStackList] = useState([]);
 	const [sortList, setSortList] = useState('latest');
 
 	const lastContentRef = useRef(null);
-	const reRender = useCallback(() => {
+	// const reRender = useCallback(() => {
+	// 	if (stackList.length >= 15) {
+	// 		return;
+	// 	}
+	// 	const options = {
+	// 		threshold: 0.5,
+	// 	};
+	// 	const observer = new IntersectionObserver((entries) => {
+	// 		if (entries[0].isIntersecting) {
+	// 			axios
+	// 				.get(`http://localhost:3001/feelsta`)
+	// 				.then((response) => {
+	// 					if (response.data.success === true) {
+	// 						let dataLists = response.data.feelsta;
+	// 						setStackList([...stackList, ...dataLists]);
+	// 						console.log(stackList);
+	// 					}
+	// 				})
+	// 				.catch((err) => {
+	// 					console.log(err);
+	// 				});
+	// 			console.log(stackList);
+	// 			// observer.unobserve(lastContentRef.current); // 이 부분 추가
+	// 		}
+	// 	}, options);
+
+	// 	observer.observe(lastContentRef.current);
+	// 	console.log('1');
+	// 	return () => {
+	// 		observer && observer.disconnect();
+	// 	};
+	// }, []);
+	const reRender = () => {
+		if (stackList.length >= 15) {
+			return;
+		}
+		let observerIsActive = true;
+
 		const options = {
 			threshold: 0.5,
 		};
-		const observer = new IntersectionObserver((entries) => {
+		const observer = new IntersectionObserver(async (entries) => {
 			if (entries[0].isIntersecting) {
-				axios
-					.get(`http://localhost:3001/feelsta`)
-					.then((response) => {
-						if (response.data.success === true) {
-							let dataLists = response.data.feelsta;
-							setStackList((prevStackList) => [...prevStackList, ...dataLists]);
-						}
-					})
-					.catch((err) => {
-						console.log(err);
-					});
+				observerIsActive = false;
+
+				try {
+					const response = await axios.get(`http://localhost:3001/feelsta`);
+					if (response.data.success === true) {
+						let dataLists = response.data.feelsta;
+						setStackList((prevStackList) => [...prevStackList, ...dataLists]);
+						console.log(stackList);
+					}
+				} catch (err) {
+					console.log(err);
+				}
 				console.log(stackList);
 				// observer.unobserve(lastContentRef.current); // 이 부분 추가
 			}
 		}, options);
 
 		observer.observe(lastContentRef.current);
-
+		console.log('1');
 		return () => {
 			observer && observer.disconnect();
+			observerIsActive = true;
 		};
-	}, []);
+	};
 
-	useEffect(() => {
-		if (stackList.length !== 0) {
-			reRender();
-		}
-	}, [reRender]);
+	useEffect(() => {}, []);
 
 	const handleFilterChange = (e) => {
 		setSortList(e.target.value);
@@ -94,20 +128,23 @@ const FeelStaList = () => {
 		}
 	};
 
-	const getList = () => {
-		axios.get(`http://localhost:3001/feelsta`).then((response) => {
-			console.log(response);
-			if (response.data.success === true) {
-				let dataList = response.data.feelsta;
-				setFeelstaList(dataList);
-				setStackList(dataList);
-			}
-		});
-	};
+	// const getList = () => {
+	// 	axios.get(`http://localhost:3001/feelsta`).then((response) => {
+	// 		console.log(response);
+	// 		if (response.data.success === true) {
+	// 			let dataList = response.data.feelsta;
+	// 			setFeelstaList(dataList);
+	// 			setStackList(dataList);
 
-	useEffect(() => {
-		getList();
-	}, []);
+	// 			console.log(feelstaList);
+	// 			console.log(stackList);
+	// 		}
+	// 	});
+	// };
+
+	// useEffect(() => {
+	// 	getList();
+	// }, []);
 
 	const [toSearch, setToSearch] = useState('');
 	const [searchType, setSearchType] = useState('fromtitle');
@@ -135,13 +172,16 @@ const FeelStaList = () => {
 						item.FEELSTA_TAG.includes(toSearch)
 					);
 				}
-				setFeelstaList(dataLists);
+				setStackList(dataLists);
 			}
 		});
 	};
 
 	const navigate = useNavigate();
-
+	const cliker = () => {
+		console.log(stackList);
+		reRender();
+	};
 	return (
 		<ListContainer>
 			<ListInfo>
@@ -172,6 +212,8 @@ const FeelStaList = () => {
 			</ListInfo>
 			<hr></hr>
 			<ListItem>
+				<div onClick={() => cliker()}>asdfasdf</div>
+
 				{stackList &&
 					stackList.map((feelsta) => (
 						<FeelstaItem
@@ -188,7 +230,7 @@ const FeelStaList = () => {
 							LIKE_NAME={feelsta.LIKE_NAME}
 						/>
 					))}
-				<div ref={lastContentRef}>ddddd</div>
+				<div ref={lastContentRef} onFocus={reRender()}></div>
 			</ListItem>
 			<Poster onClick={() => navigate('/feelstacreate')}>글쓰기</Poster>
 		</ListContainer>
