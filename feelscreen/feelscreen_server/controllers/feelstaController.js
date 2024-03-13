@@ -6,8 +6,8 @@ function feelAll(res) {
 	if (count === 0) {
 	}
 
-	console.log('count', count);
-	feelstaDB.feelstaAll((count += 3), res);
+	// console.log('count', count);
+	feelstaDB.feelstaAll(count++, res);
 }
 
 function feelOne(id, res) {

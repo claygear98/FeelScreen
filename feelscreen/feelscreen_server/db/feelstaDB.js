@@ -1,6 +1,7 @@
 const db = require('../db/databaseSet.js');
 
 function feelstaAll(count, res) {
+	console.log(count);
 	//
 	let sql = `SELECT 
     feelsta.FEELSTA_ID, 
@@ -18,7 +19,7 @@ function feelstaAll(count, res) {
 	FROM FEELSTA
 	JOIN USER ON feelsta.USER_ID = USER.USER_ID
 	ORDER BY FEELSTA_DATE DESC
-	LIMIT 3 OFFSET ${count}`;
+	LIMIT 3 OFFSET ${count * 3}`;
 
 	db.query(sql, async function (error, result) {
 		if (error) {
