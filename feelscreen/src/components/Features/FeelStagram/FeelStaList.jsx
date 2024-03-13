@@ -20,6 +20,7 @@ const ListItem = styled.div`
 	height: 500px;
 	list-style: none;
 	margin: 0;
+	overflow: auto;
 	padding: 0;
 	display: flex;
 	flex-direction: column;
@@ -45,20 +46,27 @@ const FeelStaList = () => {
 	const [sortList, setSortList] = useState('latest');
 
 	const lastContentRef = useRef(null);
-
 	const reRender = useCallback(() => {
+		const options = {
+			threshold: 0.5,
+		};
 		const observer = new IntersectionObserver((entries) => {
 			if (entries[0].isIntersecting) {
-				axios.get(`http://localhost:3001/feelsta`).then((response) => {
-					if (response.data.success === true) {
-						let dataLists = response.data.feelsta;
-						setStackList((prevStackList) => [...prevStackList, ...dataLists]);
-					}
-				});
-				console.log('감지됨');
-				observer.unobserve(lastContentRef.current); // 이 부분 추가
+				axios
+					.get(`http://localhost:3001/feelsta`)
+					.then((response) => {
+						if (response.data.success === true) {
+							let dataLists = response.data.feelsta;
+							setStackList((prevStackList) => [...prevStackList, ...dataLists]);
+						}
+					})
+					.catch((err) => {
+						console.log(err);
+					});
+				console.log(stackList);
+				// observer.unobserve(lastContentRef.current); // 이 부분 추가
 			}
-		});
+		}, options);
 
 		observer.observe(lastContentRef.current);
 
@@ -68,8 +76,10 @@ const FeelStaList = () => {
 	}, []);
 
 	useEffect(() => {
-		reRender();
-	}, []);
+		if (stackList.length !== 0) {
+			reRender();
+		}
+	}, [reRender]);
 
 	const handleFilterChange = (e) => {
 		setSortList(e.target.value);
@@ -178,7 +188,7 @@ const FeelStaList = () => {
 							LIKE_NAME={feelsta.LIKE_NAME}
 						/>
 					))}
-				<div ref={lastContentRef}></div>
+				<div ref={lastContentRef}>ddddd</div>
 			</ListItem>
 			<Poster onClick={() => navigate('/feelstacreate')}>글쓰기</Poster>
 		</ListContainer>

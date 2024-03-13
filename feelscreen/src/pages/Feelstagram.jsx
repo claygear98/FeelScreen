@@ -8,7 +8,7 @@ const Feelstagram = () => {
 		<div>
 			<Header />
 			<FeelStaList />
-			<Nav />
+			{/* <Nav /> */}
 		</div>
 	);
 };
