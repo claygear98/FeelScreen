@@ -42,10 +42,7 @@ const Poster = styled.button`
 `;
 
 const FeelStaList = () => {
-<<<<<<< HEAD
-=======
 	// const [feelstaList, setFeelstaList] = useState([]);
->>>>>>> 9732497dc631d99ae58223fcfd1699e2ebf26d90
 	const [stackList, setStackList] = useState([]);
 	const [sortList, setSortList] = useState('latest');
 	const [ref, inView] = useInView();
@@ -72,78 +69,6 @@ const FeelStaList = () => {
 	// 		}
 	// 	}, options);
 
-<<<<<<< HEAD
-	const lastContentRef = useRef(null);
-	// const reRender = useCallback(() => {
-	// 	if (stackList.length >= 15) {
-	// 		return;
-	// 	}
-	// 	const options = {
-	// 		threshold: 0.5,
-	// 	};
-	// 	const observer = new IntersectionObserver((entries) => {
-	// 		if (entries[0].isIntersecting) {
-	// 			axios
-	// 				.get(`http://localhost:3001/feelsta`)
-	// 				.then((response) => {
-	// 					if (response.data.success === true) {
-	// 						let dataLists = response.data.feelsta;
-	// 						setStackList([...stackList, ...dataLists]);
-	// 						console.log(stackList);
-	// 					}
-	// 				})
-	// 				.catch((err) => {
-	// 					console.log(err);
-	// 				});
-	// 			console.log(stackList);
-	// 			// observer.unobserve(lastContentRef.current); // 이 부분 추가
-	// 		}
-	// 	}, options);
-
-	// 	observer.observe(lastContentRef.current);
-	// 	console.log('1');
-	// 	return () => {
-	// 		observer && observer.disconnect();
-	// 	};
-	// }, []);
-	const reRender = () => {
-		if (stackList.length >= 15) {
-			return;
-		}
-		let observerIsActive = true;
-
-		const options = {
-			threshold: 0.5,
-		};
-		const observer = new IntersectionObserver(async (entries) => {
-			if (entries[0].isIntersecting) {
-				observerIsActive = false;
-
-				try {
-					const response = await axios.get(`http://localhost:3001/feelsta`);
-					if (response.data.success === true) {
-						let dataLists = response.data.feelsta;
-						setStackList((prevStackList) => [...prevStackList, ...dataLists]);
-						console.log(stackList);
-					}
-				} catch (err) {
-					console.log(err);
-				}
-				console.log(stackList);
-				// observer.unobserve(lastContentRef.current); // 이 부분 추가
-			}
-		}, options);
-
-		observer.observe(lastContentRef.current);
-		console.log('1');
-		return () => {
-			observer && observer.disconnect();
-			observerIsActive = true;
-		};
-	};
-
-	useEffect(() => {}, []);
-=======
 	// 	observer.observe(lastContentRef.current);
 
 	// 	return () => {
@@ -156,7 +81,6 @@ const FeelStaList = () => {
 	// 		reRender();
 	// 	}
 	// }, []);
->>>>>>> 9732497dc631d99ae58223fcfd1699e2ebf26d90
 
 	const handleFilterChange = (e) => {
 		setSortList(e.target.value);
@@ -178,20 +102,10 @@ const FeelStaList = () => {
 	// 			let dataList = response.data.feelsta;
 	// 			setFeelstaList(dataList);
 	// 			setStackList(dataList);
-<<<<<<< HEAD
-
-	// 			console.log(feelstaList);
-	// 			console.log(stackList);
 	// 		}
 	// 	});
 	// };
 
-=======
-	// 		}
-	// 	});
-	// };
-
->>>>>>> 9732497dc631d99ae58223fcfd1699e2ebf26d90
 	// useEffect(() => {
 	// 	getList();
 	// }, []);
@@ -252,10 +166,7 @@ const FeelStaList = () => {
 	}, [inView]);
 
 	const navigate = useNavigate();
-	const cliker = () => {
-		console.log(stackList);
-		reRender();
-	};
+
 	return (
 		<ListContainer>
 			<ListInfo>
@@ -286,8 +197,6 @@ const FeelStaList = () => {
 			</ListInfo>
 			<hr></hr>
 			<ListItem>
-				<div onClick={() => cliker()}>asdfasdf</div>
-
 				{stackList &&
 					stackList.map((feelsta) => (
 						<FeelstaItem
@@ -304,11 +213,7 @@ const FeelStaList = () => {
 							LIKE_NAME={feelsta.LIKE_NAME}
 						/>
 					))}
-<<<<<<< HEAD
-				<div ref={lastContentRef} onFocus={reRender()}></div>
-=======
 				<div ref={ref}>ddddd</div>
->>>>>>> 9732497dc631d99ae58223fcfd1699e2ebf26d90
 			</ListItem>
 			<Poster onClick={() => navigate('/feelstacreate')}>글쓰기</Poster>
 		</ListContainer>
