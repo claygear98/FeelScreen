@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -46,7 +46,7 @@ const FeelStaList = () => {
 
 	const lastContentRef = useRef(null);
 
-	const reRender = () => {
+	const reRender = useCallback(() => {
 		const observer = new IntersectionObserver((entries) => {
 			if (entries[0].isIntersecting) {
 				axios.get(`http://localhost:3001/feelsta`).then((response) => {
@@ -61,10 +61,11 @@ const FeelStaList = () => {
 
 		observer.observe(lastContentRef.current);
 
-		// return () => {
-		// 	observer.disconnect();
-		// };
-	};
+		return () => {
+			observer.disconnect();
+		};
+	}, []);
+
 	useEffect(() => {
 		reRender();
 	}, [lastContentRef, stackList]);
