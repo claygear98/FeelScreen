@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import FeelstaItem from './FeelstaItem';
+import { useInView } from 'react-intersection-observer';
 
 const ListContainer = styled.div`
 	width: 100%;
@@ -41,9 +42,37 @@ const Poster = styled.button`
 `;
 
 const FeelStaList = () => {
+<<<<<<< HEAD
+=======
+	// const [feelstaList, setFeelstaList] = useState([]);
+>>>>>>> 9732497dc631d99ae58223fcfd1699e2ebf26d90
 	const [stackList, setStackList] = useState([]);
 	const [sortList, setSortList] = useState('latest');
+	const [ref, inView] = useInView();
+	// const lastContentRef = useRef(null);
+	// const reRender = useCallback(() => {
+	// 	const options = {
+	// 		threshold: 0.5,
+	// 	};
+	// 	const observer = new IntersectionObserver((entries) => {
+	// 		if (entries[0].isIntersecting) {
+	// 			axios
+	// 				.get(`http://localhost:3001/feelsta`)
+	// 				.then((response) => {
+	// 					if (response.data.success === true) {
+	// 						let dataLists = response.data.feelsta;
+	// 						setStackList((prevStackList) => [...prevStackList, ...dataLists]);
+	// 					}
+	// 				})
+	// 				.catch((err) => {
+	// 					console.log(err);
+	// 				});
+	// 			console.log(stackList);
+	// 			// observer.unobserve(lastContentRef.current); // 이 부분 추가
+	// 		}
+	// 	}, options);
 
+<<<<<<< HEAD
 	const lastContentRef = useRef(null);
 	// const reRender = useCallback(() => {
 	// 	if (stackList.length >= 15) {
@@ -114,6 +143,20 @@ const FeelStaList = () => {
 	};
 
 	useEffect(() => {}, []);
+=======
+	// 	observer.observe(lastContentRef.current);
+
+	// 	return () => {
+	// 		observer && observer.disconnect();
+	// 	};
+	// }, []);
+
+	// useEffect(() => {
+	// 	if (stackList.length !== 0) {
+	// 		reRender();
+	// 	}
+	// }, []);
+>>>>>>> 9732497dc631d99ae58223fcfd1699e2ebf26d90
 
 	const handleFilterChange = (e) => {
 		setSortList(e.target.value);
@@ -135,6 +178,7 @@ const FeelStaList = () => {
 	// 			let dataList = response.data.feelsta;
 	// 			setFeelstaList(dataList);
 	// 			setStackList(dataList);
+<<<<<<< HEAD
 
 	// 			console.log(feelstaList);
 	// 			console.log(stackList);
@@ -142,6 +186,12 @@ const FeelStaList = () => {
 	// 	});
 	// };
 
+=======
+	// 		}
+	// 	});
+	// };
+
+>>>>>>> 9732497dc631d99ae58223fcfd1699e2ebf26d90
 	// useEffect(() => {
 	// 	getList();
 	// }, []);
@@ -176,6 +226,30 @@ const FeelStaList = () => {
 			}
 		});
 	};
+
+	//새로 만들기
+	const productFetch = () => {
+		axios
+			.get(`http://localhost:3001/feelsta`)
+			.then((response) => {
+				if (response.data.success === true) {
+					let dataLists = response.data.feelsta;
+					setStackList((prevStackList) => [...prevStackList, ...dataLists]);
+				}
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	};
+
+	useEffect(() => {
+		// inView가 true 일때만 실행한다.
+		if (inView) {
+			console.log(inView, '무한 스크롤 요청 🎃');
+
+			productFetch();
+		}
+	}, [inView]);
 
 	const navigate = useNavigate();
 	const cliker = () => {
@@ -230,7 +304,11 @@ const FeelStaList = () => {
 							LIKE_NAME={feelsta.LIKE_NAME}
 						/>
 					))}
+<<<<<<< HEAD
 				<div ref={lastContentRef} onFocus={reRender()}></div>
+=======
+				<div ref={ref}>ddddd</div>
+>>>>>>> 9732497dc631d99ae58223fcfd1699e2ebf26d90
 			</ListItem>
 			<Poster onClick={() => navigate('/feelstacreate')}>글쓰기</Poster>
 		</ListContainer>
