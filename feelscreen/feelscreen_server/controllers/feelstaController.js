@@ -4,12 +4,10 @@ let count = 0;
 
 function feelAll(res) {
 	if (count === 0) {
-	} else {
-		count += 3;
 	}
 
 	console.log('count', count);
-	feelstaDB.feelstaAll(count, res);
+	feelstaDB.feelstaAll((count += 3), res);
 }
 
 function feelOne(id, res) {

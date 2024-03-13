@@ -61,9 +61,9 @@ const FeelStaList = () => {
 
 		observer.observe(lastContentRef.current);
 
-		// return () => {
-		// 	observer.disconnect();
-		// };
+		return () => {
+			observer.disconnect();
+		};
 	};
 	useEffect(() => {
 		reRender();
