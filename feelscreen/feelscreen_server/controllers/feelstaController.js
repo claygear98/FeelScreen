@@ -7,6 +7,8 @@ function feelAll(res) {
 	} else {
 		count += 3;
 	}
+
+	console.log('count', count);
 	feelstaDB.feelstaAll(count, res);
 }
 

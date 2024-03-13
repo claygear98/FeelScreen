@@ -125,8 +125,9 @@ router.get('/refresh', (req, res) => {
 //필스타 등록(토큰)
 router.post(
 	'/feelsta-post',
-	feelstaController.FeelUpload.array('image', 4),
 	JWT.authJWT,
+	feelstaController.FeelUpload.array('image', 4),
+
 	async (req, res) => {
 		let user_id = req.userId;
 
