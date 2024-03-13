@@ -62,13 +62,13 @@ const FeelStaList = () => {
 		observer.observe(lastContentRef.current);
 
 		return () => {
-			observer.disconnect();
+			observer && observer.disconnect();
 		};
 	}, []);
 
 	useEffect(() => {
 		reRender();
-	}, [lastContentRef, stackList]);
+	}, []);
 
 	const handleFilterChange = (e) => {
 		setSortList(e.target.value);
