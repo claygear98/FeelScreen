@@ -56,6 +56,7 @@ const FeelStaList = () => {
 					}
 				});
 				console.log('감지됨');
+				observer.unobserve(lastContentRef.current); // 이 부분 추가
 			}
 		});
 
