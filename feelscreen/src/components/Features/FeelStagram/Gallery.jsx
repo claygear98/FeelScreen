@@ -31,7 +31,7 @@ const Gallery = ({ images }) => {
 		<GalleryContainer>
 			<Slider style={{ transform: `translateX(-${currentSlide * 100}%)` }}>
 				{images.map((image, index) => (
-					<Slide key={index} src={image} alt={`Slide ${index + 1}`} />
+					<Slide key={index} src={`/${image}`} alt={`Slide ${index + 1}`} />
 				))}
 			</Slider>
 			<button onClick={prevSlide}>◀</button>
