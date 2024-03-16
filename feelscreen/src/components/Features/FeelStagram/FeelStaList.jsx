@@ -45,6 +45,7 @@ const FeelStaList = () => {
 	const [stackList, setStackList] = useState([]);
 	const [sortList, setSortList] = useState('latest');
 	const [ref, inView] = useInView();
+	const [page, setPage] = useState(0);
 
 	const handleFilterChange = (e) => {
 		setSortList(e.target.value);
@@ -90,6 +91,7 @@ const FeelStaList = () => {
 					if (response.data.success === true) {
 						let dataLists = response.data.feelsta;
 						setStackList((prevStackList) => [...prevStackList, ...dataLists]);
+						setPage((prevPage) => prevPage + 1);
 					}
 				})
 				.catch((err) => {
@@ -102,6 +104,7 @@ const FeelStaList = () => {
 					if (response.data.success === true) {
 						let dataLists = response.data.feelsta;
 						setStackList((prevStackList) => [...prevStackList, ...dataLists]);
+						setPage((prevPage) => prevPage + 1);
 					}
 				})
 				.catch((err) => {
@@ -117,7 +120,7 @@ const FeelStaList = () => {
 
 			productFetch();
 		}
-	}, [inView]);
+	}, [inView, page]);
 
 	const navigate = useNavigate();
 

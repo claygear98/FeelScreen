@@ -1,16 +1,16 @@
 import React from 'react';
 import Nav from '../components/Features/Nav/Nav';
-import FeelStaCreate from '../components/Features/FeelStagram/FeelStaCreate';
 import Header from '../components/Features/Header/Header';
+import FeelStaModify from '../components/Features/FeelStagram/FeelstaModify';
 
-const FeelstaCreate = () => {
+const FeelstaModify = () => {
 	return (
 		<div>
 			<Header />
-			<FeelStaCreate />
+			<FeelStaModify />
 			<Nav />
 		</div>
 	);
 };
 
-export default FeelstaCreate;
+export default FeelstaModify;
