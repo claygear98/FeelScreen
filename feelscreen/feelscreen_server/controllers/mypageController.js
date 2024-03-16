@@ -11,7 +11,7 @@ const nameUpdate = (req, res) => {
 const userDelete = (req, res) => {
 	let user_id = req.userId;
 
-	userDB.userDelete(user_id, password, res);
+	userDB.userDelete(user_id, req.get('password'), res);
 };
 
 const userFeelsta = (req, res) => {

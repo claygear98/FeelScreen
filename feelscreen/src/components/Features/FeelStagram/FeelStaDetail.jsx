@@ -200,7 +200,7 @@ const FeelStaDetail = () => {
 	const handleCommentSubmit = () => {
 		if (plus !== '') {
 			axios
-				.post('http://localhost:3001/comment-register', {
+				.post('http://localhost:3001/feelsta/comment-register', {
 					Authorization: cookies.get('Authorization'),
 					Comment: plus,
 				})

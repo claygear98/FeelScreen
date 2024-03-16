@@ -119,7 +119,7 @@ function userUpdate(user_id, username, res) {
 
 //탈퇴 전 비밀번호 확인
 function userDelete(user_id, password, res) {
-	let sql = `SELECT PASSWORD, PASSWORDSALT FROM USER WEHRE USER_ID = ${user_id}`;
+	let sql = `SELECT PASSWORD, PASSWORDSALT FROM USER WHERE USER_ID = ${user_id}`;
 
 	db.query(sql, function (error, result) {
 		if (error) {
@@ -142,14 +142,14 @@ function userDelete(user_id, password, res) {
 
 //회원 탈퇴
 function withDraw(user_id, res) {
-	let sql = `DELETE FROM USER WHERE USER_ID = ${user_id}`;
+	let sql = `DELETE FROM USER, FEELSTA, COMMENT, HEART WHERE USER_ID = ${user_id}`;
 
 	db.query(sql, function (error, result) {
 		if (error) {
 			console.log(error);
 			res.send({ success: false, message: 'db error' });
 		} else {
-			res.send({ success: true });
+			res.status(200).send({ success: true });
 		}
 	});
 }
@@ -167,6 +167,7 @@ function userFeelsta(user_id, res) {
 		}
 	});
 }
+
 module.exports = {
 	logIn,
 	allow,

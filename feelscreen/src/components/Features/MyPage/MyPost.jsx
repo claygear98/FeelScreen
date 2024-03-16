@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import tokenCheckAxios from '../../../hooks/customAxios';
 import { Cookies } from 'react-cookie';
+import axios from 'axios';
 const SeeMyPost = styled.div`
 	display: flex;
 	flex-direction: column;
@@ -63,13 +64,15 @@ const MyPost = () => {
 	const cookies = new Cookies();
 	const [mPost, setMPost] = useState([]);
 	const getMyPost = () => {
-		tokenCheckAxios
+		// tokenCheckAxios
+		axios
 			.get('http://localhost:3001/user-feelsta', {
 				headers: {
 					Authorization: cookies.get('Authorization'),
 				},
 			})
 			.then((res) => {
+				// console.log(res.data.user);
 				setMPost(res.data.user);
 			});
 	};

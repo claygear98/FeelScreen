@@ -142,13 +142,6 @@ router.post(
 	}
 );
 
-//댓글 등록(토큰)
-router.post('/feelsta/comment-register', JWT.authJWT, async (req, res) => {
-	let user_id = req.userId;
-
-	commentController.feelComment(req, res, user_id);
-});
-
 //좋아요 등록
 router.get('/feelstalike', JWT.authGetJWT, async (req, res) => {
 	let user_id = req.userId;
@@ -195,6 +188,8 @@ router.delete(
 	JWT.authJWT,
 	feelstaController.feelCommentDelete
 );
+
+router.delete('/delete', JWT.authGetJWT, mypageController.userDelete);
 
 router.get('/user-feelsta', JWT.authGetJWT, mypageController.userFeelsta);
 app.use('/', express.static(path.join(__dirname, 'images')));

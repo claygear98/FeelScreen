@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
-// import axios from 'axios';
+import axios from 'axios';
 import tokenCheckAxios from '../../../hooks/customAxios';
 import { Cookies } from 'react-cookie';
 import { useState } from 'react';
@@ -113,7 +113,8 @@ const MyPage = () => {
 
 	function onSubmit(data) {
 		console.log(data.id);
-		tokenCheckAxios
+		// tokenCheckAxios
+		axios
 			.patch(`/modify-user`, {
 				Authorization: cookies.get('Authorization'),
 				username: data.username,
@@ -142,14 +143,16 @@ const MyPage = () => {
 	function deleteUser(data) {
 		//axios.delete 로 토큰 보내기
 		const Access = cookies.get('userId');
-		tokenCheckAxios
-			.delete(`/allow/${Access}`, {
+		// tokenCheckAxios
+		axios
+			.delete(`http://localhost:3001/delete`, {
 				headers: {
 					Authorization: cookies.get('Authorization'),
+					password: data.password,
 				},
 			})
 			.then((res) => {
-				if (res.status === 200) {
+				if (res.data.success) {
 					alert('정상적으로 탈퇴되었습니다.');
 					setProfileModifyVisible(false);
 					cookies.remove('userId');
