@@ -19,6 +19,11 @@ function feelPost(req, res, urlArr, user_id) {
 	feelstaDB.feelstaPost(req, res, urlArr, user_id);
 }
 
+function feelstaMin(res) {
+	feelstaDB.feelstaMin(res);
+}
+
+//좋아요
 function feelLike(user_id, feelsta_id, res) {
 	feelstaDB.feelstaLike(user_id, feelsta_id, res);
 }
@@ -27,9 +32,10 @@ function feelDeleteLike(user_id, feelsta_id, res) {
 	feelstaDB.feelstaDeleteLike(user_id, feelsta_id, res);
 }
 
-function feelstaMin(res) {
-	feelstaDB.feelstaMin(res);
-}
+//댓글
+const feelCommentPost = (req, res) => {};
+const feelCommentModify = (req, res) => {};
+const feelCommentDelete = (req, res) => {};
 
 const storage = multer.diskStorage({
 	// (2)
@@ -64,4 +70,7 @@ module.exports = {
 	feelDeleteLike,
 	feelstaMin,
 	FeelUpload,
+	feelCommentPost,
+	feelCommentModify,
+	feelCommentDelete,
 };

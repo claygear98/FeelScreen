@@ -175,6 +175,27 @@ router.delete('/notice', JWT.authJWT, (req, res) => {});
 //닉네임 수정
 router.patch('/modify-user', JWT.authJWT, mypageController.nameUpdate);
 
+//댓글 등록
+router.post(
+	'/feelsta/comment-register',
+	JWT.authJWT,
+	feelstaController.feelCommentPost
+);
+
+//댓글 수정
+router.patch(
+	'/feelsta/comment-modify',
+	JWT.authJWT,
+	feelstaController.feelCommentModify
+);
+
+//댓글 삭제
+router.delete(
+	'/feelsta/comment-delete',
+	JWT.authJWT,
+	feelstaController.feelCommentDelete
+);
+
 app.use('/', express.static(path.join(__dirname, 'images')));
 app.use('/', router);
 app.listen(3001, () => {
