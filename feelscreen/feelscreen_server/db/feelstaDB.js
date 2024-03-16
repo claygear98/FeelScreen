@@ -54,6 +54,7 @@ function feelstaOne(id, res) {
 					'COMMENT_CONTENT', COMMENT.COMMENT_CONTENT,
 					'USER_ID', COMMENT.USER_ID,
 					'COMMENT_DATE', COMMENT.COMMENT_DATE,
+					'USERNAME', USER.USERNAME,
 					'PROFILEIMAGE', USER.PROFILEIMAGE
                 )
             )
@@ -145,7 +146,7 @@ function feelstaMin(res) {
 }
 
 function feelstaCommentPost(req, res) {
-	let sql = `INSERT INTO COMMENT VALUES (${req.body.comment}, ${req.userId}, date_format(now(), '%Y-%m-%d %H:%i:%s'), ${req.body.feelsta_id});`;
+	let sql = `INSERT INTO COMMENT (COMMENT_CONTENT, USER_ID, COMMENT_DATE, FEELSTA_ID)VALUES ("${req.body.Comment}", ${req.userId}, "date_format(now(), '%Y-%m-%d %H:%i:%s')", ${req.body.feelsta_id});`;
 
 	db.query(sql, function (error, result) {
 		if (error) {
@@ -158,7 +159,7 @@ function feelstaCommentPost(req, res) {
 }
 
 function feelstaCommentModify(req, res) {
-	let sql = `UPDATE COMMENT SET COMMENT_CONTENT = ${req.body.comment} WHERE COMMENT_ID = ${req.body.comment_id}`;
+	let sql = `UPDATE COMMENT SET COMMENT_CONTENT = "${req.body.Comment}" WHERE COMMENT_ID = ${req.body.comment_id}`;
 
 	db.query(sql, function (error, result) {
 		if (error) {

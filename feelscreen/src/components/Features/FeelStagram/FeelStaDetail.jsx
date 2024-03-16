@@ -217,12 +217,12 @@ const FeelStaDetail = () => {
 		}
 	};
 
-	const commenting = useCallback(() => {
+	const commenting = () => {
 		return newComment.map((a, i) => (
 			<CommentList>
 				<Comment key={i}>
 					<img
-						src={userImage}
+						src={`/${userImage}`}
 						alt=""
 						style={{
 							width: '30px',
@@ -237,7 +237,7 @@ const FeelStaDetail = () => {
 				</Comment>
 			</CommentList>
 		));
-	}, [newComment]);
+	};
 
 	useEffect(() => {
 		commenting();
@@ -313,7 +313,7 @@ const FeelStaDetail = () => {
 										}}
 									/>
 									<div>
-										<div>{a.USER_ID}</div>
+										<div>{a.USERNAME}</div>
 										<div>{a.COMMENT_CONTENT}</div>
 										<div>
 											<span>수정</span>
@@ -323,7 +323,7 @@ const FeelStaDetail = () => {
 								</Comment>
 							</CommentList>
 						))}
-					{commenting}
+					{commenting()}
 				</div>
 				<CommentSet>
 					<InputComment
