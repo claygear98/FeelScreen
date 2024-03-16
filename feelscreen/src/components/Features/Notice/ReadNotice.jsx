@@ -55,6 +55,7 @@ const ReadNotice = () => {
 	const [noticeList, setNoticeList] = useState([]);
 	const [detail, setDetail] = useState([]);
 	const [focus, setFocus] = useState(-1);
+	const [heart, setHeart] = useState(false);
 	const navigate = useNavigate();
 	const { username } = useHeaderInfo();
 	const fetchNoticeList = useCallback(() => {
@@ -96,6 +97,9 @@ const ReadNotice = () => {
 		} else {
 			return 0;
 		}
+	};
+	const handleHeart = (e) => {
+		setHeart(!heart);
 	};
 	return (
 		<div>
