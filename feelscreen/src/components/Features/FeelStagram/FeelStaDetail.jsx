@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import { FaRegHeart } from 'react-icons/fa';
 import { FaRegCommentAlt } from 'react-icons/fa';
@@ -217,10 +217,10 @@ const FeelStaDetail = () => {
 		}
 	};
 
-	const commenting = () => {
+	const commenting = useCallback(() => {
 		return newComment.map((a, i) => (
-			<CommentList>
-				<Comment key={i}>
+			<CommentList key={i}>
+				<Comment>
 					<img
 						src={`/${userImage}`}
 						alt=""
@@ -237,7 +237,7 @@ const FeelStaDetail = () => {
 				</Comment>
 			</CommentList>
 		));
-	};
+	}, [newComment, userImage, username]);
 
 	useEffect(() => {
 		commenting();
