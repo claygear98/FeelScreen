@@ -23,7 +23,7 @@ module.exports = {
 		return jwt.sign(payload, secret, {
 			// secret으로 sign하여 발급하고 return
 			algorithm: 'HS256', // 암호화 알고리즘
-			expiresIn: '1m',
+			expiresIn: '1h',
 		});
 	},
 
