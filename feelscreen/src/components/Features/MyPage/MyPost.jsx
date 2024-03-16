@@ -84,7 +84,6 @@ const MyPost = () => {
 		<SeeMyPost>
 			<div>
 				<h4>내가 쓴글</h4>
-				<button>필터</button>
 			</div>
 			<hr />
 			<MyPostList>
@@ -96,8 +95,8 @@ const MyPost = () => {
 								alt=""
 							/>
 							<PostDescription>
-								<div>이번주에 스크린 같이 치실 분~?</div>
-								<div>2023.12.12</div>
+								<div>{a.FEELSTA_CONTENT}</div>
+								<div>{a.FEELSTA_DATE}</div>
 							</PostDescription>
 						</MyPostBox>
 					</li>
