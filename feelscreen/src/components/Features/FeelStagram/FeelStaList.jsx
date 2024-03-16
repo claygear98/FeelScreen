@@ -86,12 +86,16 @@ const FeelStaList = () => {
 	const productFetch = () => {
 		if (sortList === 'latest') {
 			axios
-				.get(`http://localhost:3001/feelsta`)
+				.get(`http://localhost:3001/feelsta`, {
+					headers: {
+						counter: page,
+					},
+				})
 				.then((response) => {
 					if (response.data.success === true) {
 						let dataLists = response.data.feelsta;
 						setStackList((prevStackList) => [...prevStackList, ...dataLists]);
-						// setPage((prevPage) => prevPage + 1);
+						setPage((prevPage) => prevPage++);
 					}
 				})
 				.catch((err) => {
@@ -99,12 +103,16 @@ const FeelStaList = () => {
 				});
 		} else if (sortList === 'likest') {
 			axios
-				.get(`http://localhost:3001/feelsta`)
+				.get(`http://localhost:3001/feelsta`, {
+					headers: {
+						counter: page,
+					},
+				})
 				.then((response) => {
 					if (response.data.success === true) {
 						let dataLists = response.data.feelsta;
 						setStackList((prevStackList) => [...prevStackList, ...dataLists]);
-						// setPage((prevPage) => prevPage + 1);
+						setPage((prevPage) => prevPage++);
 					}
 				})
 				.catch((err) => {
@@ -112,6 +120,7 @@ const FeelStaList = () => {
 				});
 		}
 	};
+	// 마지막 요소를 보낼때 마지막이라는 걸 확인할수있는 걸 보내주고 그게 확인되면 감지하는 포인터 날려버리기
 
 	useEffect(() => {
 		// inView가 true 일때만 실행한다.

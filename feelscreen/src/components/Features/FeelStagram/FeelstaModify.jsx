@@ -8,13 +8,6 @@ import { FaPlus } from 'react-icons/fa';
 import { RiDeleteBin6Line } from 'react-icons/ri';
 import { useNavigate } from 'react-router-dom';
 
-const SignForm = {
-	// image: new FormData(),
-	image: [''],
-	tag: [''],
-	description: '',
-};
-
 const Container = styled.div`
 	margin-top: 15px;
 	text-align: left;
@@ -133,14 +126,28 @@ const Done = styled.button`
 
 const FeelStaModify = () => {
 	//받아오는 axios..!
-	const getOwnData = () => {
-		axios.get();
+	// const getOwnData = () => {
+	// 	axios.get();
+	// };
+	const data = {
+		tag: '#마머하노,#오늘뭐하노,#왜묻노',
+		description: '가위바위보슬보슬개미똥구멍멍이가노래를한다.',
+		image:
+			'/assets/feelsta/개구리.png,/assets/feelsta/개구리.png,/assets/feelsta/개구리.png,/assets/feelsta/개구리.png',
+	};
+
+	const SignForm = {
+		// image: new FormData(),
+		image: data.image.split(','),
+		tag: data.tag.split(','),
+		description: data.description,
 	};
 
 	const { register, handleSubmit, getValues, setValue, watch } = useForm({
 		mode: 'onChange',
 		defaultValues: SignForm,
 	});
+
 	useEffect(() => {
 		const imageFields = watch('image'); // 이미지 필드를 관찰합니다.
 		// 각 이미지 필드에 대해 등록을 수행합니다.
@@ -149,8 +156,8 @@ const FeelStaModify = () => {
 		}
 	}, [register, watch]);
 
-	const [tagIndex, setTagIndex] = useState(0);
-	const [showImages, setShowImages] = useState([]);
+	const [tagIndex, setTagIndex] = useState(SignForm.tag.length);
+	const [showImages, setShowImages] = useState(SignForm.image);
 	const [selectedImageCount, setSelectedImageCount] = useState(0); // 이미지 선택된 수
 
 	// 이미지 상대경로 저장
@@ -329,7 +336,11 @@ const FeelStaModify = () => {
 				</Tag>
 				<Des>
 					<h4>내용</h4>
-					<textarea name="description" {...register('description')} />
+					<textarea
+						name="description"
+						defaultValue={data.description}
+						{...register('description')}
+					/>
 				</Des>
 				<Done>수정완료</Done>
 			</FeelstaForm>
