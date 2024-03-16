@@ -202,6 +202,7 @@ const FeelStaDetail = () => {
 			axios
 				.post('http://localhost:3001/feelsta/comment-register', {
 					Authorization: cookies.get('Authorization'),
+					feelsta_id: state,
 					Comment: plus,
 				})
 				.then((response) => {
@@ -215,6 +216,7 @@ const FeelStaDetail = () => {
 				});
 		}
 	};
+
 	const commenting = useCallback(() => {
 		return newComment.map((a, i) => (
 			<CommentList>
@@ -313,6 +315,10 @@ const FeelStaDetail = () => {
 									<div>
 										<div>{a.USER_ID}</div>
 										<div>{a.COMMENT_CONTENT}</div>
+										<div>
+											<span>수정</span>
+											<span>삭제</span>
+										</div>
 									</div>
 								</Comment>
 							</CommentList>

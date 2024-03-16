@@ -44,11 +44,10 @@ const MyPostBox = styled.div`
 	display: flex;
 	justify-content: space-between;
 `;
-const PostPic = styled.div`
+const PostPic = styled.img`
 	margin: 10px;
 	width: 80px;
 	height: 80px;
-	background-color: #061d31;
 	border-radius: 10px;
 `;
 const PostDescription = styled.div`
@@ -92,7 +91,10 @@ const MyPost = () => {
 				{mPost.map((a, i) => (
 					<li key={i}>
 						<MyPostBox>
-							<PostPic>사진</PostPic>
+							<PostPic
+								src={a.FEELSTA_IMAGE && a.FEELSTA_IMAGE.split(',')[0]}
+								alt=""
+							/>
 							<PostDescription>
 								<div>이번주에 스크린 같이 치실 분~?</div>
 								<div>2023.12.12</div>

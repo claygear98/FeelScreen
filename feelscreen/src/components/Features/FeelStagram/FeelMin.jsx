@@ -78,7 +78,11 @@ const FeelMin = () => {
 						<ItemContent>
 							<h5>{a.FEELSTA_CONTENT}</h5>
 
-							<img src={a.FEELSTA_IMAGE} alt="" style={{ width: '110px' }} />
+							<img
+								src={a.FEELSTA_IMAGE}
+								alt=""
+								style={{ width: '110px', height: '30px' }}
+							/>
 						</ItemContent>
 					</div>
 				</FeelMinItem>

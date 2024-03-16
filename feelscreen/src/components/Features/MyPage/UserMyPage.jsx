@@ -140,7 +140,7 @@ const MyPage = () => {
 		navigateToMain();
 	}
 
-	function deleteUser(data) {
+	function deleteUser() {
 		//axios.delete 로 토큰 보내기
 		const Access = cookies.get('userId');
 		// tokenCheckAxios
