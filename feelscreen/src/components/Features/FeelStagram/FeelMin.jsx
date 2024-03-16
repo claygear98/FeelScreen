@@ -35,7 +35,6 @@ const ItemContent = styled.div`
 	height: 70px;
 	border: 1px solid black;
 	> img {
-		width: 110px;
 		border: 1px solid black;
 	}
 `;
@@ -79,7 +78,7 @@ const FeelMin = () => {
 						<ItemContent>
 							<h5>{a.FEELSTA_CONTENT}</h5>
 
-							<img src={a.FEELSTA_IMAGE} alt="" />
+							<img src={a.FEELSTA_IMAGE} alt="" style={{ width: '110px' }} />
 						</ItemContent>
 					</div>
 				</FeelMinItem>

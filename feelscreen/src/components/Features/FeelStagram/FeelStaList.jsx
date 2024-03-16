@@ -42,73 +42,13 @@ const Poster = styled.button`
 `;
 
 const FeelStaList = () => {
-	// const [feelstaList, setFeelstaList] = useState([]);
 	const [stackList, setStackList] = useState([]);
 	const [sortList, setSortList] = useState('latest');
 	const [ref, inView] = useInView();
-	// const lastContentRef = useRef(null);
-	// const reRender = useCallback(() => {
-	// 	const options = {
-	// 		threshold: 0.5,
-	// 	};
-	// 	const observer = new IntersectionObserver((entries) => {
-	// 		if (entries[0].isIntersecting) {
-	// 			axios
-	// 				.get(`http://localhost:3001/feelsta`)
-	// 				.then((response) => {
-	// 					if (response.data.success === true) {
-	// 						let dataLists = response.data.feelsta;
-	// 						setStackList((prevStackList) => [...prevStackList, ...dataLists]);
-	// 					}
-	// 				})
-	// 				.catch((err) => {
-	// 					console.log(err);
-	// 				});
-	// 			console.log(stackList);
-	// 			// observer.unobserve(lastContentRef.current); // 이 부분 추가
-	// 		}
-	// 	}, options);
-
-	// 	observer.observe(lastContentRef.current);
-
-	// 	return () => {
-	// 		observer && observer.disconnect();
-	// 	};
-	// }, []);
-
-	// useEffect(() => {
-	// 	if (stackList.length !== 0) {
-	// 		reRender();
-	// 	}
-	// }, []);
 
 	const handleFilterChange = (e) => {
 		setSortList(e.target.value);
-		if (sortList === 'latest') {
-			setStackList(
-				stackList.sort(
-					(a, b) => new Date(b.FEELSTA_DATE) - new Date(a.FEELSTA_DATE)
-				)
-			);
-		} else if (sortList === 'likest') {
-			setStackList(stackList.sort((a, b) => b.FEELSTA_LIKE - a.FEELSTA_LIKE));
-		}
 	};
-
-	// const getList = () => {
-	// 	axios.get(`http://localhost:3001/feelsta`).then((response) => {
-	// 		console.log(response);
-	// 		if (response.data.success === true) {
-	// 			let dataList = response.data.feelsta;
-	// 			setFeelstaList(dataList);
-	// 			setStackList(dataList);
-	// 		}
-	// 	});
-	// };
-
-	// useEffect(() => {
-	// 	getList();
-	// }, []);
 
 	const [toSearch, setToSearch] = useState('');
 	const [searchType, setSearchType] = useState('fromtitle');
@@ -143,17 +83,31 @@ const FeelStaList = () => {
 
 	//새로 만들기
 	const productFetch = () => {
-		axios
-			.get(`http://localhost:3001/feelsta`)
-			.then((response) => {
-				if (response.data.success === true) {
-					let dataLists = response.data.feelsta;
-					setStackList((prevStackList) => [...prevStackList, ...dataLists]);
-				}
-			})
-			.catch((err) => {
-				console.log(err);
-			});
+		if (sortList === 'latest') {
+			axios
+				.get(`http://localhost:3001/feelsta`)
+				.then((response) => {
+					if (response.data.success === true) {
+						let dataLists = response.data.feelsta;
+						setStackList((prevStackList) => [...prevStackList, ...dataLists]);
+					}
+				})
+				.catch((err) => {
+					console.log(err);
+				});
+		} else if (sortList === 'likest') {
+			axios
+				.get(`http://localhost:3001/feelsta`)
+				.then((response) => {
+					if (response.data.success === true) {
+						let dataLists = response.data.feelsta;
+						setStackList((prevStackList) => [...prevStackList, ...dataLists]);
+					}
+				})
+				.catch((err) => {
+					console.log(err);
+				});
+		}
 	};
 
 	useEffect(() => {
