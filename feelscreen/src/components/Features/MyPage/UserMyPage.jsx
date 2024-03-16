@@ -141,8 +141,6 @@ const MyPage = () => {
 	}
 
 	function deleteUser(data) {
-		//axios.delete 로 토큰 보내기
-		const Access = cookies.get('userId');
 		// tokenCheckAxios
 		axios
 			.delete(`http://localhost:3001/delete`, {
