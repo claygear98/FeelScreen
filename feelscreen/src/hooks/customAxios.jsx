@@ -11,19 +11,23 @@ const tokenCheckAxios = axios.create({
 });
 
 const tokenChecker = () => {
-	Auth = Auth.split('.');
+	if (Auth) {
+		Auth = Auth.split('.');
+	}
 	Auth = Auth[1];
 	Auth = JSON.parse(base64.decode(Auth));
-	Auth = Auth.exp + Date.now();
+	Auth = Auth.exp;
 
 	console.log(Auth);
 	console.log(Date.now());
-	if (Auth > Date.now()) {
+	if (Auth > parseInt(Date.now() / 1000)) {
 		return true;
-	} else if (Auth <= Date.now()) {
+	} else if (Auth <= parseInt(Date.now() / 1000)) {
+		console.log('s');
 		axios
 			.get('http://localhost:3001/refresh', {
 				headers: {
+					Authorization: cookies.get('Authorization'),
 					Refresh: cookies.get('Refresh'),
 				},
 			})
@@ -51,12 +55,12 @@ tokenCheckAxios.interceptors.request.use(
 			console.log('안뇽');
 			alert('로그인 유효기간 만료! 다시 로그인해주세요.');
 		}
-	}
-	// function (error) {
-	// 	// 요청 오류가 있는 작업 수행
+	},
+	function (error) {
+		// 요청 오류가 있는 작업 수행
 
-	// 	return Promise.reject(error);
-	// }
+		return Promise.reject(error);
+	}
 );
 
 // 응답 인터셉터 추가하기
@@ -64,10 +68,12 @@ tokenCheckAxios.interceptors.response.use(
 	function (response) {
 		// 2xx 범위에 있는 상태 코드는 이 함수를 트리거 합니다.
 		// 응답 데이터가 있는 작업 수행을 바로뒤에서 하기 때문에 안씀
+		console.log(response);
 		console.log('인터셉터');
 		return response;
 	},
 	function (error) {
+		console.log(error);
 		// 2xx 외의 범위에 있는 상태 코드는 이 함수를 트리거 합니다.
 		// 응답 오류가 있는 작업 수행
 		console.log('인터셉터 흠');

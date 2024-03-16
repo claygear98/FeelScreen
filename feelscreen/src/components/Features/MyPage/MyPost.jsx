@@ -70,7 +70,7 @@ const MyPost = () => {
 				},
 			})
 			.then((res) => {
-				setMPost(res.data.feelsta);
+				setMPost(res.data.user);
 			});
 	};
 

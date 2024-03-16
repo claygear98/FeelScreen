@@ -3,8 +3,8 @@ const jwt = require('jsonwebtoken');
 
 function refresh(req, res) {
 	// access token과 refresh token의 존재 유무를 체크
-	if (req.body.Authorization) {
-		const authToken = req.body.Authorization;
+	if (req.get('Authorization')) {
+		const authToken = req.get('Authorization');
 
 		// access token 검증 -> expired여야 함.
 		const authResult = verify(authToken);
@@ -20,7 +20,7 @@ function refresh(req, res) {
 				message: '유효하지 않은 토큰(토큰 존재 X)',
 			});
 		}
-
+		const refreshToken = req.get('Refresh');
 		/* access token의 decoding 된 값에서
       유저의 id를 가져와 refresh token을 검증. */
 		const refreshResult = refreshVerify(refreshToken, decoded.id);

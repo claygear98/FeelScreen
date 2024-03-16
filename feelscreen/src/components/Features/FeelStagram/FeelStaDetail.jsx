@@ -241,6 +241,7 @@ const FeelStaDetail = () => {
 		commenting();
 	}, [commenting]);
 
+	// 토큰확인하고 본인이면 수정 삭제 버튼 처 만들기
 	return (
 		<DetailContainer>
 			<ItemPreview>

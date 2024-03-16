@@ -5,7 +5,7 @@ const jsonwebtoken = require('jsonwebtoken');
 const nameUpdate = (req, res) => {
 	let user_id = req.userId;
 
-	userDB.nameUpdate(user_id, req.get('username'), res);
+	userDB.userUpdate(user_id, req.body.username, res);
 };
 
 const userDelete = (req, res) => {
@@ -13,4 +13,10 @@ const userDelete = (req, res) => {
 
 	userDB.userDelete(user_id, password, res);
 };
-module.exports = { nameUpdate, userDelete };
+
+const userFeelsta = (req, res) => {
+	let user_id = req.userId;
+
+	userDB.userFeelsta(user_id, res);
+};
+module.exports = { nameUpdate, userDelete, userFeelsta };

@@ -5,19 +5,25 @@ require('dotenv').config();
 const redisClient = require('./redis');
 const secret = process.env.SECRET;
 console.log('secret', secret);
-
+redisClient.on('connect', () => {
+	console.info('Redis connected!');
+});
+redisClient.on('error', (err) => {
+	console.error('Redis Client Error', err);
+});
 module.exports = {
 	// access token 발급
 	sign: (user_id) => {
 		const payload = {
 			// access token에 들어갈 payload
 			id: user_id,
-			exp: parseInt(Date.now() / 1000) + 6000,
+			// exp: parseInt(Date.now() / 1000) + 6000,
 		};
 
 		return jwt.sign(payload, secret, {
 			// secret으로 sign하여 발급하고 return
 			algorithm: 'HS256', // 암호화 알고리즘
+			expiresIn: '10m',
 		});
 	},
 

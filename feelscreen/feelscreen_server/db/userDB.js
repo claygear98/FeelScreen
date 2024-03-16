@@ -105,7 +105,7 @@ function header(id, res) {
 }
 
 function userUpdate(user_id, username, res) {
-	let sql = `UPDATE USER SET USERNAME = ${username} WHERE USER_ID = ${user_id}`;
+	let sql = `UPDATE USER SET USERNAME = "${username}" WHERE USER_ID = ${user_id}`;
 
 	db.query(sql, function (error, result) {
 		if (error) {
@@ -154,6 +154,19 @@ function withDraw(user_id, res) {
 	});
 }
 
+function userFeelsta(user_id, res) {
+	let sql = `SELECT FEELSTA_CONTENT, FEELSTA_DATE, FEELSTA_IMAGE FROM FEELSTA WHERE USER_ID = ${user_id} ORDER BY FEELSTA_DATE DESC;`;
+
+	db.query(sql, function (error, result) {
+		if (error) {
+			console.log(error);
+			res.send({ success: false, message: 'db error' });
+		} else {
+			console.log(result);
+			res.status(200).send({ success: true, user: result });
+		}
+	});
+}
 module.exports = {
 	logIn,
 	allow,
@@ -161,4 +174,5 @@ module.exports = {
 	header,
 	userUpdate,
 	userDelete,
+	userFeelsta,
 };

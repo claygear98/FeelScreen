@@ -144,6 +144,45 @@ function feelstaMin(res) {
 	});
 }
 
+function feelstaCommentPost(req, res) {
+	let sql = `INSERT INTO COMMENT VALUES (${req.body.comment}, ${req.userId}, date_format(now(), '%Y-%m-%d %H:%i:%s'), ${req.body.feelsta_id});`;
+
+	db.query(sql, function (error, result) {
+		if (error) {
+			console.log(error);
+			res.send({ success: false, message: 'db error' });
+		} else {
+			res.send({ success: true });
+		}
+	});
+}
+
+function feelstaCommentModify(req, res) {
+	let sql = `UPDATE COMMENT SET COMMENT_CONTENT = ${req.body.comment} WHERE COMMENT_ID = ${req.body.comment_id}`;
+
+	db.query(sql, function (error, result) {
+		if (error) {
+			console.log(error);
+			res.send({ success: false, message: 'db error' });
+		} else {
+			res.send({ success: true });
+		}
+	});
+}
+
+function feelstaCommentDelete(req, res) {
+	let sql = `DELETE FROM COMMENT WHERE COMMENT_ID = ${req.body.comment_id}`;
+
+	db.query(sql, function (error, result) {
+		if (error) {
+			console.log(error);
+			res.send({ success: false, message: 'db error' });
+		} else {
+			res.send({ success: true });
+		}
+	});
+}
+
 module.exports = {
 	feelstaAll,
 	feelstaOne,
@@ -151,4 +190,7 @@ module.exports = {
 	feelstaDeleteLike,
 	feelstaLike,
 	feelstaMin,
+	feelstaCommentPost,
+	feelstaCommentModify,
+	feelstaCommentDelete,
 };

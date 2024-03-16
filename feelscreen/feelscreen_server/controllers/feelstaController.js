@@ -33,7 +33,9 @@ function feelDeleteLike(user_id, feelsta_id, res) {
 }
 
 //댓글
-const feelCommentPost = (req, res) => {};
+const feelCommentPost = (req, res) => {
+	feelstaDB.feelstaCommentPost(req, res);
+};
 const feelCommentModify = (req, res) => {};
 const feelCommentDelete = (req, res) => {};
 

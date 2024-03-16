@@ -40,7 +40,7 @@ const MinNotice = () => {
 		axios
 			.get(`${server_port}/noticemin`)
 			.then((res) => {
-				if (res.data.success === ture) {
+				if (res.data.success === true) {
 					setNoticeList(res.data.result);
 				} else {
 					console.log('fail to fetch');

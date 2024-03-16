@@ -119,7 +119,7 @@ router.get('/feelstadetail', (req, res) => {
 
 //리프레시 토큰 재요청
 router.get('/refresh', (req, res) => {
-	res.send({ Authorization: createToken.refresh() });
+	createToken.refresh(req, res);
 });
 
 //필스타 등록(토큰)
@@ -196,6 +196,7 @@ router.delete(
 	feelstaController.feelCommentDelete
 );
 
+router.get('/user-feelsta', JWT.authGetJWT, mypageController.userFeelsta);
 app.use('/', express.static(path.join(__dirname, 'images')));
 app.use('/', router);
 app.listen(3001, () => {
