@@ -7,6 +7,7 @@ import { useState, useEffect } from 'react';
 import { FaPlus } from 'react-icons/fa';
 import { RiDeleteBin6Line } from 'react-icons/ri';
 import { useNavigate } from 'react-router-dom';
+import { Cookies } from 'react-cookie';
 
 const SignForm = {
 	// image: new FormData(),
@@ -132,6 +133,7 @@ const Done = styled.button`
 `;
 
 const FeelStaCreate = () => {
+	const cookies = new Cookies();
 	const { register, handleSubmit, getValues, setValue, watch } = useForm({
 		mode: 'onChange',
 		defaultValues: SignForm,
@@ -246,6 +248,7 @@ const FeelStaCreate = () => {
 			.post('http://localhost:3001/feelsta-post', formData, {
 				headers: {
 					'Content-Type': 'multipart/form-data',
+					Authorization: cookies.get('Authorization'),
 				},
 			})
 			.then((Response) => {

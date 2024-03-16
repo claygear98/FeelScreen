@@ -13,13 +13,13 @@ const tokenCheckAxios = axios.create({
 const tokenChecker = () => {
 	if (Auth) {
 		Auth = Auth.split('.');
+		console.log(Auth);
 	}
 	Auth = Auth[1];
 	Auth = JSON.parse(base64.decode(Auth));
 	Auth = Auth.exp;
-
 	console.log(Auth);
-	console.log(Date.now());
+	console.log(Date.now() / 1000);
 	if (Auth > parseInt(Date.now() / 1000)) {
 		return true;
 	} else if (Auth <= parseInt(Date.now() / 1000)) {
@@ -32,6 +32,7 @@ const tokenChecker = () => {
 				},
 			})
 			.then((res) => {
+				console.log('박지훈');
 				cookies.set('Authorization', res.data.Authorization);
 				return true;
 			})
@@ -50,11 +51,13 @@ tokenCheckAxios.interceptors.request.use(
 		if (TFcheck === true) {
 			console.log('2');
 			console.log(config);
+			//config.headers.set({ Authorization: cookies.get('Authorization') });
 			return config;
 		} else {
 			console.log('안뇽');
-			alert('로그인 유효기간 만료! 다시 로그인해주세요.');
+			alert('로그인 유효기간 만료! 다시 로그인해주세요.---------');
 		}
+		console.log('먼데');
 	},
 	function (error) {
 		// 요청 오류가 있는 작업 수행
@@ -77,7 +80,7 @@ tokenCheckAxios.interceptors.response.use(
 		// 2xx 외의 범위에 있는 상태 코드는 이 함수를 트리거 합니다.
 		// 응답 오류가 있는 작업 수행
 		console.log('인터셉터 흠');
-		alert('로그인 유효기간 만료! 다시 로그인해주세요.');
+		alert('로그인 유효기간 만료! 다시 로그인해주세요.!!!!!!!!!!!!');
 
 		return Promise.reject(error);
 	}

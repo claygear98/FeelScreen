@@ -90,7 +90,7 @@ function feelstaPost(req, res, urlArr, user_id) {
 			console.log(error);
 			res.send({ success: false, message: 'db error' });
 		} else {
-			res.send({
+			res.status(200).send({
 				success: true,
 			});
 		}

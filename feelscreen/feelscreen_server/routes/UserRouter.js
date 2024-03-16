@@ -125,12 +125,12 @@ router.get('/refresh', (req, res) => {
 //필스타 등록(토큰)
 router.post(
 	'/feelsta-post',
-	JWT.authJWT,
+
 	feelstaController.FeelUpload.array('image', 4),
 
 	async (req, res) => {
 		let user_id = req.userId;
-
+		console.log(user_id, '바보');
 		let urlArr = new Array();
 		for (let i = 0; i < req.files.length; i++) {
 			urlArr.push(`/assets/feelsta/${req.files[i].originalname}`);
