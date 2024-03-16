@@ -4,62 +4,84 @@ import base64 from 'base-64';
 import { useNavigate } from 'react-router-dom';
 
 const cookies = new Cookies();
+let Auth = cookies.get('Authorization');
 
 const tokenCheckAxios = axios.create({
 	baseURL: 'http://localhost:3001',
 });
 
-const tokenChecker = async () => {
-	let Auth = cookies.get('Authorization');
-	if (!Auth) return false;
-
-	Auth = Auth.split('.')[1];
+const tokenChecker = () => {
+	if (Auth) {
+		Auth = Auth.split('.');
+		console.log(Auth);
+	}
+	Auth = Auth[1];
 	Auth = JSON.parse(base64.decode(Auth));
-	const expirationTime = Auth.exp;
-
-	if (expirationTime > parseInt(Date.now() / 1000)) {
+	Auth = Auth.exp;
+	console.log(Auth);
+	console.log(Date.now() / 1000);
+	if (Auth > parseInt(Date.now() / 1000)) {
 		return true;
-	} else {
-		try {
-			const response = await axios.get('http://localhost:3001/refresh', {
+	} else if (Auth <= parseInt(Date.now() / 1000)) {
+		console.log('s');
+		axios
+			.get('http://localhost:3001/refresh', {
 				headers: {
 					Authorization: cookies.get('Authorization'),
 					Refresh: cookies.get('Refresh'),
 				},
+			})
+			.then((res) => {
+				console.log('박지훈');
+				cookies.set('Authorization', res.data.Authorization);
+				return true;
+			})
+			.catch((error) => {
+				console.error(error);
 			});
-
-			cookies.set('Authorization', response.data.Authorization);
-			return true;
-		} catch (error) {
-			console.error(error);
-			return false;
-		}
 	}
 };
 
+// 요청 인터셉터 추가하기
 tokenCheckAxios.interceptors.request.use(
-	async function (config) {
-		const isTokenValid = await tokenChecker();
-		if (isTokenValid) {
+	function (config) {
+		// 요청이 전달되기 전에 작업 수행
+		console.log('1');
+		const TFcheck = tokenChecker();
+		if (TFcheck === true) {
+			console.log('2');
+			console.log(config);
+			//config.headers.set({ Authorization: cookies.get('Authorization') });
 			return config;
 		} else {
-			alert('로그인 유효기간 만료! 다시 로그인해주세요.');
-			// 여기서 네비게이션을 사용하여 로그인 페이지로 이동하거나 다른 작업을 수행할 수 있음
-			return Promise.reject(new Error('Token expired'));
+			console.log('안뇽');
+			alert('로그인 유효기간 만료! 다시 로그인해주세요.---------');
 		}
+		console.log('먼데');
 	},
 	function (error) {
+		// 요청 오류가 있는 작업 수행
+
 		return Promise.reject(error);
 	}
 );
 
+// 응답 인터셉터 추가하기
 tokenCheckAxios.interceptors.response.use(
 	function (response) {
+		// 2xx 범위에 있는 상태 코드는 이 함수를 트리거 합니다.
+		// 응답 데이터가 있는 작업 수행을 바로뒤에서 하기 때문에 안씀
+		console.log(response);
+		console.log('인터셉터');
 		return response;
 	},
 	function (error) {
-		console.error(error);
-		alert('서버와의 통신에 문제가 발생했습니다.');
+		console.log(error);
+		// 2xx 외의 범위에 있는 상태 코드는 이 함수를 트리거 합니다.
+		// 응답 오류가 있는 작업 수행
+		console.log('인터셉터 흠');
+		alert('로그인 유효기간 만료! 다시 로그인해주세요.!!!!!!!!!!!!');
+
 		return Promise.reject(error);
 	}
 );
