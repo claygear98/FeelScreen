@@ -74,10 +74,10 @@ const Tag = styled.div`
 		height: 15px;
 	}
 	ul {
+		width: 360px;
 		list-style: none;
 		padding: 0;
 		display: flex;
-		justify-content: flex-start;
 	}
 
 	ul li {
@@ -143,7 +143,14 @@ const FeelStaModify = () => {
 		description: data.description,
 	};
 
-	const { register, handleSubmit, getValues, setValue, watch } = useForm({
+	const {
+		register,
+		formState: { errors },
+		handleSubmit,
+		getValues,
+		setValue,
+		watch,
+	} = useForm({
 		mode: 'onChange',
 		defaultValues: SignForm,
 	});
@@ -315,6 +322,7 @@ const FeelStaModify = () => {
 					<h4>태그 추가</h4>
 					{tagIndex === 4 ? <h6>태그는 최대4개까지 등록가능합니다.</h6> : ''}
 					<input type="text" {...register(`tag.${tagIndex}`)} id="tagInput" />
+
 					<Chuga type="button" onClick={plusTagAdd} id="addTagButton">
 						추가
 					</Chuga>
@@ -339,6 +347,7 @@ const FeelStaModify = () => {
 					<textarea
 						name="description"
 						defaultValue={data.description}
+						style={{ resize: 'none' }}
 						{...register('description')}
 					/>
 				</Des>
