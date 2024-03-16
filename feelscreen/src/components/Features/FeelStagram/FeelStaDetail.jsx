@@ -1,9 +1,10 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import { FaRegHeart } from 'react-icons/fa';
 import { FaRegCommentAlt } from 'react-icons/fa';
 import { FaHeart } from 'react-icons/fa';
 import axios from 'axios';
+import Gallery from './Gallery';
 
 import { useLocation } from 'react-router-dom';
 import { Cookies } from 'react-cookie';
@@ -217,10 +218,10 @@ const FeelStaDetail = () => {
 		}
 	};
 
-	const commenting = () => {
+	const commenting = useCallback(() => {
 		return newComment.map((a, i) => (
-			<CommentList>
-				<Comment key={i}>
+			<CommentList key={i}>
+				<Comment>
 					<img
 						src={`/${userImage}`}
 						alt=""
@@ -237,7 +238,7 @@ const FeelStaDetail = () => {
 				</Comment>
 			</CommentList>
 		));
-	};
+	}, [newComment, userImage, username]);
 
 	useEffect(() => {
 		commenting();
@@ -266,11 +267,9 @@ const FeelStaDetail = () => {
 						))}
 				</ItemSec>
 				<ItemImg>
-					<img
-						src={feelsta.FEELSTA_IMAGE}
-						alt=""
-						style={{ width: '300px', borderRadius: '10px' }}
-					/>
+					{feelsta.FEELSTA_IMAGE && (
+						<Gallery images={feelsta.FEELSTA_IMAGE.split(',')} />
+					)}
 				</ItemImg>
 				<ItemBot>
 					<Likes>

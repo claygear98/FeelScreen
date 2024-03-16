@@ -10,6 +10,7 @@ import Mypost from './pages/Mypost';
 import FeelstaCreate from './pages/FeelstaCreate';
 import FeelstaDetail from './pages/FeelstaDetail';
 import PostNotice from './components/Features/Notice/PostNotice';
+import FeelstaModify from './pages/FeelstaModify';
 
 function App() {
 	return (
@@ -22,6 +23,7 @@ function App() {
 					<Route path="/notice" element={<Notice />} />
 					<Route path="/feelstagram" element={<Feelstagram />} />
 					<Route path="/feelstacreate" element={<FeelstaCreate />} />
+					<Route path="/feelstamodify/:id" element={<FeelstaModify />} />
 					<Route path="/feelstadetail/:id" element={<FeelstaDetail />} />
 					<Route path="/mypage" element={<Mypage />} />
 					<Route path="/mypost" element={<Mypost />} />

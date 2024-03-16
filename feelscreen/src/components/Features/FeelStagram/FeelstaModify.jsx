@@ -1,7 +1,7 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
-// import axios from 'axios';
+import axios from 'axios';
 import tokenCheckAxios from '../../../hooks/customAxios';
 import { useState, useEffect } from 'react';
 import { FaPlus } from 'react-icons/fa';
@@ -131,7 +131,12 @@ const Done = styled.button`
 	border-radius: 5px;
 `;
 
-const FeelStaEdit = () => {
+const FeelStaModify = () => {
+	//받아오는 axios..!
+	const getOwnData = () => {
+		axios.get();
+	};
+
 	const { register, handleSubmit, getValues, setValue, watch } = useForm({
 		mode: 'onChange',
 		defaultValues: SignForm,
@@ -326,10 +331,10 @@ const FeelStaEdit = () => {
 					<h4>내용</h4>
 					<textarea name="description" {...register('description')} />
 				</Des>
-				<Done>작성완료</Done>
+				<Done>수정완료</Done>
 			</FeelstaForm>
 		</Container>
 	);
 };
 
-export default FeelStaEdit;
+export default FeelStaModify;
