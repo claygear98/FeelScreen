@@ -8,6 +8,7 @@ import { FaPlus } from 'react-icons/fa';
 import { RiDeleteBin6Line } from 'react-icons/ri';
 import { useNavigate } from 'react-router-dom';
 import { Cookies } from 'react-cookie';
+import { useLocation } from 'react-router-dom';
 
 const Container = styled.div`
 	margin-top: 15px;
@@ -126,7 +127,7 @@ const Done = styled.button`
 `;
 
 const FeelStaModify = () => {
-	//받아오는 axios..!
+	//받아오는 axios..! Detail 정보를 받아와야할듯
 	// const getOwnData = () => {
 	// 	axios.get();
 	// };
@@ -168,6 +169,7 @@ const FeelStaModify = () => {
 	const [showImages, setShowImages] = useState(SignForm.image);
 	const [selectedImageCount, setSelectedImageCount] = useState(0); // 이미지 선택된 수
 	const cookies = new Cookies();
+	const { state } = useLocation();
 
 	// 이미지 상대경로 저장
 	const handleAddImages = (event) => {
@@ -264,12 +266,16 @@ const FeelStaModify = () => {
 		}
 
 		tokenCheckAxios
-			.patch('http://localhost:3001/feelsta-post', formData, {
-				headers: {
-					'Content-Type': 'multipart/form-data',
-					Authorization: cookies.get('Authorization'),
-				},
-			})
+			.patch(
+				`http://localhost:3001/feelstamodify?feelsta_id=${state}`,
+				formData,
+				{
+					headers: {
+						'Content-Type': 'multipart/form-data',
+						Authorization: cookies.get('Authorization'),
+					},
+				}
+			)
 			.then((Response) => {
 				console.log(Response);
 				if (Response.data.success === true) {
