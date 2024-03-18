@@ -1,10 +1,11 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import { HiOutlineSpeakerphone } from 'react-icons/hi';
 import { useNavigate } from 'react-router-dom';
 import useHeaderInfo from '../Header/HeadStore';
 import useNoticeInfo from './NoticeStore';
+const server_port = 'http://localhost:3001';
 
 const NoticeHeader = styled.div`
 	box-sizing: border-box;
@@ -78,6 +79,8 @@ const ReadNotice = () => {
 	}, [fetchNoticeList]);
 
 	const handleDetail = (id) => {
+		console.log(id);
+		console.log(`${server_port}/noticeDetail?notice_id=${id}`);
 		axios
 			.get(`${server_port}/noticeDetail?notice_id=${id}`)
 			.then((response) => {
@@ -91,8 +94,14 @@ const ReadNotice = () => {
 						response.data.notice[0].NOTICECONTENT.replaceAll('"', '');
 					setDetail(response.data.notice[0]);
 					setFocus(id);
+				} else {
+					console.log('ㅁㄴㅇㄹ');
 				}
+			})
+			.catch((err) => {
+				console.log(err);
 			});
+		console.log(focus);
 	};
 	const isSame = (a, b) => {
 		if (a === b) {
