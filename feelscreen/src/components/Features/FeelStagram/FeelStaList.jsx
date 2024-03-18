@@ -28,6 +28,13 @@ const ListItem = styled.div`
 	align-items: center;
 `;
 
+const ObserverDiv = styled.div`
+	width: 100%;
+	height: 150px;
+	background-color: black;
+	opacity: 0;
+`;
+
 const Poster = styled.button`
 	width: 110px;
 	height: 50px;
@@ -200,7 +207,7 @@ const FeelStaList = () => {
 						/>
 					))}
 				{end && <div>더 이상 데이터가 없습니다.</div>}
-				<div ref={ref}></div>
+				<ObserverDiv ref={ref}>;l;;;;;</ObserverDiv>
 			</ListItem>
 			<Poster onClick={() => navigate('/feelstacreate')}>글쓰기</Poster>
 		</ListContainer>
