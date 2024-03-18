@@ -4,8 +4,8 @@ import axios from 'axios';
 import { HiOutlineSpeakerphone } from 'react-icons/hi';
 import { useNavigate } from 'react-router-dom';
 import useHeaderInfo from '../Header/HeadStore';
+import useNoticeInfo from './NoticeStore';
 
-const server_port = 'http://localhost:3001';
 const NoticeHeader = styled.div`
 	box-sizing: border-box;
 	padding: 10px;
@@ -52,27 +52,26 @@ const NoticeItem = styled.div`
 	}
 `;
 const ReadNotice = () => {
-	const [noticeList, setNoticeList] = useState([]);
 	const [detail, setDetail] = useState([]);
 	const [focus, setFocus] = useState(-1);
-	const [heart, setHeart] = useState(false);
 	const navigate = useNavigate();
 	const { username } = useHeaderInfo();
-	const fetchNoticeList = useCallback(() => {
-		axios
-			.get(`${server_port}/notice`)
-			.then((response) => {
-				if (response.data.success === true) {
-					setNoticeList(response.data.notice);
-					console.log('Failed notices');
-				} else {
-					console.log('Failed to fetch notices');
-				}
-			})
-			.catch((error) => {
-				console.error('Error fetching notices:', error);
-			});
-	}, []);
+	const { noticeList, fetchNoticeList } = useNoticeInfo();
+	// const fetchNoticeList = useCallback(() => {
+	// 	axios
+	// 		.get(`${server_port}/notice`)
+	// 		.then((response) => {
+	// 			if (response.data.success === true) {
+	// 				setNoticeList(response.data.notice);
+	// 				console.log('Failed notices');
+	// 			} else {
+	// 				console.log('Failed to fetch notices');
+	// 			}
+	// 		})
+	// 		.catch((error) => {
+	// 			console.error('Error fetching notices:', error);
+	// 		});
+	// }, []);
 
 	useEffect(() => {
 		fetchNoticeList();
@@ -97,9 +96,6 @@ const ReadNotice = () => {
 		} else {
 			return 0;
 		}
-	};
-	const handleHeart = (e) => {
-		setHeart(!heart);
 	};
 	return (
 		<div>
