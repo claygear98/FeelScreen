@@ -46,6 +46,8 @@ const FeelStaList = () => {
 	const [sortList, setSortList] = useState('latest');
 	const [ref, inView] = useInView();
 	const [page, setPage] = useState(0);
+	const [loading, setLoading] = useState(false);
+	const [end, setEnd] = useState(false);
 
 	const handleFilterChange = (e) => {
 		setSortList(e.target.value);
@@ -64,72 +66,90 @@ const FeelStaList = () => {
 
 	const searchSubmit = () => {
 		// feelsta-search로 바꾸던지 해야됨
-		axios.get(`http://localhost:3001/feelsta`).then((response) => {
-			console.log(response);
-			if (response.data.success === true) {
-				let dataLists = response.data.feelsta;
-				if (searchType === 'fromtitle') {
-					dataLists = dataLists.filter((item) =>
-						item.FEELSTA_CONTENT.includes(toSearch)
-					);
-				} else if (searchType === 'tagging') {
-					dataLists = dataLists.filter((item) =>
-						item.FEELSTA_TAG.includes(toSearch)
-					);
+		axios
+			.get(`http://localhost:3001/feelsta_search`, {
+				headers: {
+					type: searchType,
+					search: toSearch,
+				},
+			})
+			.then((response) => {
+				console.log(response);
+				if (response.data.success === true) {
+					let dataLists = response.data.feelsta;
+					setStackList(dataLists);
 				}
-				setStackList(dataLists);
-			}
-		});
+			});
 	};
 
 	//새로 만들기
 	const productFetch = () => {
-		if (sortList === 'latest') {
-			axios
-				.get(`http://localhost:3001/feelsta`, {
-					headers: {
-						counter: page,
-					},
-				})
-				.then((response) => {
-					if (response.data.success === true) {
-						let dataLists = response.data.feelsta;
-						setStackList((prevStackList) => [...prevStackList, ...dataLists]);
-						setPage((prevPage) => prevPage++);
-					}
-				})
-				.catch((err) => {
-					console.log(err);
-				});
-		} else if (sortList === 'likest') {
-			axios
-				.get(`http://localhost:3001/feelsta`, {
-					headers: {
-						counter: page,
-					},
-				})
-				.then((response) => {
-					if (response.data.success === true) {
-						let dataLists = response.data.feelsta;
-						setStackList((prevStackList) => [...prevStackList, ...dataLists]);
-						setPage((prevPage) => prevPage++);
-					}
-				})
-				.catch((err) => {
-					console.log(err);
-				});
+		if (!loading && !end) {
+			setLoading(true);
+			if (sortList === 'latest') {
+				axios
+					.get(`http://localhost:3001/feelsta`, {
+						headers: {
+							counter: page,
+						},
+					})
+					.then((response) => {
+						if (response.data.success === true) {
+							let dataLists = response.data.feelsta;
+							setStackList((prevStackList) => [...prevStackList, ...dataLists]);
+							setPage((prevPage) => prevPage++);
+							if (response.data.end === true) {
+								setEnd(true);
+							}
+						}
+					})
+					.catch((err) => {
+						console.log(err);
+					})
+					.finally(() => {
+						setLoading(false);
+					});
+			} else if (sortList === 'likest') {
+				axios
+					.get(`http://localhost:3001/feelsta_likes`, {
+						headers: {
+							counter: page,
+						},
+					})
+					.then((response) => {
+						if (response.data.success === true) {
+							let dataLists = response.data.feelsta;
+							setStackList((prevStackList) => [...prevStackList, ...dataLists]);
+							setPage((prevPage) => prevPage++);
+						}
+						if (response.data.end === true) {
+							setEnd(true);
+						}
+					})
+					.catch((err) => {
+						console.log(err);
+					})
+					.finally(() => {
+						setLoading(false);
+					});
+			}
 		}
 	};
-	// 마지막 요소를 보낼때 마지막이라는 걸 확인할수있는 걸 보내주고 그게 확인되면 감지하는 포인터 날려버리기
+	// 마지막 요소를 보낼때 마지막이라는 걸 확인할수있어야 하니까 전송할 데이터가 3개 이하일 경우 end: true 이런식으로 보내주라
 
 	useEffect(() => {
 		// inView가 true 일때만 실행한다.
-		if (inView) {
+		if (inView && !end) {
 			console.log(inView, '무한 스크롤 요청 🎃');
 
 			productFetch();
 		}
-	}, [inView]);
+	}, [inView, end]);
+
+	useEffect(() => {
+		setPage(0);
+		setStackList([]);
+	}, [sortList]);
 
 	const navigate = useNavigate();
 
@@ -179,7 +199,8 @@ const FeelStaList = () => {
 							LIKE_NAME={feelsta.LIKE_NAME}
 						/>
 					))}
-				<div ref={ref}>ddddd</div>
+				{end && <div>더 이상 데이터가 없습니다.</div>}
+				<div ref={ref}></div>
 			</ListItem>
 			<Poster onClick={() => navigate('/feelstacreate')}>글쓰기</Poster>
 		</ListContainer>

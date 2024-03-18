@@ -7,6 +7,8 @@ import { useState, useEffect } from 'react';
 import { FaPlus } from 'react-icons/fa';
 import { RiDeleteBin6Line } from 'react-icons/ri';
 import { useNavigate } from 'react-router-dom';
+import { Cookies } from 'react-cookie';
+import { useLocation } from 'react-router-dom';
 
 const Container = styled.div`
 	margin-top: 15px;
@@ -74,10 +76,10 @@ const Tag = styled.div`
 		height: 15px;
 	}
 	ul {
+		width: 360px;
 		list-style: none;
 		padding: 0;
 		display: flex;
-		justify-content: flex-start;
 	}
 
 	ul li {
@@ -125,7 +127,7 @@ const Done = styled.button`
 `;
 
 const FeelStaModify = () => {
-	//받아오는 axios..!
+	//받아오는 axios..! Detail 정보를 받아와야할듯
 	// const getOwnData = () => {
 	// 	axios.get();
 	// };
@@ -143,7 +145,14 @@ const FeelStaModify = () => {
 		description: data.description,
 	};
 
-	const { register, handleSubmit, getValues, setValue, watch } = useForm({
+	const {
+		register,
+		formState: { errors },
+		handleSubmit,
+		getValues,
+		setValue,
+		watch,
+	} = useForm({
 		mode: 'onChange',
 		defaultValues: SignForm,
 	});
@@ -159,6 +168,8 @@ const FeelStaModify = () => {
 	const [tagIndex, setTagIndex] = useState(SignForm.tag.length);
 	const [showImages, setShowImages] = useState(SignForm.image);
 	const [selectedImageCount, setSelectedImageCount] = useState(0); // 이미지 선택된 수
+	const cookies = new Cookies();
+	const { state } = useLocation();
 
 	// 이미지 상대경로 저장
 	const handleAddImages = (event) => {
@@ -255,11 +266,16 @@ const FeelStaModify = () => {
 		}
 
 		tokenCheckAxios
-			.post('http://localhost:3001/feelsta-post', formData, {
-				headers: {
-					'Content-Type': 'multipart/form-data',
-				},
-			})
+			.patch(
+				`http://localhost:3001/feelstamodify?feelsta_id=${state}`,
+				formData,
+				{
+					headers: {
+						'Content-Type': 'multipart/form-data',
+						Authorization: cookies.get('Authorization'),
+					},
+				}
+			)
 			.then((Response) => {
 				console.log(Response);
 				if (Response.data.success === true) {
@@ -315,6 +331,7 @@ const FeelStaModify = () => {
 					<h4>태그 추가</h4>
 					{tagIndex === 4 ? <h6>태그는 최대4개까지 등록가능합니다.</h6> : ''}
 					<input type="text" {...register(`tag.${tagIndex}`)} id="tagInput" />
+
 					<Chuga type="button" onClick={plusTagAdd} id="addTagButton">
 						추가
 					</Chuga>
@@ -339,6 +356,7 @@ const FeelStaModify = () => {
 					<textarea
 						name="description"
 						defaultValue={data.description}
+						style={{ resize: 'none' }}
 						{...register('description')}
 					/>
 				</Des>
