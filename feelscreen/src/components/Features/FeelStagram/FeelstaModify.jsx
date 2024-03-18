@@ -7,6 +7,7 @@ import { useState, useEffect } from 'react';
 import { FaPlus } from 'react-icons/fa';
 import { RiDeleteBin6Line } from 'react-icons/ri';
 import { useNavigate } from 'react-router-dom';
+import { Cookies } from 'react-cookie';
 
 const Container = styled.div`
 	margin-top: 15px;
@@ -166,6 +167,7 @@ const FeelStaModify = () => {
 	const [tagIndex, setTagIndex] = useState(SignForm.tag.length);
 	const [showImages, setShowImages] = useState(SignForm.image);
 	const [selectedImageCount, setSelectedImageCount] = useState(0); // 이미지 선택된 수
+	const cookies = new Cookies();
 
 	// 이미지 상대경로 저장
 	const handleAddImages = (event) => {
@@ -262,9 +264,10 @@ const FeelStaModify = () => {
 		}
 
 		tokenCheckAxios
-			.post('http://localhost:3001/feelsta-post', formData, {
+			.patch('http://localhost:3001/feelsta-post', formData, {
 				headers: {
 					'Content-Type': 'multipart/form-data',
+					Authorization: cookies.get('Authorization'),
 				},
 			})
 			.then((Response) => {
