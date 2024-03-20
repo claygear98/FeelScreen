@@ -78,9 +78,8 @@ const ReadNotice = () => {
 	}, [fetchNoticeList]);
 
 	const handleDetail = (id) => {
-		axios
-			.get(`${server_port}/noticeDetail?notice_id=${id}`)
-			.then((response) => {
+		axios.get(`${server_port}/noticeDetail?notice_id=${id}`),
+			{ headers: { 'Cache-Control': 'no-cache' } }.then((response) => {
 				if ((response.data.success = true)) {
 					response.data.notice.NOTICECONTENT =
 						response.data.notice.NOTICECONTENT.replaceAll('"', '');
