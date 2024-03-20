@@ -147,6 +147,8 @@ const FeelStaDetail = () => {
 	const [feelsta, setFeelsta] = useState({});
 	const [commentsLists, setCommentsLists] = useState([]);
 
+	const [isModify, setIsModify] = useState(false);
+
 	const callDetail = () => {
 		axios
 			.get(`http://localhost:3001/feelstadetail?feelsta_id=${state}`)
@@ -228,11 +230,17 @@ const FeelStaDetail = () => {
 	};
 
 	const deleteComment = () => {};
+
+	const changeComment = (e) => {
+		const changer = e.target.value;
+		setPlus(changer);
+	};
 	const modifyComment = () => {
 		tokenCheckAxios.patch('/feelsta/comment-modify', {
 			Authorization: cookies.get('Authorization'),
 			feelsta_id: state,
-			comment_id: 
+			comment_id: commentsLists.COMMENT_ID,
+			comment: plus,
 		});
 	};
 
@@ -334,13 +342,31 @@ const FeelStaDetail = () => {
 									/>
 									<div>
 										<div>{a.USERNAME}</div>
-										{isModify ? <input type='text' defaultValue={a.COMMENT_CONTENT}/> : <div>{a.COMMENT_CONTENT}</div>}
-										
+										{isModify ? (
+											<div>
+												<input
+													type="text"
+													defaultValue={a.COMMENT_CONTENT}
+													onChange={changeComment}
+												/>
+												<span
+													onClick={(e) => {
+														e.preventDefault();
+														modifyComment();
+													}}
+												>
+													수정하기
+												</span>
+											</div>
+										) : (
+											<div>{a.COMMENT_CONTENT}</div>
+										)}
+
 										<div>
 											<span
 												onClick={(e) => {
 													e.preventDefault();
-													modifyComment();
+													setIsModify(true);
 												}}
 											>
 												<GoPencil />
