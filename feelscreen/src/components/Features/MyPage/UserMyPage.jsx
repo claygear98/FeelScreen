@@ -113,8 +113,7 @@ const MyPage = () => {
 
 	function onSubmit(data) {
 		console.log(data.id);
-		// tokenCheckAxios
-		axios
+		tokenCheckAxios
 			.patch(`/modify-user`, {
 				Authorization: cookies.get('Authorization'),
 				username: data.username,
@@ -141,8 +140,7 @@ const MyPage = () => {
 	}
 
 	function deleteUser(data) {
-		// tokenCheckAxios
-		axios
+		tokenCheckAxios
 			.delete(`http://localhost:3001/delete`, {
 				headers: {
 					Authorization: cookies.get('Authorization'),

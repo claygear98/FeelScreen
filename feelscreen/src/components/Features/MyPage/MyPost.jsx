@@ -63,8 +63,7 @@ const MyPost = () => {
 	const cookies = new Cookies();
 	const [mPost, setMPost] = useState([]);
 	const getMyPost = () => {
-		// tokenCheckAxios
-		axios
+		tokenCheckAxios
 			.get('http://localhost:3001/user-feelsta', {
 				headers: {
 					Authorization: cookies.get('Authorization'),

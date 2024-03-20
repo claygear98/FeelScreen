@@ -85,6 +85,7 @@ const Tag = styled.div`
 		list-style: none;
 		padding: 0;
 		display: flex;
+		flex-wrap: wrap;
 		justify-content: flex-start;
 	}
 

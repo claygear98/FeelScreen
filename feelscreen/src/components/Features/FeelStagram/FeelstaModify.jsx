@@ -127,16 +127,21 @@ const Done = styled.button`
 `;
 
 const FeelStaModify = () => {
+	const [data, setData] = useState([]);
 	//받아오는 axios..! Detail 정보를 받아와야할듯
-	// const getOwnData = () => {
-	// 	axios.get();
-	// };
-	const data = {
-		tag: '#마머하노,#오늘뭐하노,#왜묻노',
-		description: '가위바위보슬보슬개미똥구멍멍이가노래를한다.',
-		image:
-			'/assets/feelsta/개구리.png,/assets/feelsta/개구리.png,/assets/feelsta/개구리.png,/assets/feelsta/개구리.png',
+	const getOwnData = () => {
+		tokenCheckAxios
+			.get(`http://localhost:3001/feelstadetail?feelsta_id=${state}`)
+			.then((response) => {
+				if (response.data.success === true) {
+					setData(response.data.feelsta);
+				}
+			});
 	};
+
+	useEffect(() => {
+		getOwnData();
+	}, []);
 
 	const SignForm = {
 		// image: new FormData(),
@@ -145,14 +150,7 @@ const FeelStaModify = () => {
 		description: data.description,
 	};
 
-	const {
-		register,
-		formState: { errors },
-		handleSubmit,
-		getValues,
-		setValue,
-		watch,
-	} = useForm({
+	const { register, handleSubmit, getValues, setValue, watch } = useForm({
 		mode: 'onChange',
 		defaultValues: SignForm,
 	});
@@ -302,19 +300,20 @@ const FeelStaModify = () => {
 					)}
 					<ImageBox>
 						{/* // 저장해둔 이미지들을 순회하면서 화면에 이미지 출력 */}
-						{showImages.map((image, id) => (
-							<div key={id}>
-								<img src={image} alt={`${image}-${id}`} />
-								<button
-									onClick={(e) => {
-										e.preventDefault();
-										handleDeleteImage(id);
-									}}
-								>
-									<RiDeleteBin6Line />
-								</button>
-							</div>
-						))}
+						{showImages &&
+							showImages.map((image, id) => (
+								<div key={id}>
+									<img src={image} alt={`${image}-${id}`} />
+									<button
+										onClick={(e) => {
+											e.preventDefault();
+											handleDeleteImage(id);
+										}}
+									>
+										<RiDeleteBin6Line />
+									</button>
+								</div>
+							))}
 						<label htmlFor="input-file" onChange={handleAddImages}>
 							<input type="file" id="input-file" multiple />
 							<PlusBtn>
