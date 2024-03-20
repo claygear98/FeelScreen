@@ -6,7 +6,10 @@ const useNoticeInfo = create((set) => ({
 	noticeList: [],
 	fetchNoticeList() {
 		axios
-			.get(`${server_port}/notice`)
+			.get(`${server_port}/notice`, {
+				headers: { 'Cache-Control': 'no-cache' },
+			})
+
 			.then((response) => {
 				set((state) => ({
 					noticeList: response.data.notice,

@@ -79,10 +79,11 @@ const ReadNotice = () => {
 	}, [fetchNoticeList]);
 
 	const handleDetail = (id) => {
-		console.log(id);
-		console.log(`${server_port}/noticeDetail?notice_id=${id}`);
 		axios
-			.get(`${server_port}/noticeDetail?notice_id=${id}`)
+			.get(`${server_port}/noticeDetail?notice_id=${id}`, {
+				headers: { 'Cache-Control': 'no-cache' },
+			})
+
 			.then((response) => {
 				if ((response.data.success = true)) {
 					// response.data.notice.NOTICECONTENT.length !== undefined
