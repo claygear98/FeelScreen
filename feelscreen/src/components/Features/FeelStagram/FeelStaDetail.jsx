@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { FaRegHeart } from 'react-icons/fa';
 import { FaRegCommentAlt } from 'react-icons/fa';
 import { FaHeart } from 'react-icons/fa';
-import { IoMdMenu } from 'react-icons/io';
 import axios from 'axios';
 import Gallery from './Gallery';
 import { MdDeleteForever } from 'react-icons/md';
@@ -36,10 +35,6 @@ const ItemTop = styled.div`
 	margin-top: 15px;
 	width: 330px;
 	display: flex;
-	> div {
-		margin-left: 50px;
-		cursor: pointer;
-	}
 `;
 
 const NameDate = styled.div`
@@ -231,7 +226,6 @@ const FeelStaDetail = () => {
 	};
 
 	const deleteComment = (e) => {
-		e.preventDefault();
 		tokenCheckAxios.delete('/feelsta/comment-delete', {
 			Authorization: cookies.get('Authorization'),
 			feelsta_id: state,
@@ -294,7 +288,8 @@ const FeelStaDetail = () => {
 						<div>{feelsta.FEELSTA_DATE}</div>
 					</NameDate>
 					<div>
-						<IoMdMenu />
+						<span>수정</span>
+						<span>삭제</span>
 					</div>
 				</ItemTop>
 				<ItemSec>
@@ -359,8 +354,7 @@ const FeelStaDetail = () => {
 													onChange={changeComment}
 												/>
 												<span
-													onClick={(e) => {
-														e.preventDefault();
+													onClick={() => {
 														modifyComment();
 														setIsModify(false);
 													}}
@@ -374,16 +368,14 @@ const FeelStaDetail = () => {
 
 										<div>
 											<span
-												onClick={(e) => {
-													e.preventDefault();
+												onClick={() => {
 													setIsModify(true);
 												}}
 											>
 												<GoPencil />
 											</span>
 											<span
-												onClick={(e) => {
-													e.preventDefault();
+												onClick={() => {
 													deleteComment();
 												}}
 											>
