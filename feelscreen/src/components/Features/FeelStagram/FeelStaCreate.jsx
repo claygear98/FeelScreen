@@ -85,7 +85,7 @@ const Tag = styled.div`
 		list-style: none;
 		padding: 0;
 		display: flex;
-		flex-wrap: wrap; /* 태그가 넘칠 때 줄 바꿈될 수 있도록 설정 */
+		flex-wrap: wrap;
 		justify-content: flex-start;
 	}
 
