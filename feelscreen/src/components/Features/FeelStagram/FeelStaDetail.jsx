@@ -175,6 +175,7 @@ const FeelStaDetail = () => {
 	}, []);
 
 	const [plus, setPlus] = useState('');
+	const [modi, setModi] = useState('');
 	const [newComment, setNewComment] = useState([]);
 	const cookies = new Cookies();
 
@@ -240,14 +241,15 @@ const FeelStaDetail = () => {
 
 	const changeComment = (e) => {
 		const changer = e.target.value;
-		setPlus(changer);
+		setModi(changer);
 	};
+
 	const modifyComment = () => {
 		tokenCheckAxios.patch('/feelsta/comment-modify', {
 			Authorization: cookies.get('Authorization'),
 			feelsta_id: state,
 			comment_id: commentsLists.COMMENT_ID,
-			comment: plus,
+			comment: modi,
 		});
 	};
 
