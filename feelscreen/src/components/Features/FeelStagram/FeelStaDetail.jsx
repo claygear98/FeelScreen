@@ -334,7 +334,8 @@ const FeelStaDetail = () => {
 									/>
 									<div>
 										<div>{a.USERNAME}</div>
-										<div>{a.COMMENT_CONTENT}</div>
+										{isModify ? <input type='text' defaultValue={a.COMMENT_CONTENT}/> : <div>{a.COMMENT_CONTENT}</div>}
+										
 										<div>
 											<span
 												onClick={(e) => {
