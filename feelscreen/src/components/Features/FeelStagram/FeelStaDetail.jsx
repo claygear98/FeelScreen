@@ -3,12 +3,17 @@ import styled from 'styled-components';
 import { FaRegHeart } from 'react-icons/fa';
 import { FaRegCommentAlt } from 'react-icons/fa';
 import { FaHeart } from 'react-icons/fa';
+import { IoMdMenu } from 'react-icons/io';
 import axios from 'axios';
 import Gallery from './Gallery';
+import { MdDeleteForever } from 'react-icons/md';
+import { GoPencil } from 'react-icons/go';
 
 import { useLocation } from 'react-router-dom';
 import { Cookies } from 'react-cookie';
 import useHeaderInfo from '../Header/HeadStore';
+import tokenCheckAxios from '../../../hooks/customAxios';
+// import { token } from 'aligoapi';
 
 const DetailContainer = styled.div`
 	width: 100%;
@@ -29,8 +34,12 @@ const ItemPreview = styled.div`
 
 const ItemTop = styled.div`
 	margin-top: 15px;
-	width: 300px;
+	width: 330px;
 	display: flex;
+	> div {
+		margin-left: 50px;
+		cursor: pointer;
+	}
 `;
 
 const NameDate = styled.div`
@@ -172,7 +181,7 @@ const FeelStaDetail = () => {
 	const { username, userImage } = useHeaderInfo();
 	const handleHeart = (feelstaId) => {
 		if (isHeart === false) {
-			axios
+			tokenCheckAxios
 				.get(`http://localhost:3001/feelstalike`, {
 					headers: {
 						Authorization: cookies.get('Authorization'),
@@ -181,7 +190,7 @@ const FeelStaDetail = () => {
 				})
 				.then(setIsHeart(!isHeart));
 		} else {
-			axios
+			tokenCheckAxios
 				.delete(`http://localhost:3001/feelstalike`, {
 					headers: {
 						Authorization: cookies.get('Authorization'),
@@ -200,7 +209,7 @@ const FeelStaDetail = () => {
 
 	const handleCommentSubmit = () => {
 		if (plus !== '') {
-			axios
+			tokenCheckAxios
 				.post('http://localhost:3001/feelsta/comment-register', {
 					Authorization: cookies.get('Authorization'),
 					feelsta_id: state,
@@ -216,6 +225,15 @@ const FeelStaDetail = () => {
 					}
 				});
 		}
+	};
+
+	const deleteComment = () => {};
+	const modifyComment = () => {
+		tokenCheckAxios.patch('/feelsta/comment-modify', {
+			Authorization: cookies.get('Authorization'),
+			feelsta_id: state,
+			comment_id: 
+		});
 	};
 
 	const commenting = useCallback(() => {
@@ -258,6 +276,9 @@ const FeelStaDetail = () => {
 						<div>{feelsta.USERNAME}</div>
 						<div>{feelsta.FEELSTA_DATE}</div>
 					</NameDate>
+					<div>
+						<IoMdMenu />
+					</div>
 				</ItemTop>
 				<ItemSec>
 					<div>{feelsta.FEELSTA_CONTENT}</div>
@@ -315,8 +336,22 @@ const FeelStaDetail = () => {
 										<div>{a.USERNAME}</div>
 										<div>{a.COMMENT_CONTENT}</div>
 										<div>
-											<span>수정</span>
-											<span>삭제</span>
+											<span
+												onClick={(e) => {
+													e.preventDefault();
+													modifyComment();
+												}}
+											>
+												<GoPencil />
+											</span>
+											<span
+												onClick={(e) => {
+													e.preventDefault();
+													deleteComment();
+												}}
+											>
+												<MdDeleteForever />
+											</span>
 										</div>
 									</div>
 								</Comment>
