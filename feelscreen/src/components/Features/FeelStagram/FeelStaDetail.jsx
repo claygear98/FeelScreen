@@ -229,7 +229,14 @@ const FeelStaDetail = () => {
 		}
 	};
 
-	const deleteComment = () => {};
+	const deleteComment = (e) => {
+		e.preventDefault();
+		tokenCheckAxios.delete('/feelsta/comment-delete', {
+			Authorization: cookies.get('Authorization'),
+			feelsta_id: state,
+			comment_id: commentsLists.COMMENT_ID,
+		});
+	};
 
 	const changeComment = (e) => {
 		const changer = e.target.value;
@@ -353,6 +360,7 @@ const FeelStaDetail = () => {
 													onClick={(e) => {
 														e.preventDefault();
 														modifyComment();
+														setIsModify(false);
 													}}
 												>
 													수정하기
