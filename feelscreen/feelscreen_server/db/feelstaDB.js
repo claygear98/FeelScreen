@@ -1,7 +1,7 @@
 const db = require('../db/databaseSet.js');
 
-function feelstaAll(count, res) {
-	console.log(count);
+//최신순
+function feelstaAllDate(count, res) {
 	//
 	let sql = `SELECT 
     feelsta.FEELSTA_ID, 
@@ -19,17 +19,70 @@ function feelstaAll(count, res) {
 	FROM FEELSTA
 	JOIN USER ON feelsta.USER_ID = USER.USER_ID
 	ORDER BY FEELSTA_DATE DESC
-	LIMIT 3 OFFSET ${count * 3}`;
+	LIMIT 3 OFFSET ${count}`;
 
 	db.query(sql, async function (error, result) {
 		if (error) {
 			console.log(error);
 			res.send({ success: false, message: 'db error' });
 		} else {
-			await res.send({
-				success: true,
-				feelsta: result,
-			});
+			if (result.length < 3) {
+				await res.send({
+					success: true,
+					end: true,
+					feelsta: result,
+				});
+			} else {
+				await res.send({
+					success: true,
+					end: false,
+					feelsta: result,
+				});
+			}
+		}
+	});
+}
+
+//좋아요순
+function feelstaAllLike(count, res) {
+	//
+	let sql = `SELECT 
+    feelsta.FEELSTA_ID, 
+    feelsta.FEELSTA_IMAGE, 
+    feelsta.FEELSTA_CONTENT, 
+    feelsta.FEELSTA_DATE, 
+    (SELECT COUNT(FEELSTA_ID) FROM HEART WHERE feelsta.FEELSTA_ID = HEART.FEELSTA_ID) AS FEELSTA_LIKE,
+    (SELECT GROUP_CONCAT(USER.USERNAME SEPARATOR ',') FROM HEART
+		JOIN USER ON HEART.USER_ID = USER.USER_ID
+            WHERE HEART.FEELSTA_ID = FEELSTA.FEELSTA_ID) AS LIKE_NAME,
+    feelsta.FEELSTA_TAG, 
+    (SELECT COUNT(*) FROM COMMENT WHERE COMMENT.FEELSTA_ID = feelsta.FEELSTA_ID) AS COMMENTS,
+    USER.USERNAME, 
+    USER.PROFILEIMAGE
+	FROM FEELSTA
+	JOIN USER ON feelsta.USER_ID = USER.USER_ID
+	ORDER BY FEELSTA_LIKE DESC
+	LIMIT 3 OFFSET ${count}`;
+
+	db.query(sql, async function (error, result) {
+		if (error) {
+			console.log(error);
+			res.send({ success: false, message: 'db error' });
+		} else {
+			if (result.length < 3) {
+				await res.send({
+					success: true,
+					end: true,
+					feelsta: result,
+				});
+			} else {
+				console.log(result);
+				await res.send({
+					success: true,
+					end: false,
+					feelsta: result,
+				});
+			}
 		}
 	});
 }
@@ -146,7 +199,7 @@ function feelstaMin(res) {
 }
 
 function feelstaCommentPost(req, res) {
-	let sql = `INSERT INTO COMMENT (COMMENT_CONTENT, USER_ID, COMMENT_DATE, FEELSTA_ID)VALUES ("${req.body.Comment}", ${req.userId}, "date_format(now(), '%Y-%m-%d %H:%i:%s')", ${req.body.feelsta_id});`;
+	let sql = `INSERT INTO COMMENT (COMMENT_CONTENT, USER_ID, COMMENT_DATE, FEELSTA_ID)VALUES ("${req.body.Comment}", ${req.userId}, date_format(now(), '%Y-%m-%d %H:%i:%s'), ${req.body.feelsta_id});`;
 
 	db.query(sql, function (error, result) {
 		if (error) {
@@ -184,8 +237,22 @@ function feelstaCommentDelete(req, res) {
 	});
 }
 
+function feelstaDelete(feelsta_id, res) {
+	let sql = `DELETE FROM FEELSTA, COMMENT, HEART WHERE FEELSTA_ID = ${feelsta_id}`;
+
+	db.query(sql, function (error, result) {
+		if (error) {
+			console.log(error);
+			res.send({ success: false, message: 'db error' });
+		} else {
+			res.send({ success: true });
+		}
+	});
+}
+
 module.exports = {
-	feelstaAll,
+	feelstaAllDate,
+	feelstaAllLike,
 	feelstaOne,
 	feelstaPost,
 	feelstaDeleteLike,
@@ -194,4 +261,5 @@ module.exports = {
 	feelstaCommentPost,
 	feelstaCommentModify,
 	feelstaCommentDelete,
+	feelstaDelete,
 };

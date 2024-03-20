@@ -6,7 +6,6 @@ const signController = require('../controllers/signController.js');
 const noticeController = require('../controllers/noticeController.js');
 const mainController = require('../controllers/mainController.js');
 const feelstaController = require('../controllers/feelstaController.js');
-const commentController = require('../controllers/commentController.js');
 const mypageController = require('../controllers/mypageController.js');
 const imageMove = require('./imageMove.js');
 const cors = require('cors');
@@ -104,7 +103,11 @@ router.post('/header', JWT.authJWT, async (req, res) => {
 
 //필스타 전체 목록
 router.get('/feelsta', (req, res) => {
-	feelstaController.feelAll(res);
+	feelstaController.feelAllDate(req, res);
+});
+
+router.get('/feelsta_likes', (req, res) => {
+	feelstaController.feelAllLike(req, res);
 });
 
 router.get('/notice', (req, res) => {
@@ -173,6 +176,13 @@ router.post(
 	'/feelsta/comment-register',
 	JWT.authJWT,
 	feelstaController.feelCommentPost
+);
+
+//필스타 삭제
+router.delete(
+	'/feelsta-delete',
+	JWT.authGetJWT,
+	feelstaController.feelstaDelete
 );
 
 //댓글 수정

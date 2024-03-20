@@ -66,7 +66,7 @@ function allow(sql, res) {
 
 function duplicate(sql, req, res) {
 	let random = 0;
-	console.log('dhkd');
+
 	db.query(sql, async function (error, result) {
 		if (error) {
 			console.log(error);

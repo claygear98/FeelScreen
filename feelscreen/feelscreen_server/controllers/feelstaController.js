@@ -1,13 +1,12 @@
 const multer = require('multer');
 const feelstaDB = require('../db/feelstaDB.js');
-let count = 0;
 
-function feelAll(res) {
-	if (count === 0) {
-	}
+function feelAllDate(req, res) {
+	feelstaDB.feelstaAllDate(req.get('counter'), res);
+}
 
-	// console.log('count', count);
-	feelstaDB.feelstaAll(count++, res);
+function feelAllLike(req, res) {
+	feelstaDB.feelstaAllLike(req.get('counter'), res);
 }
 
 function feelOne(id, res) {
@@ -22,6 +21,11 @@ function feelPost(req, res, urlArr, user_id) {
 function feelstaMin(res) {
 	feelstaDB.feelstaMin(res);
 }
+const feelstaDelete = (req, res) => {
+	feelstaDB.feelstaDelete(req.get('feelsta_id'), res);
+};
+
+const feelstaUpdate = (req, res) => {};
 
 //좋아요
 function feelLike(user_id, feelsta_id, res) {
@@ -65,7 +69,8 @@ const FeelUpload = multer({
 });
 
 module.exports = {
-	feelAll,
+	feelAllDate,
+	feelAllLike,
 	feelOne,
 	feelPost,
 	feelLike,
@@ -75,4 +80,6 @@ module.exports = {
 	feelCommentPost,
 	feelCommentModify,
 	feelCommentDelete,
+	feelstaDelete,
+	feelstaUpdate,
 };
