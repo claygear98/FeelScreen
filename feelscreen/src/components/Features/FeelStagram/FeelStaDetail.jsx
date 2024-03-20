@@ -7,7 +7,7 @@ import axios from 'axios';
 import Gallery from './Gallery';
 import { MdDeleteForever } from 'react-icons/md';
 import { GoPencil } from 'react-icons/go';
-
+import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import { Cookies } from 'react-cookie';
 import useHeaderInfo from '../Header/HeadStore';
@@ -111,6 +111,12 @@ const Comment = styled.li`
 	}
 `;
 
+const Control = styled.div`
+	display: flex;
+	font-size: 30px;
+	cursor: pointer;
+`;
+
 const InputComment = styled.textarea`
 	margin: 10px 0 10px 0;
 	width: 270px;
@@ -138,6 +144,7 @@ const CommentSet = styled.div`
 `;
 
 const FeelStaDetail = () => {
+	const navigate = useNavigate();
 	const { state } = useLocation();
 	const [feelsta, setFeelsta] = useState({});
 	const [commentsLists, setCommentsLists] = useState([]);
@@ -273,6 +280,13 @@ const FeelStaDetail = () => {
 		commenting();
 	}, [commenting]);
 
+	const deletePost = () => {
+		tokenCheckAxios.delete('/feelsta-delete', {
+			Authorization: cookies.get('Authorization'),
+			feelsta_id: state,
+		});
+	};
+
 	// 토큰확인하고 본인이면 수정 삭제 버튼 처 만들기
 	return (
 		<DetailContainer>
@@ -287,10 +301,12 @@ const FeelStaDetail = () => {
 						<div>{feelsta.USERNAME}</div>
 						<div>{feelsta.FEELSTA_DATE}</div>
 					</NameDate>
-					<div>
-						<span>수정</span>
-						<span>삭제</span>
-					</div>
+					<Control>
+						<GoPencil
+							onClick={navigate(`/feelstamodify?feelsta_id=${state}`)}
+						/>
+						<MdDeleteForever onClick={deletePost} />
+					</Control>
 				</ItemTop>
 				<ItemSec>
 					<div>{feelsta.FEELSTA_CONTENT}</div>
