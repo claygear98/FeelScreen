@@ -1,23 +1,50 @@
 const noticeDB = require('../db/noticeDB.js');
 
-function noticePost(title, content, res) {
-	noticeDB.noticePost(title, content, res);
-}
+const noticePost = async (req, res) => {
+	let image = imageNames.filter((name) => {
+		if (req.body.content.includes(name)) {
+			return name;
+		}
+	});
+	imageNames = [];
 
-function noticeList(res) {
+	let from = './images';
+	let to = '../../public/assets/notice';
+
+	await imageMove.moveImage(from, to, image, req, res);
+};
+
+const noticeList = (req, res) => {
 	noticeDB.noticeList(res);
-}
+};
 
-function noticeDetail(notice_id, res) {
+const noticeDetail = (req, res) => {
+	let { notice_id } = req.query;
 	noticeDB.noticeDetail(notice_id, res);
-}
+};
 
-function noticeMin(res) {
+const noticeMin = (req, res) => {
 	noticeDB.noticeMin(res);
-}
+};
+
+const noticeDelete = (req, res) => {
+	noticeDB.noticeDelete(req.get('noticeId'), res);
+};
+
+const imageDelete = (req, res) => {
+	let image = [...imageNames];
+	imageNames = [];
+
+	imageMove.imageDelete(image);
+
+	console.log('뒤로가기 확인 완');
+};
+
 module.exports = {
 	noticePost,
 	noticeList,
 	noticeDetail,
 	noticeMin,
+	noticeDelete,
+	imageDelete,
 };

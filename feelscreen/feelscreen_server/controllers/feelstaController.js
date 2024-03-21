@@ -1,26 +1,34 @@
 const multer = require('multer');
 const feelstaDB = require('../db/feelstaDB.js');
 
-function feelAllDate(req, res) {
+const feelAllDate = (req, res) => {
 	feelstaDB.feelstaAllDate(req.get('counter'), res);
-}
+};
 
-function feelAllLike(req, res) {
+const feelAllLike = (req, res) => {
 	feelstaDB.feelstaAllLike(req.get('counter'), res);
-}
+};
 
-function feelOne(id, res) {
-	feelstaDB.feelstaOne(id, res);
-}
+const feelOne = (req, res) => {
+	let { feelsta_id } = req.query;
 
-function feelPost(req, res, urlArr, user_id) {
-	console.log(req.body.tag);
+	feelstaDB.feelstaOne(feelsta_id, res);
+};
+
+const feelPost = (req, res) => {
+	let user_id = req.userId;
+	console.log(user_id, '바보');
+	let urlArr = new Array();
+	for (let i = 0; i < req.files.length; i++) {
+		urlArr.push(`/assets/feelsta/${req.files[i].originalname}`);
+	}
+
 	feelstaDB.feelstaPost(req, res, urlArr, user_id);
-}
+};
 
-function feelstaMin(res) {
+const feelstaMin = (req, res) => {
 	feelstaDB.feelstaMin(res);
-}
+};
 const feelstaDelete = (req, res) => {
 	feelstaDB.feelstaDelete(req.get('feelsta_id'), res);
 };
@@ -28,18 +36,21 @@ const feelstaDelete = (req, res) => {
 const feelstaUpdate = (req, res) => {};
 
 //좋아요
-function feelLike(user_id, feelsta_id, res) {
-	feelstaDB.feelstaLike(user_id, feelsta_id, res);
+function feelLike(req, res) {
+	let user_id = req.userId;
+	feelstaDB.feelstaLike(user_id, req.get('feelsta_id'), res);
 }
 
-function feelDeleteLike(user_id, feelsta_id, res) {
-	feelstaDB.feelstaDeleteLike(user_id, feelsta_id, res);
+function feelDeleteLike(req, res) {
+	let user_id = req.userId;
+	feelstaDB.feelstaDeleteLike(user_id, req.get('feelsta_id'), res);
 }
 
 //댓글
 const feelCommentPost = (req, res) => {
 	feelstaDB.feelstaCommentPost(req, res);
 };
+
 const feelCommentModify = (req, res) => {};
 const feelCommentDelete = (req, res) => {};
 

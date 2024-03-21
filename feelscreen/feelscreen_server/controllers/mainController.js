@@ -1,8 +1,8 @@
 const user = require('../db/userDB.js');
 
-function header(id, res) {
-	user.header(id, res);
-}
+const header = (req, res) => {
+	user.header(req.userId, res);
+};
 
 module.exports = {
 	header,

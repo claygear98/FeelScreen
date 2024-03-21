@@ -2,7 +2,6 @@ const db = require('../db/databaseSet.js');
 
 //최신순
 function feelstaAllDate(count, res) {
-	//
 	let sql = `SELECT 
     feelsta.FEELSTA_ID, 
     feelsta.FEELSTA_IMAGE, 
@@ -19,7 +18,7 @@ function feelstaAllDate(count, res) {
 	FROM FEELSTA
 	JOIN USER ON feelsta.USER_ID = USER.USER_ID
 	ORDER BY FEELSTA_DATE DESC
-	LIMIT 3 OFFSET ${count}`;
+	LIMIT ${count * 3}, 3`;
 
 	db.query(sql, async function (error, result) {
 		if (error) {
@@ -45,7 +44,6 @@ function feelstaAllDate(count, res) {
 
 //좋아요순
 function feelstaAllLike(count, res) {
-	//
 	let sql = `SELECT 
     feelsta.FEELSTA_ID, 
     feelsta.FEELSTA_IMAGE, 
@@ -62,7 +60,7 @@ function feelstaAllLike(count, res) {
 	FROM FEELSTA
 	JOIN USER ON feelsta.USER_ID = USER.USER_ID
 	ORDER BY FEELSTA_LIKE DESC
-	LIMIT 3 OFFSET ${count}`;
+	LIMIT ${count * 3}, 3`;
 
 	db.query(sql, async function (error, result) {
 		if (error) {
@@ -87,6 +85,7 @@ function feelstaAllLike(count, res) {
 	});
 }
 
+//필스타 디테일
 function feelstaOne(id, res) {
 	let sql = `
 	SELECT 
@@ -135,6 +134,7 @@ function feelstaOne(id, res) {
 	});
 }
 
+//필스타 등록
 function feelstaPost(req, res, urlArr, user_id) {
 	let sql = `INSERT INTO FEELSTA (FEELSTA_CONTENT, FEELSTA_TAG, FEELSTA_DATE, FEELSTA_IMAGE, USER_ID) VALUES ("${req.body.description}", "${req.body.tag}",date_format(now(), '%Y-%m-%d %H:%i:%s'), "${urlArr}", 15)`;
 
@@ -150,6 +150,7 @@ function feelstaPost(req, res, urlArr, user_id) {
 	});
 }
 
+//좋아요
 function feelstaLike(user_id, feelsta_id, res) {
 	let sql = `INSERT INTO HEART (FEELSTA_ID, USER_ID) VALUES (${feelsta_id}, ${user_id})`;
 
@@ -163,6 +164,7 @@ function feelstaLike(user_id, feelsta_id, res) {
 	});
 }
 
+//좋아요 취소
 function feelstaDeleteLike(user_id, feelsta_id, res) {
 	let sql = `DELETE FROM HEART WHERE (FEELSTA_ID = ${feelsta_id} AND USER_ID = ${user_id})`;
 
@@ -176,6 +178,7 @@ function feelstaDeleteLike(user_id, feelsta_id, res) {
 	});
 }
 
+//메인화면
 function feelstaMin(res) {
 	let sql = `SELECT 
     feelsta.FEELSTA_ID, 
@@ -198,6 +201,7 @@ function feelstaMin(res) {
 	});
 }
 
+//댓글 등록
 function feelstaCommentPost(req, res) {
 	let sql = `INSERT INTO COMMENT (COMMENT_CONTENT, USER_ID, COMMENT_DATE, FEELSTA_ID)VALUES ("${req.body.Comment}", ${req.userId}, date_format(now(), '%Y-%m-%d %H:%i:%s'), ${req.body.feelsta_id});`;
 
@@ -211,6 +215,7 @@ function feelstaCommentPost(req, res) {
 	});
 }
 
+//댓글 수정
 function feelstaCommentModify(req, res) {
 	let sql = `UPDATE COMMENT SET COMMENT_CONTENT = "${req.body.Comment}" WHERE COMMENT_ID = ${req.body.comment_id}`;
 
@@ -224,6 +229,7 @@ function feelstaCommentModify(req, res) {
 	});
 }
 
+//댓글 삭제
 function feelstaCommentDelete(req, res) {
 	let sql = `DELETE FROM COMMENT WHERE COMMENT_ID = ${req.body.comment_id}`;
 
@@ -237,6 +243,7 @@ function feelstaCommentDelete(req, res) {
 	});
 }
 
+//필스타 삭제
 function feelstaDelete(feelsta_id, res) {
 	let sql = `DELETE FROM FEELSTA, COMMENT, HEART WHERE FEELSTA_ID = ${feelsta_id}`;
 

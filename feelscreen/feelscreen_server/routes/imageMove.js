@@ -1,6 +1,6 @@
 const fs = require('fs').promises;
 const path = require('path');
-const nc = require('../controllers/noticeController');
+const noticeDB = require('../db/noticeDB');
 
 async function moveImage(sourceDir, destDir, imageNames, req, res) {
 	try {
@@ -22,7 +22,12 @@ async function moveImage(sourceDir, destDir, imageNames, req, res) {
 		}
 
 		console.log('이미지 이동이 성공적으로 완료되었습니다.');
-		nc.noticePost(req.body.title, req.body.content, res);
+		noticeDB.noticePost(
+			req.body.title,
+			req.body.content,
+			imageNames.join(','),
+			res
+		);
 	} catch (err) {
 		console.error(`이미지 이동 중 오류 발생: ${err}`);
 		res.send({ success: false });
@@ -44,7 +49,19 @@ async function imageDelete(imageNames) {
 	}
 }
 
+async function NoticeDelete(imageNames) {
+	let imagePath = '../../public/assets/notice';
+
+	for (let imageName of imageNames) {
+		const sourcePath = path.join(imagePath, imageName);
+
+		// 이미지 파일 삭제
+		await fs.unlink(sourcePath);
+	}
+}
+
 module.exports = {
 	moveImage,
 	imageDelete,
+	NoticeDelete,
 };
