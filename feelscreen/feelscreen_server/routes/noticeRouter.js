@@ -39,9 +39,9 @@ router.get('/min', noticeController.noticeMin);
 
 router.get('/view', noticeController.noticeList);
 
-router.post('/notice-post', noticeController.noticePost);
+router.post('/post', noticeController.noticePost);
 
-router.get('/noticeDetail', noticeController.noticeDetail);
+router.get('/detail', noticeController.noticeDetail);
 
 //공지 사진 업로드
 router.post('/image', upload.single('image'), (req, res) => {

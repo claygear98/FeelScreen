@@ -51,8 +51,13 @@ const feelCommentPost = (req, res) => {
 	feelstaDB.feelstaCommentPost(req, res);
 };
 
-const feelCommentModify = (req, res) => {};
-const feelCommentDelete = (req, res) => {};
+const feelCommentModify = (req, res) => {
+	feelstaDB.feelstaCommentModify(req, res);
+};
+
+const feelCommentDelete = (req, res) => {
+	feelstaDB.feelstaCommentDelete(req, res);
+};
 
 const storage = multer.diskStorage({
 	// (2)
