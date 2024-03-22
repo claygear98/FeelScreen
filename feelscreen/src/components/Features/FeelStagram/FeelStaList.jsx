@@ -118,16 +118,12 @@ const FeelStaList = () => {
 					});
 			} else if (sortList === 'likest') {
 				axios
-					.get(`http://localhost:3001/feelstalikes`, {
-						headers: {
-							counter: page,
-						},
-					})
+					.get(`http://localhost:3001/feelsta/likes?counter=${page}`)
 					.then((response) => {
 						if (response.data.success === true) {
 							let dataLists = response.data.feelsta;
 							setStackList((prevStackList) => [...prevStackList, ...dataLists]);
-							setPage((prevPage) => prevPage++);
+							setPage((prevPage) => (prevPage += 1));
 						}
 						if (response.data.end === true) {
 							setEnd(true);
