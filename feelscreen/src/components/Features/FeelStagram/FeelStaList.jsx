@@ -118,7 +118,7 @@ const FeelStaList = () => {
 					});
 			} else if (sortList === 'likest') {
 				axios
-					.get(`http://localhost:3001/feelstalikes`, {
+					.get(`http://localhost:3001/feelsta/likes`, {
 						headers: {
 							counter: page,
 						},

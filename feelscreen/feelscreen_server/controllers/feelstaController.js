@@ -6,6 +6,7 @@ const feelAllDate = (req, res) => {
 };
 
 const feelAllLike = (req, res) => {
+	console.log(req.get('counter'));
 	feelstaDB.feelstaAllLike(req.get('counter'), res);
 };
 
