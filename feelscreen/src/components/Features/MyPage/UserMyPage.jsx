@@ -114,7 +114,7 @@ const MyPage = () => {
 	function onSubmit(data) {
 		console.log(data.id);
 		tokenCheckAxios
-			.patch(`/modify-user`, {
+			.patch(`/modify/user`, {
 				Authorization: cookies.get('Authorization'),
 				username: data.username,
 			})

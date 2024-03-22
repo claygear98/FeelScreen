@@ -246,7 +246,7 @@ const FeelStaCreate = () => {
 		}
 
 		tokenCheckAxios
-			.post('http://localhost:3001/feelsta-post', formData, {
+			.post('http://localhost:3001/feelsta/post', formData, {
 				headers: {
 					'Content-Type': 'multipart/form-data',
 					Authorization: cookies.get('Authorization'),

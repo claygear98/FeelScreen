@@ -44,7 +44,7 @@ const FeelMin = () => {
 
 	const [min, setMin] = useState([]);
 	const flowThree = () => {
-		axios.get('http://localhost:3001/feelstamin').then((res) => {
+		axios.get('http://localhost:3001/feelsta/min').then((res) => {
 			setMin(res.data.result);
 		});
 	};
