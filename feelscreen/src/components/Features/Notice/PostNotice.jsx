@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import usePreventGoBack from './usePreventGoBack';
 
-const sever_port = 'http://localhost:3001';
+const server_port = 'http://localhost:3001';
 
 const PostNoticeFrom = styled.form`
 	box-sizing: border-box;
@@ -81,7 +81,7 @@ const PostNotice = () => {
 	const onSubmitPost = (e) => {
 		console.log(123);
 		axios
-			.post(`${sever_port}/notice/post`, {
+			.post(`${server_port}/notice/post`, {
 				title: Title,
 				content: Content.replaceAll('"', "'"),
 			})
