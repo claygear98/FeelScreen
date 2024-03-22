@@ -59,7 +59,7 @@ const FeelMin = () => {
 				<FeelMinItem key={i}>
 					<div
 						onClick={() => {
-							navigate(`/feelstadetail/${a.FEELSTA_ID}`, {
+							navigate(`/feelsta/detail/${a.FEELSTA_ID}`, {
 								state: a.FEELSTA_ID,
 							});
 						}}

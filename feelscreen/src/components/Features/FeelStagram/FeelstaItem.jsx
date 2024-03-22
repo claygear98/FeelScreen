@@ -121,7 +121,7 @@ const FeelstaItem = (props) => {
 		<div>
 			<Item
 				onClick={() => {
-					navigate(`/feelsta/detail?${props.FEELSTA_ID}`, {
+					navigate(`/feelsta/detail/${props.FEELSTA_ID}`, {
 						state: props.FEELSTA_ID,
 					});
 				}}
@@ -146,7 +146,7 @@ const FeelstaItem = (props) => {
 					</ItemSec>
 					<ItemImg>
 						<img
-							src={props.FEELSTA_IMAGE}
+							src={props.FEELSTA_IMAGE && props.FEELSTA_IMAGE.split(',')[0]}
 							alt=""
 							style={{ width: '300px', borderRadius: '10px' }}
 						/>

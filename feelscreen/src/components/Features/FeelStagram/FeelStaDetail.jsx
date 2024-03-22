@@ -152,9 +152,11 @@ const FeelStaDetail = () => {
 	const [isModify, setIsModify] = useState(false);
 
 	const callDetail = () => {
+		console.log(state);
 		axios
 			.get(`http://localhost:3001/feelsta/detail?feelsta_id=${state}`)
 			.then((res) => {
+				console.log(res.data);
 				if (res.data.success === true) {
 					// Feelsta 데이터를 상태에 설정
 					setFeelsta(res.data.feelsta[0]);
@@ -281,9 +283,11 @@ const FeelStaDetail = () => {
 	}, [commenting]);
 
 	const deletePost = () => {
-		tokenCheckAxios.delete('/feelsta/delete', {
-			Authorization: cookies.get('Authorization'),
-			feelsta_id: state,
+		axios.delete('http://localhost:3001/feelsta/delete', {
+			headers: {
+				Authorization: cookies.get('Authorization'),
+				feelsta_id: state,
+			},
 		});
 	};
 
@@ -303,7 +307,7 @@ const FeelStaDetail = () => {
 					</NameDate>
 					<Control>
 						<GoPencil
-							onClick={navigate(`/feelsta/modify?feelsta_id=${state}`)}
+							onClick={() => navigate(`/feelsta/modify?feelsta_id=${state}`)}
 						/>
 						<MdDeleteForever onClick={deletePost} />
 					</Control>

@@ -2,16 +2,17 @@ const multer = require('multer');
 const feelstaDB = require('../db/feelstaDB.js');
 
 const feelAllDate = (req, res) => {
-	feelstaDB.feelstaAllDate(req.get('counter'), res);
+	console.log(req.query);
+	feelstaDB.feelstaAllDate(req.query.counter, res);
 };
 
 const feelAllLike = (req, res) => {
-	console.log(req.get('counter'));
-	feelstaDB.feelstaAllLike(req.get('counter'), res);
+	console.log(req.query);
+	feelstaDB.feelstaAllLike(req.query.counter, res);
 };
 
 const feelOne = (req, res) => {
-	let { feelsta_id } = req.query;
+	let feelsta_id = req.query.feelsta_id;
 
 	feelstaDB.feelstaOne(feelsta_id, res);
 };
@@ -31,6 +32,7 @@ const feelstaMin = (req, res) => {
 	feelstaDB.feelstaMin(res);
 };
 const feelstaDelete = (req, res) => {
+	console.log(req.body);
 	feelstaDB.feelstaDelete(req.get('feelsta_id'), res);
 };
 

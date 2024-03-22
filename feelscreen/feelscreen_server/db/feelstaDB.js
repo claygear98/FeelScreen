@@ -245,7 +245,11 @@ function feelstaCommentDelete(req, res) {
 
 //필스타 삭제
 function feelstaDelete(feelsta_id, res) {
-	let sql = `DELETE FROM FEELSTA, COMMENT, HEART WHERE FEELSTA_ID = ${feelsta_id}`;
+	let sql = `DELETE FEELSTA, COMMENT, HEART
+	FROM FEELSTA
+	LEFT JOIN COMMENT ON FEELSTA.FEELSTA_ID = COMMENT.FEELSTA_ID
+	LEFT JOIN HEART ON FEELSTA.FEELSTA_ID = HEART.FEELSTA_ID
+	WHERE FEELSTA.FEELSTA_ID = ${feelsta_id};`;
 
 	db.query(sql, function (error, result) {
 		if (error) {
