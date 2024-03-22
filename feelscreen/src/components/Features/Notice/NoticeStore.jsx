@@ -19,6 +19,7 @@ const useNoticeInfo = create((set) => ({
 				console.error('Error fetching notices:', error);
 			});
 	},
+	Dele,
 }));
 
 export default useNoticeInfo;

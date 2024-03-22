@@ -51,7 +51,7 @@ const MinNotice = () => {
 			});
 	}, []);
 	const goNotie = () => {
-		navigate('/notice/read');
+		navigate('/notice/view');
 	};
 	useEffect(() => {
 		fetchNoticeList();
