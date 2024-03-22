@@ -96,7 +96,7 @@ const FeelstaItem = (props) => {
 	const handleHeart = (feelstaId) => {
 		if (isHeart === false) {
 			axios
-				.get(`/feelsta/like`, {
+				.get(`http://localhost:3001/feelsta/likes`, {
 					headers: {
 						Authorization: cookies.get('Authorization'),
 						feelsta_id: feelstaId,

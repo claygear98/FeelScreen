@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import { HiOutlineSpeakerphone } from 'react-icons/hi';
@@ -68,19 +68,15 @@ const ReadNotice = () => {
 				headers: { 'Cache-Control': 'no-cache' },
 			})
 			.then((response) => {
-				if ((response.data.success = true)) {
-					response.data.notice.NOTICECONTENT =
-						response.data.notice.NOTICECONTENT.replaceAll('"', '');
-					setDetail(response.data.notice);
+				console.log(response.data);
+				if (response.data.success === true) {
+					response.data.notice[0].NOTICECONTENT =
+						response.data.notice[0].NOTICECONTENT.replaceAll('"', '');
+					setDetail(response.data.notice[0]);
 					setFocus(id);
-				} else {
-					console.log('ㅁㄴㅇㄹ');
 				}
-			})
-			.catch((err) => {
-				console.log(err);
+				console.log(focus);
 			});
-		console.log(focus);
 	};
 	const isSame = (a, b) => {
 		if (a === b) {

@@ -20,6 +20,7 @@ const noticeList = (req, res) => {
 
 const noticeDetail = (req, res) => {
 	let { notice_id } = req.query;
+	console.log(notice_id);
 	noticeDB.noticeDetail(notice_id, res);
 };
 

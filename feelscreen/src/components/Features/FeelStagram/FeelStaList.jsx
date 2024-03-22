@@ -72,7 +72,6 @@ const FeelStaList = () => {
 	};
 
 	const searchSubmit = () => {
-		// feelsta-search로 바꾸던지 해야됨
 		axios
 			.get(`http://localhost:3001/feelsta/search`, {
 				headers: {
@@ -169,7 +168,7 @@ const FeelStaList = () => {
 				</select>
 				<div>
 					<select name="search" id="search" onChange={handleSearchChange}>
-						<option value="fromtitle">제목</option>
+						<option value="fromtitle">내용</option>
 						<option value="tagging">태그</option>
 					</select>
 					<input
@@ -209,7 +208,7 @@ const FeelStaList = () => {
 				{end && <div>더 이상 데이터가 없습니다.</div>}
 				<ObserverDiv ref={ref}>;l;;;;;</ObserverDiv>
 			</ListItem>
-			<Poster onClick={() => navigate('http://localhost:3001/feelsta/post')}>
+			<Poster onClick={() => navigate('http://localhost:3000/feelsta/post')}>
 				글쓰기
 			</Poster>
 		</ListContainer>
