@@ -6,7 +6,6 @@ import { useNavigate } from 'react-router-dom';
 import useHeaderInfo from '../Header/HeadStore';
 import useNoticeInfo from './NoticeStore';
 const server_port = 'http://localhost:3001';
-
 const NoticeHeader = styled.div`
 	box-sizing: border-box;
 	padding: 10px;
