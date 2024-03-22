@@ -23,8 +23,8 @@ function App() {
 					<Route path="/notice" element={<Notice />} />
 					<Route path="/feelstagram" element={<Feelstagram />} />
 					<Route path="/feelstacreate" element={<FeelstaCreate />} />
-					<Route path="/feelstamodify/:id" element={<FeelstaModify />} />
-					<Route path="/feelstadetail/:id" element={<FeelstaDetail />} />
+					<Route path="/feelsta/modify/:id" element={<FeelstaModify />} />
+					<Route path="/feelsta/detail/:id" element={<FeelstaDetail />} />
 					<Route path="/mypage" element={<Mypage />} />
 					<Route path="/mypost" element={<Mypost />} />
 					<Route path="notice">

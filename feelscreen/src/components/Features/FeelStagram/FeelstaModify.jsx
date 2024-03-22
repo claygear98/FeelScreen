@@ -131,7 +131,7 @@ const FeelStaModify = () => {
 	//받아오는 axios..! Detail 정보를 받아와야할듯
 	const getOwnData = () => {
 		tokenCheckAxios
-			.get(`http://localhost:3001/feelstadetail?feelsta_id=${state}`)
+			.get(`http://localhost:3001/feelsta/detail?feelsta_id=${state}`)
 			.then((response) => {
 				if (response.data.success === true) {
 					setData(response.data.feelsta);
@@ -265,7 +265,7 @@ const FeelStaModify = () => {
 
 		tokenCheckAxios
 			.patch(
-				`http://localhost:3001/feelstamodify?feelsta_id=${state}`,
+				`http://localhost:3001/feelsta/modify?feelsta_id=${state}`,
 				formData,
 				{
 					headers: {

@@ -74,7 +74,7 @@ const FeelStaList = () => {
 	const searchSubmit = () => {
 		// feelsta-search로 바꾸던지 해야됨
 		axios
-			.get(`http://localhost:3001/feelsta_search`, {
+			.get(`http://localhost:3001/feelsta/search`, {
 				headers: {
 					type: searchType,
 					search: toSearch,
@@ -95,7 +95,7 @@ const FeelStaList = () => {
 			setLoading(true);
 			if (sortList === 'latest') {
 				axios
-					.get(`http://localhost:3001/feelsta`, {
+					.get(`http://localhost:3001/feelsta/view`, {
 						headers: {
 							counter: page,
 						},
@@ -118,7 +118,7 @@ const FeelStaList = () => {
 					});
 			} else if (sortList === 'likest') {
 				axios
-					.get(`http://localhost:3001/feelsta_likes`, {
+					.get(`http://localhost:3001/feelstalikes`, {
 						headers: {
 							counter: page,
 						},
@@ -209,7 +209,9 @@ const FeelStaList = () => {
 				{end && <div>더 이상 데이터가 없습니다.</div>}
 				<ObserverDiv ref={ref}>;l;;;;;</ObserverDiv>
 			</ListItem>
-			<Poster onClick={() => navigate('/feelstacreate')}>글쓰기</Poster>
+			<Poster onClick={() => navigate('http://localhost:3001/feelsta/post')}>
+				글쓰기
+			</Poster>
 		</ListContainer>
 	);
 };

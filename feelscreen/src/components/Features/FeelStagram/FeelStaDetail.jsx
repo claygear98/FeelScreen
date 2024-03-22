@@ -7,7 +7,7 @@ import axios from 'axios';
 import Gallery from './Gallery';
 import { MdDeleteForever } from 'react-icons/md';
 import { GoPencil } from 'react-icons/go';
-
+import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import { Cookies } from 'react-cookie';
 import useHeaderInfo from '../Header/HeadStore';
@@ -111,6 +111,12 @@ const Comment = styled.li`
 	}
 `;
 
+const Control = styled.div`
+	display: flex;
+	font-size: 30px;
+	cursor: pointer;
+`;
+
 const InputComment = styled.textarea`
 	margin: 10px 0 10px 0;
 	width: 270px;
@@ -138,6 +144,7 @@ const CommentSet = styled.div`
 `;
 
 const FeelStaDetail = () => {
+	const navigate = useNavigate();
 	const { state } = useLocation();
 	const [feelsta, setFeelsta] = useState({});
 	const [commentsLists, setCommentsLists] = useState([]);
@@ -146,7 +153,7 @@ const FeelStaDetail = () => {
 
 	const callDetail = () => {
 		axios
-			.get(`http://localhost:3001/feelstadetail?feelsta_id=${state}`)
+			.get(`http://localhost:3001/feelsta/detail?feelsta_id=${state}`)
 			.then((res) => {
 				if (res.data.success === true) {
 					// Feelsta 데이터를 상태에 설정
@@ -180,7 +187,7 @@ const FeelStaDetail = () => {
 	const handleHeart = (feelstaId) => {
 		if (isHeart === false) {
 			tokenCheckAxios
-				.get(`http://localhost:3001/feelstalike`, {
+				.get(`http://localhost:3001/feelsta/likes`, {
 					headers: {
 						Authorization: cookies.get('Authorization'),
 						feelsta_id: feelstaId,
@@ -189,7 +196,7 @@ const FeelStaDetail = () => {
 				.then(setIsHeart(!isHeart));
 		} else {
 			tokenCheckAxios
-				.delete(`http://localhost:3001/feelstalike`, {
+				.delete(`http://localhost:3001/feelsta/likes`, {
 					headers: {
 						Authorization: cookies.get('Authorization'),
 						feelsta_id: feelstaId,
@@ -273,6 +280,13 @@ const FeelStaDetail = () => {
 		commenting();
 	}, [commenting]);
 
+	const deletePost = () => {
+		tokenCheckAxios.delete('/feelsta/delete', {
+			Authorization: cookies.get('Authorization'),
+			feelsta_id: state,
+		});
+	};
+
 	// 토큰확인하고 본인이면 수정 삭제 버튼 처 만들기
 	return (
 		<DetailContainer>
@@ -287,10 +301,12 @@ const FeelStaDetail = () => {
 						<div>{feelsta.USERNAME}</div>
 						<div>{feelsta.FEELSTA_DATE}</div>
 					</NameDate>
-					<div>
-						<span>수정</span>
-						<span>삭제</span>
-					</div>
+					<Control>
+						<GoPencil
+							onClick={navigate(`/feelsta/modify?feelsta_id=${state}`)}
+						/>
+						<MdDeleteForever onClick={deletePost} />
+					</Control>
 				</ItemTop>
 				<ItemSec>
 					<div>{feelsta.FEELSTA_CONTENT}</div>

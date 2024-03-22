@@ -86,7 +86,7 @@ function LogIn() {
 	function onSubmit(data) {
 		console.log(data);
 		axios
-			.post('http://localhost:3001/log-in', {
+			.post('http://localhost:3001/user/log-in', {
 				phone: data.phone,
 				password: data.password,
 			})
@@ -100,7 +100,6 @@ function LogIn() {
 					alert('로그인에 실패했습니다. 전화번호/비밀번호를 확인해주세요');
 				}
 			});
-		// }).then(navigateToMain);
 	}
 
 	return (

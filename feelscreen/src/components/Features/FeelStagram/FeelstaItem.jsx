@@ -96,7 +96,7 @@ const FeelstaItem = (props) => {
 	const handleHeart = (feelstaId) => {
 		if (isHeart === false) {
 			axios
-				.get(`/feelstalike`, {
+				.get(`/feelsta/like`, {
 					headers: {
 						Authorization: cookies.get('Authorization'),
 						feelsta_id: feelstaId,
@@ -105,7 +105,7 @@ const FeelstaItem = (props) => {
 				.then(setIsHeart(!isHeart));
 		} else {
 			axios
-				.delete(`http://localhost:3001/feelstalike`, {
+				.delete(`http://localhost:3001/feelsta/likes`, {
 					headers: {
 						Authorization: cookies.get('Authorization'),
 						feelsta_id: feelstaId,
@@ -121,7 +121,7 @@ const FeelstaItem = (props) => {
 		<div>
 			<Item
 				onClick={() => {
-					navigate(`/feelstadetail/${props.FEELSTA_ID}`, {
+					navigate(`/feelsta/detail?${props.FEELSTA_ID}`, {
 						state: props.FEELSTA_ID,
 					});
 				}}
