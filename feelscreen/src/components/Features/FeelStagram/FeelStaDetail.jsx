@@ -303,7 +303,7 @@ const FeelStaDetail = () => {
 					</NameDate>
 					<Control>
 						<GoPencil
-							onClick={navigate(`/feelsta/modify?feelsta_id=${state}`)}
+							onClick={() => navigate(`/feelsta/modify?feelsta_id=${state}`)}
 						/>
 						<MdDeleteForever onClick={deletePost} />
 					</Control>

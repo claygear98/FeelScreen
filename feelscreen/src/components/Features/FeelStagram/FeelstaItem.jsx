@@ -121,7 +121,7 @@ const FeelstaItem = (props) => {
 		<div>
 			<Item
 				onClick={() => {
-					navigate(`/feelsta/detail?${props.FEELSTA_ID}`, {
+					navigate(`/feelsta/detail/${props.FEELSTA_ID}`, {
 						state: props.FEELSTA_ID,
 					});
 				}}

@@ -95,11 +95,7 @@ const FeelStaList = () => {
 			setLoading(true);
 			if (sortList === 'latest') {
 				axios
-					.get(`http://localhost:3001/feelsta/view`, {
-						headers: {
-							counter: page,
-						},
-					})
+					.get(`http://localhost:3001/feelsta/view?counter=${page}`)
 					.then((response) => {
 						if (response.data.success === true) {
 							let dataLists = response.data.feelsta;
@@ -205,9 +201,7 @@ const FeelStaList = () => {
 				{end && <div>더 이상 데이터가 없습니다.</div>}
 				<ObserverDiv ref={ref}>;l;;;;;</ObserverDiv>
 			</ListItem>
-			<Poster onClick={() => navigate('http://localhost:3001/feelsta/post')}>
-				글쓰기
-			</Poster>
+			<Poster onClick={() => navigate('/feelsta/post')}>글쓰기</Poster>
 		</ListContainer>
 	);
 };
