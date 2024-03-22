@@ -57,33 +57,20 @@ const ReadNotice = () => {
 	const navigate = useNavigate();
 	const { username } = useHeaderInfo();
 	const { noticeList, fetchNoticeList } = useNoticeInfo();
-	// const fetchNoticeList = useCallback(() => {
-	// 	axios
-	// 		.get(`${server_port}/notice`)
-	// 		.then((response) => {
-	// 			if (response.data.success === true) {
-	// 				setNoticeList(response.data.notice);
-	// 				console.log('Failed notices');
-	// 			} else {
-	// 				console.log('Failed to fetch notices');
-	// 			}
-	// 		})
-	// 		.catch((error) => {
-	// 			console.error('Error fetching notices:', error);
-	// 		});
-	// }, []);
 
 	useEffect(() => {
 		fetchNoticeList();
 	}, [fetchNoticeList]);
 
 	const handleDetail = (id) => {
-		axios.get(`${server_port}/noticeDetail?notice_id=${id}`),
-			{ headers: { 'Cache-Control': 'no-cache' } }.then((response) => {
+		axios
+			.get(`${server_port}/notice/detail?notice_id=${id}`, {
+				headers: { 'Cache-Control': 'no-cache' },
+			})
+			.then((response) => {
 				if ((response.data.success = true)) {
 					response.data.notice.NOTICECONTENT =
 						response.data.notice.NOTICECONTENT.replaceAll('"', '');
-
 					setDetail(response.data.notice);
 					setFocus(id);
 				}
@@ -148,45 +135,7 @@ const ReadNotice = () => {
 						})}
 					</NoticeCards>
 				) : (
-					<NoticeCards>
-						<NoticeItem className="noticeItem">
-							<div className="title_writer">
-								<div>
-									<HiOutlineSpeakerphone style={{ color: '#d8f7e0' }} />
-									<span>아직없음</span>
-								</div>
-								<div>사장님</div>
-							</div>
-							<div className="content">
-								<p>나는 사장</p>
-								<p>너는 손님!</p>
-								<p>&nbsp;</p>
-								<p>난 둥이다멍</p>
-								<figure className="image">
-									<img
-										src="/assets/1f.png"
-										width="128"
-										height="128"
-										alt="이미지"
-									/>
-								</figure>
-							</div>
-						</NoticeItem>
-						<div className="noticeItem">
-							<div>
-								<HiOutlineSpeakerphone style={{ color: '#d8f7e0' }} />
-								<span>아직없음</span>
-							</div>
-							<div>사장님</div>
-						</div>
-						<div className="noticeItem">
-							<div>
-								<HiOutlineSpeakerphone style={{ color: '#d8f7e0' }} />
-								<span>아직없음</span>
-							</div>
-							<div>사장님</div>
-						</div>
-					</NoticeCards>
+					<NoticeCards>네트워크에러</NoticeCards>
 				)}
 			</div>
 		</div>
