@@ -9,7 +9,7 @@ const useHeaderInfo = create((set) => ({
 	userImage: `/assets/5f.png`,
 	getInfo() {
 		axios
-			.post('http://localhost:3001/header', {
+			.post('http://localhost:3001/user/header', {
 				Authorization: cookies.get('Authorization'),
 			})
 			.then((Response) => {

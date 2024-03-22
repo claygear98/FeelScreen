@@ -10,7 +10,7 @@ const usePreventGoBack = () => {
 		// 2. custom hook에서 실행될 함수를 생성하고, 함수명을 preventGoBack으로 설정한다.
 		history.push(null, '', history.location.href);
 		// 2-1. 현재 상태를 세션 히스토리 스택에 추가(push)한다.
-		axios.get('http://localhost:3001/imagedelete').then((res) => {
+		axios.get('http://localhost:3001/notice/imagedelete').then((res) => {
 			console.log(123);
 			console.log(12);
 			console.log(1);

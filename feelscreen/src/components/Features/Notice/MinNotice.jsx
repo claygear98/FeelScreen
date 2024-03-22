@@ -38,7 +38,7 @@ const MinNotice = () => {
 	const navigate = useNavigate();
 	const fetchNoticeList = useCallback(() => {
 		axios
-			.get(`${server_port}/noticemin`)
+			.get(`${server_port}/notice/min`)
 			.then((res) => {
 				if (res.data.success === true) {
 					setNoticeList(res.data.result);

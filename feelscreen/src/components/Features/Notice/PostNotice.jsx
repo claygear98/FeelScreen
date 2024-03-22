@@ -81,7 +81,7 @@ const PostNotice = () => {
 	const onSubmitPost = (e) => {
 		console.log(123);
 		axios
-			.post(`${sever_port}/notice-post`, {
+			.post(`${sever_port}/notice/post`, {
 				title: Title,
 				content: Content.replaceAll('"', "'"),
 			})

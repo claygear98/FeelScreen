@@ -24,3 +24,5 @@ router.patch('/namemodify', JWT.authJWT, mypageController.nameUpdate);
 router.delete('/delete', JWT.authGetJWT, mypageController.userDelete);
 
 router.get('/feelsta', JWT.authGetJWT, mypageController.userFeelsta);
+
+module.exports = router;

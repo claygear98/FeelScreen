@@ -12,18 +12,14 @@ router.get('/likes', feelstaController.feelAllLike);
 router.post(
 	'/post',
 	feelstaController.FeelUpload.array('image', 4),
-	feelstaController.feelPost(req, res)
+	feelstaController.feelPost
 );
 
 //좋아요 등록
 router.get('/postlike', JWT.authGetJWT, feelstaController.feelLike);
 
 //좋아요 삭제
-router.delete(
-	'/postlike',
-	JWT.authGetJWT,
-	feelstaController.feelDeleteLike(req, res)
-);
+router.delete('/postlike', JWT.authGetJWT, feelstaController.feelDeleteLike);
 
 router.get('/min', feelstaController.feelstaMin);
 
