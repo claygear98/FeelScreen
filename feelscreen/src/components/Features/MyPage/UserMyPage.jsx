@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
-import axios from 'axios';
 import tokenCheckAxios from '../../../hooks/customAxios';
 import { Cookies } from 'react-cookie';
 import { useState } from 'react';
@@ -114,7 +113,7 @@ const MyPage = () => {
 	function onSubmit(data) {
 		console.log(data.id);
 		tokenCheckAxios
-			.patch(`/modify/user`, {
+			.patch(`/user/namemodify`, {
 				Authorization: cookies.get('Authorization'),
 				username: data.username,
 			})
@@ -133,15 +132,23 @@ const MyPage = () => {
 	}
 
 	function logOut() {
-		cookies.remove('Refresh');
-		cookies.remove('Authorization');
-		alert('로그아웃 되었습니다!');
-		navigateToMain();
+		tokenCheckAxios
+			.get('/user/log-out', {
+				headers: {
+					Authorization: cookies.get('Authorization'),
+				},
+			})
+			.then((res) => {
+				cookies.remove('Refresh');
+				cookies.remove('Authorization');
+				alert('로그아웃 되었습니다!');
+				navigateToMain();
+			});
 	}
 
 	function deleteUser(data) {
 		tokenCheckAxios
-			.delete(`http://localhost:3001/delete`, {
+			.delete(`/user/delete`, {
 				headers: {
 					Authorization: cookies.get('Authorization'),
 					password: data.password,

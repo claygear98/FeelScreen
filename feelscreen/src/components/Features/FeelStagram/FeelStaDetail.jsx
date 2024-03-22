@@ -153,7 +153,7 @@ const FeelStaDetail = () => {
 
 	const callDetail = () => {
 		axios
-			.get(`http://localhost:3001/feelstadetail/feelsta_id=${state}`)
+			.get(`http://localhost:3001/feelsta/detail?feelsta_id=${state}`)
 			.then((res) => {
 				if (res.data.success === true) {
 					// Feelsta 데이터를 상태에 설정
@@ -187,7 +187,7 @@ const FeelStaDetail = () => {
 	const handleHeart = (feelstaId) => {
 		if (isHeart === false) {
 			tokenCheckAxios
-				.get(`http://localhost:3001/feelsta/like`, {
+				.get(`http://localhost:3001/feelsta/likes`, {
 					headers: {
 						Authorization: cookies.get('Authorization'),
 						feelsta_id: feelstaId,
@@ -196,7 +196,7 @@ const FeelStaDetail = () => {
 				.then(setIsHeart(!isHeart));
 		} else {
 			tokenCheckAxios
-				.delete(`http://localhost:3001/feelsta/like`, {
+				.delete(`http://localhost:3001/feelsta/likes`, {
 					headers: {
 						Authorization: cookies.get('Authorization'),
 						feelsta_id: feelstaId,
@@ -215,7 +215,7 @@ const FeelStaDetail = () => {
 	const handleCommentSubmit = () => {
 		if (plus !== '') {
 			tokenCheckAxios
-				.post('http://localhost:3001/feelsta/comment/register', {
+				.post('http://localhost:3001/feelsta/comment-register', {
 					Authorization: cookies.get('Authorization'),
 					feelsta_id: state,
 					Comment: plus,
@@ -233,7 +233,7 @@ const FeelStaDetail = () => {
 	};
 
 	const deleteComment = (e) => {
-		tokenCheckAxios.delete('/feelsta/comment/delete', {
+		tokenCheckAxios.delete('/feelsta/comment-delete', {
 			Authorization: cookies.get('Authorization'),
 			feelsta_id: state,
 			comment_id: commentsLists.COMMENT_ID,
@@ -246,7 +246,7 @@ const FeelStaDetail = () => {
 	};
 
 	const modifyComment = () => {
-		tokenCheckAxios.patch('/feelsta/comment/modify', {
+		tokenCheckAxios.patch('/feelsta/comment-modify', {
 			Authorization: cookies.get('Authorization'),
 			feelsta_id: state,
 			comment_id: commentsLists.COMMENT_ID,
@@ -303,7 +303,7 @@ const FeelStaDetail = () => {
 					</NameDate>
 					<Control>
 						<GoPencil
-							onClick={navigate(`/feelstamodify/feelsta_id=${state}`)}
+							onClick={navigate(`/feelsta/modify?feelsta_id=${state}`)}
 						/>
 						<MdDeleteForever onClick={deletePost} />
 					</Control>
