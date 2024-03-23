@@ -128,11 +128,13 @@ const Done = styled.button`
 
 const FeelStaModify = () => {
 	const [data, setData] = useState([]);
+	const { state } = useLocation();
 	//받아오는 axios..! Detail 정보를 받아와야할듯
 	const getOwnData = () => {
 		tokenCheckAxios
 			.get(`http://localhost:3001/feelsta/detail?feelsta_id=${state}`)
 			.then((response) => {
+				console.log(state);
 				if (response.data.success === true) {
 					setData(response.data.feelsta);
 				}
@@ -167,7 +169,6 @@ const FeelStaModify = () => {
 	const [showImages, setShowImages] = useState(SignForm.image);
 	const [selectedImageCount, setSelectedImageCount] = useState(0); // 이미지 선택된 수
 	const cookies = new Cookies();
-	const { state } = useLocation();
 
 	// 이미지 상대경로 저장
 	const handleAddImages = (event) => {

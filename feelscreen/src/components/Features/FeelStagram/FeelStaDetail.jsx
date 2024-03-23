@@ -143,16 +143,23 @@ const CommentSet = styled.div`
 	}
 `;
 
+//좋아요 중복 방지
+//눌렀으면 하트 눌린하트로 표시
+
 const FeelStaDetail = () => {
 	const navigate = useNavigate();
 	const { state } = useLocation();
 	const [feelsta, setFeelsta] = useState({});
 	const [commentsLists, setCommentsLists] = useState([]);
+	const { username, userImage, getInfo } = useHeaderInfo();
 
 	const [isModify, setIsModify] = useState(false);
 
 	const callDetail = () => {
 		console.log(state);
+		console.log(state);
+		console.log(username);
+
 		axios
 			.get(`http://localhost:3001/feelsta/detail?feelsta_id=${state}`)
 			.then((res) => {
@@ -162,10 +169,16 @@ const FeelStaDetail = () => {
 					setFeelsta(res.data.feelsta[0]);
 					// Comment 데이터를 상태에 설정
 					setCommentsLists(res.data.feelsta[0].COMMENTS);
-					if (feelsta[0].LIKE_NAME && feelsta[0].LIKE_NAME.includes(username)) {
+					console.log(username);
+					if (
+						res.data.feelsta[0].LIKE_NAME &&
+						res.data.feelsta[0].LIKE_NAME.includes(username)
+					) {
 						setIsHeart(true);
+						console.log(res.data.feelsta[0].LIKE_NAME);
 					} else {
 						setIsHeart(false);
+						console.log(res.data.feelsta[0].LIKE_NAME);
 					}
 				}
 			})
@@ -178,36 +191,40 @@ const FeelStaDetail = () => {
 		callDetail();
 	}, []);
 
+	const [isHeart, setIsHeart] = useState(false);
+
 	const [plus, setPlus] = useState('');
 	const [modi, setModi] = useState('');
 	const [newComment, setNewComment] = useState([]);
 	const cookies = new Cookies();
-
-	const [isHeart, setIsHeart] = useState(false);
-
-	const { username, userImage } = useHeaderInfo();
 	const handleHeart = (feelstaId) => {
 		if (isHeart === false) {
-			tokenCheckAxios
-				.get(`http://localhost:3001/feelsta/likes`, {
+			// tokenCheckAxios
+			console.log('좋아요 누름');
+
+			axios
+				.get(`http://localhost:3001/feelsta/postlike`, {
 					headers: {
 						Authorization: cookies.get('Authorization'),
 						feelsta_id: feelstaId,
 					},
 				})
-				.then(setIsHeart(!isHeart));
+				.then(setIsHeart(true));
+		} else if (isHeart === true) {
+			console.log('wfwffwfwwffwfwwffw');
+			// tokenCheckAxios
+			axios
+				.delete(`http://localhost:3001/feelsta/postlike`, {
+					headers: {
+						Authorization: cookies.get('Authorization'),
+						feelsta_id: feelstaId,
+					},
+				})
+				.then(setIsHeart(false));
 		} else {
-			tokenCheckAxios
-				.delete(`http://localhost:3001/feelsta/likes`, {
-					headers: {
-						Authorization: cookies.get('Authorization'),
-						feelsta_id: feelstaId,
-					},
-				})
-				.then(setIsHeart(!isHeart));
+			console.log('asdfasdf');
 		}
 	};
-
 	const handleComment = (e) => {
 		const comment = e.target.value;
 		setPlus(comment);
@@ -283,12 +300,21 @@ const FeelStaDetail = () => {
 	}, [commenting]);
 
 	const deletePost = () => {
-		axios.delete('http://localhost:3001/feelsta/delete', {
-			headers: {
-				Authorization: cookies.get('Authorization'),
-				feelsta_id: state,
-			},
-		});
+		axios
+			.delete('http://localhost:3001/feelsta/delete', {
+				headers: {
+					Authorization: cookies.get('Authorization'),
+					feelsta_id: state,
+				},
+			}) // 첫번째 꺼 지울때 오류남
+			.then((res) => {
+				if (res.data.success === true) {
+					alert('게시물 삭제가 완료되었다!');
+					navigate('/feelstagram');
+				} else {
+					alert('ㅜㅜ 실패다');
+				}
+			});
 	};
 
 	// 토큰확인하고 본인이면 수정 삭제 버튼 처 만들기
@@ -335,7 +361,9 @@ const FeelStaDetail = () => {
 							{isHeart ? <FaHeart /> : <FaRegHeart />}
 						</span>
 						<span>
-							{isHeart ? feelsta.FEELSTA_LIKE + 1 : feelsta.FEELSTA_LIKE}
+							{feelsta.LIKE_NAME === username
+								? feelsta.FEELSTA_LIKE + 1
+								: feelsta.FEELSTA_LIKE}
 						</span>
 					</Likes>
 					<Comments>
@@ -352,8 +380,8 @@ const FeelStaDetail = () => {
 				</ItemBot>
 				<div>
 					{commentsLists &&
-						commentsLists.map((a) => (
-							<CommentList>
+						commentsLists.map((a, i) => (
+							<CommentList key={i}>
 								<Comment>
 									<img
 										src={`/${a.PROFILEIMAGE}`}

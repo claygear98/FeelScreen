@@ -95,23 +95,24 @@ const FeelstaItem = (props) => {
 
 	const handleHeart = (feelstaId) => {
 		if (isHeart === false) {
+			console.log('좋아요 누름');
 			axios
-				.get(`http://localhost:3001/feelsta/likes`, {
+				.get(`http://localhost:3001/feelsta/postlike`, {
 					headers: {
 						Authorization: cookies.get('Authorization'),
 						feelsta_id: feelstaId,
 					},
 				})
-				.then(setIsHeart(!isHeart));
+				.then(setIsHeart(true));
 		} else {
 			axios
-				.delete(`http://localhost:3001/feelsta/likes`, {
+				.delete(`http://localhost:3001/feelsta/postlike`, {
 					headers: {
 						Authorization: cookies.get('Authorization'),
 						feelsta_id: feelstaId,
 					},
 				})
-				.then(setIsHeart(!isHeart));
+				.then(setIsHeart(false));
 		}
 	};
 

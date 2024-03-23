@@ -53,7 +53,6 @@ const FeelStaList = () => {
 	const [sortList, setSortList] = useState('latest');
 	const [ref, inView] = useInView();
 	const [page, setPage] = useState(0);
-	const [loading, setLoading] = useState(false);
 	const [end, setEnd] = useState(false);
 
 	const handleFilterChange = (e) => {
@@ -90,8 +89,7 @@ const FeelStaList = () => {
 
 	//새로 만들기
 	const productFetch = () => {
-		if (!loading && !end) {
-			setLoading(true);
+		if (!end) {
 			if (sortList === 'latest') {
 				axios
 					.get(`http://localhost:3001/feelsta/view?counter=${page}`)
@@ -99,7 +97,8 @@ const FeelStaList = () => {
 						if (response.data.success === true) {
 							let dataLists = response.data.feelsta;
 							setStackList((prevStackList) => [...prevStackList, ...dataLists]);
-							setPage((prevPage) => prevPage++);
+							setPage((prevPage) => (prevPage += 1));
+							console.log(page);
 							if (response.data.end === true) {
 								setEnd(true);
 							}
@@ -107,9 +106,6 @@ const FeelStaList = () => {
 					})
 					.catch((err) => {
 						console.log(err);
-					})
-					.finally(() => {
-						setLoading(false);
 					});
 			} else if (sortList === 'likest') {
 				axios
@@ -119,6 +115,7 @@ const FeelStaList = () => {
 							let dataLists = response.data.feelsta;
 							setStackList((prevStackList) => [...prevStackList, ...dataLists]);
 							setPage((prevPage) => (prevPage += 1));
+							console.log(page);
 						}
 						if (response.data.end === true) {
 							setEnd(true);
@@ -126,9 +123,6 @@ const FeelStaList = () => {
 					})
 					.catch((err) => {
 						console.log(err);
-					})
-					.finally(() => {
-						setLoading(false);
 					});
 			}
 		}
