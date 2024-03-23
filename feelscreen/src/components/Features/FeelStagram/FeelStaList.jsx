@@ -53,7 +53,6 @@ const FeelStaList = () => {
 	const [sortList, setSortList] = useState('latest');
 	const [ref, inView] = useInView();
 	const [page, setPage] = useState(0);
-	const [loading, setLoading] = useState(false);
 	const [end, setEnd] = useState(false);
 
 	const handleFilterChange = (e) => {
@@ -90,8 +89,7 @@ const FeelStaList = () => {
 
 	//새로 만들기
 	const productFetch = () => {
-		if (!loading && !end) {
-			setLoading(true);
+		if (!end) {
 			if (sortList === 'latest') {
 				axios
 					.get(`http://localhost:3001/feelsta/view?counter=${page}`)
@@ -107,9 +105,6 @@ const FeelStaList = () => {
 					})
 					.catch((err) => {
 						console.log(err);
-					})
-					.finally(() => {
-						setLoading(false);
 					});
 			} else if (sortList === 'likest') {
 				axios
@@ -126,14 +121,10 @@ const FeelStaList = () => {
 					})
 					.catch((err) => {
 						console.log(err);
-					})
-					.finally(() => {
-						setLoading(false);
 					});
 			}
 		}
 	};
-	// 마지막 요소를 보낼때 마지막이라는 걸 확인할수있어야 하니까 전송할 데이터가 3개 이하일 경우 end: true 이런식으로 보내주라
 
 	useEffect(() => {
 		// inView가 true 일때만 실행한다.
