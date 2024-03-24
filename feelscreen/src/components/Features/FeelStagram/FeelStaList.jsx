@@ -127,7 +127,6 @@ const FeelStaList = () => {
 			}
 		}
 	};
-	// 마지막 요소를 보낼때 마지막이라는 걸 확인할수있어야 하니까 전송할 데이터가 3개 이하일 경우 end: true 이런식으로 보내주라
 
 	useEffect(() => {
 		// inView가 true 일때만 실행한다.
