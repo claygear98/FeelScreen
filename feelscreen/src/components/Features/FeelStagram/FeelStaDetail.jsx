@@ -361,7 +361,7 @@ const FeelStaDetail = () => {
 							{isHeart ? <FaHeart /> : <FaRegHeart />}
 						</span>
 						<span>
-							{feelsta.LIKE_NAME === username
+							{feelsta.LIKE_NAME && feelsta.LIKE_NAME.includes(username)
 								? feelsta.FEELSTA_LIKE + 1
 								: feelsta.FEELSTA_LIKE}
 						</span>
