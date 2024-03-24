@@ -2,12 +2,8 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { Cookies } from 'react-cookie';
-
-import { FaHeart } from 'react-icons/fa';
-import { FaRegHeart } from 'react-icons/fa';
+import Likes from './FeelstaLike';
 import { FaRegCommentAlt } from 'react-icons/fa';
-import useHeaderInfo from '../Header/HeadStore';
 
 const Item = styled.div`
 	width: 360px;
@@ -69,11 +65,6 @@ const ItemBot = styled.div`
 	display: flex;
 `;
 
-const Likes = styled.span`
-	span {
-		margin: 0 5px 0 0;
-	}
-`;
 const Comments = styled.span`
 	span {
 		margin: 0 5px 0 0;
@@ -82,40 +73,6 @@ const Comments = styled.span`
 `;
 
 const FeelstaItem = (props) => {
-	const { username } = useHeaderInfo();
-	const pushLikeBtn = () => {
-		if (props.LIKE_NAME && props.LIKE_NAME.includes(username)) {
-			return true;
-		} else {
-			return false;
-		}
-	};
-	const [isHeart, setIsHeart] = useState(pushLikeBtn);
-	const cookies = new Cookies();
-
-	const handleHeart = (feelstaId) => {
-		if (isHeart === false) {
-			console.log('좋아요 누름');
-			axios
-				.get(`http://localhost:3001/feelsta/postlike`, {
-					headers: {
-						Authorization: cookies.get('Authorization'),
-						feelsta_id: feelstaId,
-					},
-				})
-				.then(setIsHeart(true));
-		} else {
-			axios
-				.delete(`http://localhost:3001/feelsta/postlike`, {
-					headers: {
-						Authorization: cookies.get('Authorization'),
-						feelsta_id: feelstaId,
-					},
-				})
-				.then(setIsHeart(false));
-		}
-	};
-
 	const navigate = useNavigate();
 
 	return (
@@ -153,21 +110,11 @@ const FeelstaItem = (props) => {
 						/>
 					</ItemImg>
 					<ItemBot>
-						<Likes>
-							<span
-								className="heartPush"
-								onClick={(e) => {
-									e.preventDefault();
-									handleHeart(props.FEELSTA_ID);
-								}}
-							>
-								{isHeart ? <FaHeart /> : <FaRegHeart />}
-							</span>
-
-							<span>
-								{isHeart ? props.FEELSTA_LIKE + 1 : props.FEELSTA_LIKE}
-							</span>
-						</Likes>
+						<Likes
+							FEELSTA_LIKE={props.FEELSTA_LIKE}
+							FEELSTA_IMAGE={props.FEELSTA_IMAGE}
+							LIKE_NAME={props.LIKE_NAME}
+						/>
 						<Comments>
 							<span>
 								<FaRegCommentAlt />

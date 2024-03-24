@@ -12,6 +12,7 @@ import { useLocation } from 'react-router-dom';
 import { Cookies } from 'react-cookie';
 import useHeaderInfo from '../Header/HeadStore';
 import tokenCheckAxios from '../../../hooks/customAxios';
+import Likes from './FeelstaLike';
 // import { token } from 'aligoapi';
 
 const DetailContainer = styled.div`
@@ -76,11 +77,6 @@ const ItemBot = styled.div`
 	display: flex;
 `;
 
-const Likes = styled.span`
-	span {
-		margin: 0 5px 0 0;
-	}
-`;
 const Comments = styled.span`
 	span {
 		margin: 0 5px 0 0;
@@ -156,10 +152,6 @@ const FeelStaDetail = () => {
 	const [isModify, setIsModify] = useState(false);
 
 	const callDetail = () => {
-		console.log(state);
-		console.log(state);
-		console.log(username);
-
 		axios
 			.get(`http://localhost:3001/feelsta/detail?feelsta_id=${state}`)
 			.then((res) => {
@@ -170,16 +162,6 @@ const FeelStaDetail = () => {
 					// Comment 데이터를 상태에 설정
 					setCommentsLists(res.data.feelsta[0].COMMENTS);
 					console.log(username);
-					if (
-						res.data.feelsta[0].LIKE_NAME &&
-						res.data.feelsta[0].LIKE_NAME.includes(username)
-					) {
-						setIsHeart(true);
-						console.log(res.data.feelsta[0].LIKE_NAME);
-					} else {
-						setIsHeart(false);
-						console.log(res.data.feelsta[0].LIKE_NAME);
-					}
 				}
 			})
 			.catch((error) => {
@@ -191,40 +173,11 @@ const FeelStaDetail = () => {
 		callDetail();
 	}, []);
 
-	const [isHeart, setIsHeart] = useState(false);
-
 	const [plus, setPlus] = useState('');
 	const [modi, setModi] = useState('');
 	const [newComment, setNewComment] = useState([]);
 	const cookies = new Cookies();
-	const handleHeart = (feelstaId) => {
-		if (isHeart === false) {
-			// tokenCheckAxios
-			console.log('좋아요 누름');
 
-			axios
-				.get(`http://localhost:3001/feelsta/postlike`, {
-					headers: {
-						Authorization: cookies.get('Authorization'),
-						feelsta_id: feelstaId,
-					},
-				})
-				.then(setIsHeart(true));
-		} else if (isHeart === true) {
-			console.log('wfwffwfwwffwfwwffw');
-			// tokenCheckAxios
-			axios
-				.delete(`http://localhost:3001/feelsta/postlike`, {
-					headers: {
-						Authorization: cookies.get('Authorization'),
-						feelsta_id: feelstaId,
-					},
-				})
-				.then(setIsHeart(false));
-		} else {
-			console.log('asdfasdf');
-		}
-	};
 	const handleComment = (e) => {
 		const comment = e.target.value;
 		setPlus(comment);
@@ -351,21 +304,7 @@ const FeelStaDetail = () => {
 					)}
 				</ItemImg>
 				<ItemBot>
-					<Likes>
-						<span
-							className="heartPush"
-							onClick={() => {
-								handleHeart(feelsta.FEELSTA_ID);
-							}}
-						>
-							{isHeart ? <FaHeart /> : <FaRegHeart />}
-						</span>
-						<span>
-							{feelsta.LIKE_NAME && feelsta.LIKE_NAME.includes(username)
-								? feelsta.FEELSTA_LIKE + 1
-								: feelsta.FEELSTA_LIKE}
-						</span>
-					</Likes>
+					<Likes />
 					<Comments>
 						<span>
 							<FaRegCommentAlt />
