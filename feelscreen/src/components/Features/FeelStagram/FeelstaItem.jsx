@@ -112,7 +112,6 @@ const FeelstaItem = (props) => {
 					<ItemBot>
 						<Likes
 							FEELSTA_LIKE={props.FEELSTA_LIKE}
-							FEELSTA_IMAGE={props.FEELSTA_IMAGE}
 							LIKE_NAME={props.LIKE_NAME}
 						/>
 						<Comments>
