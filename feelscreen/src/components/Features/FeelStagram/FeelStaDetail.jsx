@@ -304,7 +304,11 @@ const FeelStaDetail = () => {
 					)}
 				</ItemImg>
 				<ItemBot>
-					<Likes />
+					<Likes
+						FEELSTA_LIKE={feelsta.FEELSTA_LIKE}
+						LIKE_NAME={feelsta.LIKE_NAME}
+						FEELSTA_ID={feelsta.FEELSTA_ID}
+					/>
 					<Comments>
 						<span>
 							<FaRegCommentAlt />

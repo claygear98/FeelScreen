@@ -41,6 +41,7 @@ const feelstaUpdate = (req, res) => {};
 //좋아요
 function feelLike(req, res) {
 	let user_id = req.userId;
+
 	feelstaDB.feelstaLike(user_id, req.get('feelsta_id'), res);
 }
 

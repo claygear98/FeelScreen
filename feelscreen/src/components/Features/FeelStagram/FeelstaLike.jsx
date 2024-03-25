@@ -13,8 +13,14 @@ const Likes = styled.span`
 	}
 `;
 const FeelstaLike = (props) => {
-	const { username } = useHeaderInfo();
-
+	// const { username } = useHeaderInfo();
+	const headerInfoString = localStorage.getItem('headerInfo');
+	// JSON 형식의 문자열을 객체로 파싱
+	const headerInfo = JSON.parse(headerInfoString);
+	// headerInfo 객체에서 username 가져오기
+	const username = headerInfo.username;
+	// 가져온 username 콘솔에 출력
+	console.log(username);
 	const pushLikeBtn = () => {
 		if (props.LIKE_NAME && props.LIKE_NAME.includes(username)) {
 			return true;
@@ -28,6 +34,7 @@ const FeelstaLike = (props) => {
 	const handleHeart = (feelstaId) => {
 		if (isHeart === false) {
 			console.log('좋아요 누름');
+			console.log(feelstaId);
 			axios
 				.get(`http://localhost:3001/feelsta/postlike`, {
 					headers: {
@@ -37,6 +44,10 @@ const FeelstaLike = (props) => {
 				})
 				.then(setIsHeart(true));
 		} else {
+			console.log('좋아요 누름ww22');
+
+			console.log(feelstaId);
+
 			axios
 				.delete(`http://localhost:3001/feelsta/postlike`, {
 					headers: {
@@ -48,18 +59,17 @@ const FeelstaLike = (props) => {
 		}
 	};
 	return (
-		<Likes>
-			<span
-				className="heartPush"
-				onClick={(e) => {
-					e.preventDefault();
-					handleHeart(props.FEELSTA_ID);
-				}}
-			>
+		<Likes
+			onClick={(e) => {
+				e.preventDefault();
+				handleHeart(props.FEELSTA_ID);
+			}}
+		>
+			<span className="heartPush">
 				{isHeart ? <FaHeart /> : <FaRegHeart />}
 			</span>
 
-			<span>{isHeart ? props.FEELSTA_LIKE + 1 : props.FEELSTA_LIKE}</span>
+			<span>{isHeart ? props.FEELSTA_LIKE : props.FEELSTA_LIKE - 1}</span>
 		</Likes>
 	);
 };

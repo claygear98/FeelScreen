@@ -77,13 +77,7 @@ const FeelstaItem = (props) => {
 
 	return (
 		<div>
-			<Item
-				onClick={() => {
-					navigate(`/feelsta/detail/${props.FEELSTA_ID}`, {
-						state: props.FEELSTA_ID,
-					});
-				}}
-			>
+			<Item>
 				<ItemPreview>
 					<ItemTop>
 						<img
@@ -96,23 +90,35 @@ const FeelstaItem = (props) => {
 							<div>{props.FEELSTA_DATE}</div>
 						</NameDate>
 					</ItemTop>
-					<ItemSec>
-						<div>{props.FEELSTA_CONTENT}</div>
-						{props.FEELSTA_TAG.split(',').map((tag, index) => (
-							<span key={index}>{tag}</span>
-						))}
-					</ItemSec>
-					<ItemImg>
-						<img
-							src={props.FEELSTA_IMAGE && props.FEELSTA_IMAGE.split(',')[0]}
-							alt=""
-							style={{ width: '300px', borderRadius: '10px' }}
-						/>
-					</ItemImg>
+					<div
+						onClick={() => {
+							navigate(`/feelsta/detail/${props.FEELSTA_ID}`, {
+								state: props.FEELSTA_ID,
+							});
+						}}
+					>
+						<ItemSec>
+							<div>{props.FEELSTA_CONTENT}</div>
+							{props.FEELSTA_TAG.split(',').map((tag, index) => (
+								<span key={index}>{tag}</span>
+							))}
+						</ItemSec>
+						<ItemImg>
+							<img
+								src={props.FEELSTA_IMAGE && props.FEELSTA_IMAGE.split(',')[0]}
+								alt=""
+								style={{ width: '300px', borderRadius: '10px' }}
+							/>
+						</ItemImg>
+					</div>
 					<ItemBot>
 						<Likes
 							FEELSTA_LIKE={props.FEELSTA_LIKE}
 							LIKE_NAME={props.LIKE_NAME}
+							FEELSTA_ID={props.FEELSTA_ID}
+							onClick={(e) => {
+								e.preventDefault();
+							}}
 						/>
 						<Comments>
 							<span>

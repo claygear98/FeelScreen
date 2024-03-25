@@ -18,6 +18,13 @@ const useHeaderInfo = create((set) => ({
 					userImage: Response.data.image,
 					username: Response.data.username,
 				}));
+				localStorage.setItem(
+					'headerInfo',
+					JSON.stringify({
+						username: Response.data.username,
+						userImage: Response.data.image,
+					})
+				);
 			});
 	},
 }));
