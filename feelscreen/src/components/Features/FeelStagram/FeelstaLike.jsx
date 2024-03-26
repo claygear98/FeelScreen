@@ -21,14 +21,15 @@ const FeelstaLike = (props) => {
 	const username = headerInfo.username;
 	// 가져온 username 콘솔에 출력
 	console.log(username);
-	const pushLikeBtn = () => {
+
+	const pushedLikeBtn = () => {
 		if (props.LIKE_NAME && props.LIKE_NAME.includes(username)) {
 			return true;
 		} else {
 			return false;
 		}
 	};
-	const [isHeart, setIsHeart] = useState(pushLikeBtn);
+	const [isHeart, setIsHeart] = useState(pushedLikeBtn());
 	const cookies = new Cookies();
 
 	const handleHeart = (feelstaId) => {
@@ -66,10 +67,14 @@ const FeelstaLike = (props) => {
 			}}
 		>
 			<span className="heartPush">
+				{console.log(isHeart)}
+				{console.log(props.LIKE_NAME)}
+				{console.log(username)}
+
 				{isHeart ? <FaHeart /> : <FaRegHeart />}
 			</span>
 
-			<span>{isHeart ? props.FEELSTA_LIKE : props.FEELSTA_LIKE - 1}</span>
+			<span>{isHeart ? props.FEELSTA_LIKE : props.FEELSTA_LIKE}</span>
 		</Likes>
 	);
 };
