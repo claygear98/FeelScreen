@@ -30,6 +30,7 @@ const FeelstaLike = (props) => {
 		}
 	};
 	const [isHeart, setIsHeart] = useState(pushedLikeBtn());
+	const [pushHeart, serPushHeart] = useState(0);
 	const cookies = new Cookies();
 
 	const handleHeart = (feelstaId) => {
@@ -74,7 +75,7 @@ const FeelstaLike = (props) => {
 				{isHeart ? <FaHeart /> : <FaRegHeart />}
 			</span>
 
-			<span>{isHeart ? props.FEELSTA_LIKE : props.FEELSTA_LIKE}</span>
+			<span>{isHeart ? props.FEELSTA_LIKE + 1 : props.FEELSTA_LIKE}</span>
 		</Likes>
 	);
 };

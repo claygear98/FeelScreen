@@ -116,9 +116,6 @@ const FeelstaItem = (props) => {
 							FEELSTA_LIKE={props.FEELSTA_LIKE}
 							LIKE_NAME={props.LIKE_NAME}
 							FEELSTA_ID={props.FEELSTA_ID}
-							onClick={(e) => {
-								e.preventDefault();
-							}}
 						/>
 						<Comments>
 							<span>
