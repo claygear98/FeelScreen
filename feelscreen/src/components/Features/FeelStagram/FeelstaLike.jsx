@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import React from 'react';
-import useHeaderInfo from '../Header/HeadStore';
 import { FaHeart } from 'react-icons/fa';
 import { FaRegHeart } from 'react-icons/fa';
 import styled from 'styled-components';
@@ -13,7 +12,6 @@ const Likes = styled.span`
 	}
 `;
 const FeelstaLike = (props) => {
-	// const { username } = useHeaderInfo();
 	const headerInfoString = localStorage.getItem('headerInfo');
 	// JSON 형식의 문자열을 객체로 파싱
 	const headerInfo = JSON.parse(headerInfoString);
@@ -45,9 +43,7 @@ const FeelstaLike = (props) => {
 				.then(setIsHeart(true));
 		} else {
 			console.log('좋아요 누름ww22');
-
 			console.log(feelstaId);
-
 			axios
 				.delete(`http://localhost:3001/feelsta/postlike`, {
 					headers: {
